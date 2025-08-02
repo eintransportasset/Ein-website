@@ -29,6 +29,8 @@ import {
   Heart,
   PlayCircle,
 } from "lucide-react"
+import Link from "next/link"
+import Image from "next/image"
 
 const LandingPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -126,9 +128,8 @@ const LandingPage = () => {
     <div className="min-h-screen bg-white overflow-x-hidden">
       {/* Header */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled ? "bg-white/95 backdrop-blur-xl shadow-2xl border-b border-gray-100" : "bg-transparent"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? "bg-white/95 backdrop-blur-xl shadow-2xl border-b border-gray-100" : "bg-transparent"
+          }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
@@ -155,11 +156,17 @@ const LandingPage = () => {
               ))}
             </nav>
 
-            <div className="hidden md:block">
-              <button className="relative bg-gradient-to-r from-[#996414] to-[#DFAC81] text-white px-8 py-3 rounded-full font-semibold overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:shadow-[#996414]/25">
-                <span className="relative z-10">Get Quote</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-[#DFAC81] to-[#996414] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </button>
+            <div className="hidden gap-2 md:flex">
+              <Link href={"/goods-transport"} className="relative bg-gradient-to-r from-[#996414] to-[#DFAC81] text-white px-8 py-3 rounded-full font-semibold overflow-hidden group transition-all duration-300  hover:from-amber-600 hover:to-amber-600 hover:shadow-2xl hover:shadow-[#996414]/25">
+                <span className="relative z-10">Goods Transport</span>
+                {/* <div className="absolute inset-0 bg-gradient-to-r from-[#DFAC81] to-[#996414] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div> */}
+                {/* <span className="relative z-10">Get Quote</span> */}
+              </Link>
+              <Link href={"/packers-and-movers"} className="relative bg-gradient-to-r from-[#996414] to-[#DFAC81] text-white px-8 py-3 rounded-full font-semibold overflow-hidden group transition-all duration-300   hover:from-amber-600 hover:to-amber-600 hover:shadow-2xl hover:shadow-[#996414]/25">
+                <span className="relative z-10">Packers and Movers</span>
+                {/* <div className="absolute inset-0 bg-gradient-to-r from-[#DFAC81] to-[#996414] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div> */}
+                {/* <span className="relative z-10">Get Quote</span> */}
+              </Link>
             </div>
 
             <button
@@ -172,9 +179,8 @@ const LandingPage = () => {
 
           {/* Mobile Menu */}
           <div
-            className={`md:hidden transition-all duration-500 overflow-hidden ${
-              isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-            }`}
+            className={`md:hidden transition-all duration-500 overflow-hidden ${isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+              }`}
           >
             <div className="bg-white/95 backdrop-blur-xl shadow-2xl rounded-2xl m-4 p-6 border border-gray-100">
               <nav className="flex flex-col space-y-4">
@@ -232,11 +238,10 @@ const LandingPage = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-5xl mx-auto text-center">
             <div
-              className={`transition-all duration-1000 ${
-                heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-              }`}
+              className={`transition-all duration-1000 ${heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+                }`}
             >
-             
+
 
               <h1 className="text-4xl md:text-6xl lg:text-7xl mt-10 font-bold mb-6 leading-tight">
                 <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
@@ -277,9 +282,8 @@ const LandingPage = () => {
 
             {/* Stats */}
             <div
-              className={`grid grid-cols-2 md:grid-cols-4 gap-8 transition-all duration-1000 delay-500 ${
-                heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+              className={`grid grid-cols-2 md:grid-cols-4 gap-8 transition-all duration-1000 delay-500 ${heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
             >
               {[
                 { number: "500+", label: "Successful Moves", icon: TrendingUp },
@@ -324,9 +328,8 @@ const LandingPage = () => {
             {services.map((service, index) => (
               <div
                 key={index}
-                className={`group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 cursor-pointer ${
-                  activeService === index ? "ring-2 ring-[#996414]/50 shadow-2xl" : ""
-                }`}
+                className={`group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 cursor-pointer ${activeService === index ? "ring-2 ring-[#996414]/50 shadow-2xl" : ""
+                  }`}
                 onMouseEnter={() => setActiveService(index)}
               >
                 <div
@@ -400,7 +403,7 @@ const LandingPage = () => {
                 </span>
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                We're revolutionizing the transportation and logistics industry with our commitment to sustainability,
+                We&apos;re revolutionizing the transportation and logistics industry with our commitment to sustainability,
                 reliability, and customer satisfaction. Our mission is to make moving stress-free while protecting our
                 planet.
               </p>
@@ -505,12 +508,14 @@ const LandingPage = () => {
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-600 mb-6 leading-relaxed">"{testimonial.content}"</p>
+                <p className="text-gray-600 mb-6 leading-relaxed">{`"${testimonial.content}"`}</p>
                 <div className="flex items-center">
-                  <img
+                  <Image
                     src={testimonial.image || "/placeholder.svg"}
                     alt={testimonial.name}
                     className="w-12 h-12 rounded-full mr-4"
+                    width={48}
+                    height={48}
                   />
                   <div>
                     <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
