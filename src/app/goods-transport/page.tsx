@@ -1,31 +1,49 @@
 'use client'
 import React, { useState } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import DateInput from '@/components/DateInput';
-import Map from '@/components/map';
+import GMap from '@/components/map';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Modal from '@/components/model';
 
-export interface FormData {
+
+type FormData = {
+  fromLat: number;
+  fromLng: number;
+  fromAddress: string;
+  fromDistrict?: string;
+  toLat: number;
+  toLng: number;
+  toAddress: string;
+  toDistrict?: string;
+  dateTime: string;
+  description: string;
   fullName: string;
   phoneNumber: string;
   email?: string;
-  from: string;
-  to: string;
-  dateTime: string;
   materials: string;
-  weight: number;
+  weight: string;
   vehicle?: string;
-  description?: string;
-}
+};
+
+type LocationField = {
+  address: string;
+  lat: number;
+  lng: number;
+  district?: string;
+};
 const Page: React.FC = () => {
   const router = useRouter();
   const { register, handleSubmit, control, formState: { errors }, reset, setValue } = useForm<FormData>();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [showMap, setShowMap] = useState<'from' | 'to' | null>(null);
+  // Store selected locations for from/to
+  const [fromLocation, setFromLocation] = useState<LocationField | null>(null);
+  const [toLocation, setToLocation] = useState<LocationField | null>(null);
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true);
     setSubmitted(false);
@@ -47,11 +65,11 @@ const Page: React.FC = () => {
 
       setSubmitted(true);
       reset(); // Reset form after successful submission
-      // window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      router.push('/order-placed'); // Redirect to order placed page after submission
+      // setFromLocation(null);
+      // setToLocation(null);
+      router.push('/order-placed');
     } catch (error) {
-      console.log("erron in create ", error)
+      console.log("error in create ", error)
       alert("Something went wrong. Please try again.");
     }
 
@@ -260,7 +278,7 @@ const Page: React.FC = () => {
                   },
                   maxLength: {
                     value: 10,
-                    message: "maximum 10 charactors allowed"
+                    message: "maximum 10 characters allowed"
                   }
                 })} className="input" placeholder="e.g. 234 567 8920" />
                 {errors.phoneNumber && <p className="error">{errors.phoneNumber.message}</p>}
@@ -271,20 +289,63 @@ const Page: React.FC = () => {
               </div>
             </div>
           </div>
+
           {/* Route Info */}
           <div>
             <h2 className="text-lg font-semibold mb-2 text-amber-700">Route Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="label">From <span className="required">*</span></label>
-                <input {...register("from", { required: "Starting location is required" })} className="input" placeholder="Pickup location" />
-                {errors.from && <p className="error">{errors.from.message}</p>}
+                <div className="flex gap-2">
+                  <input
+                    {...register("fromAddress", { required: "Pickup location is required" })}
+                    className="input"
+                    placeholder="Pickup location"
+                    value={fromLocation?.address || ""}
+                    readOnly
+                  />
+                  <button
+                    type="button"
+                    className="bg-blue-500 text-white px-2 py-1 rounded"
+                    onClick={() => setShowMap('from')}
+                  >
+                    Pick on Map
+                  </button>
+                </div>
+                {errors.fromAddress && <p className="error">{errors.fromAddress.message}</p>}
+
+                {/* Hidden fields for lat/lng */}
+                <input type="hidden" {...register("fromLat", { required: true })} />
+                <input type="hidden" {...register("fromLng", { required: true })} />
+                <input type="hidden" {...register("fromDistrict")} />
               </div>
+
               <div>
                 <label className="label">To <span className="required">*</span></label>
-                <input {...register("to", { required: "Destination is required" })} className="input" placeholder="Drop-off location" />
-                {errors.to && <p className="error">{errors.to.message}</p>}
+                <div className="flex gap-2">
+                  <input
+                    {...register("toAddress", { required: "Destination is required" })}
+                    className="input"
+                    placeholder="Drop-off location"
+                    value={toLocation?.address || ""}
+                    readOnly
+                  />
+                  <button
+                    type="button"
+                    className="bg-blue-500 text-white px-2 py-1 rounded"
+                    onClick={() => setShowMap('to')}
+                  >
+                    Pick on Map
+                  </button>
+                </div>
+                {errors.toAddress && <p className="error">{errors.toAddress.message}</p>}
+
+                {/* Hidden fields for lat/lng */}
+                <input type="hidden" {...register("toLat", { required: true })} />
+                <input type="hidden" {...register("toLng", { required: true })} />
+                <input type="hidden" {...register("toDistrict")} />
               </div>
+
               <div className="md:col-span-2">
                 <label className="label">Date <span className="required">*</span></label>
                 {/* <input type="datetime-local" {...register("dateTime", { required: "Date and time are required" })} className="input" />
@@ -345,8 +406,23 @@ const Page: React.FC = () => {
           <Modal isOpen={isOpen} setIsOpen={setIsOpen} selectValue={(value: string) => setValue('vehicle', value)} />
         )
       }
-      {/* <Map /> */
-      }
+      {/* Show map picker modal */}
+      {showMap && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-2xl h-[500px] relative">
+            <GMap
+              onLocationSelect={handleMapLocationSelect}
+              onBack={() => setShowMap(null)}
+            />
+            <button
+              className="absolute top-2 right-2 text-gray-600 hover:text-red-600"
+              onClick={() => setShowMap(null)}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
