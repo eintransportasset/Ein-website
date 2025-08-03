@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 import 'react-day-picker/dist/style.css';
 
 
-export default function DateInput({ control, name }: any) {
+export default function DateInput({ control, name ,register}: any) {
   const [showCalendar, setShowCalendar] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -37,6 +37,7 @@ export default function DateInput({ control, name }: any) {
             placeholder="Select date"
             style={{ padding: '8px', width: '280px' }}
             className='input'
+            {...register}
           />
 
           {showCalendar && (

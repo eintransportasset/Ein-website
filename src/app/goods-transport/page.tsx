@@ -2,6 +2,11 @@
 import React, { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import DateInput from '@/components/DateInput';
+import Map from '@/components/map';
+import Link from 'next/link';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import Select from 'react-select'
 type FormData = {
   from: string,
   to: string,
@@ -16,6 +21,7 @@ type FormData = {
 }
 
 const Page: React.FC = () => {
+  const router = useRouter();
   const { register, handleSubmit, control, formState: { errors }, reset } = useForm<FormData>();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -41,8 +47,9 @@ const Page: React.FC = () => {
 
       setSubmitted(true);
       reset(); // Reset form after successful submission
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // window.scrollTo({ top: 0, behavior: 'smooth' });
 
+      router.push('/order-placed'); // Redirect to order placed page after submission
     } catch (error) {
       console.log("erron in create ", error)
       alert("Something went wrong. Please try again.");
@@ -50,9 +57,65 @@ const Page: React.FC = () => {
 
     setLoading(false);
   };
+  // Options with label and description
+  const options = [
+    {
+      value: "apple",
+      label: "Apple",
+      description: "A sweet red fruit",
+    },
+    {
+      value: "banana",
+      label: "Banana",
+      description: "A long yellow fruit",
+    },
+    {
+      value: "carrot",
+      label: "Carrot",
+      description: "An orange root vegetable",
+    },
+  ];
 
+  // Custom render for each option
+  const customSingleValue = ({ data }) => (
+    <div>
+      {data.label}
+    </div>
+  );
+
+  const customOption = (props) => {
+    const { data, innerRef, innerProps, isFocused } = props;
+    return (
+      <div
+        ref={innerRef}
+        {...innerProps}
+     
+      >
+        <div style={{ fontWeight: "bold" }}>{data.label}</div>
+        <div style={{ fontSize: "12px", color: "#666" }}>{data.description}</div>
+      </div>
+    );
+  };
   return (
     <div className="min-h-screen  bg-amber-100  px-4 sm:px-6 lg:px-8">
+
+      <div className='flex justify-between items-center max-w-4xl mx-auto py-4'>
+        <Link href="/" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600  hover:text-amber-50 border px-2 py-2 mb-4">
+
+          <span>
+            <ArrowLeft />
+          </span>
+          Home
+        </Link>
+        <Link href="/packers-and-movers" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600  hover:text-amber-50 border px-2 py-2 mb-4">
+
+          Packers and Movers
+          <span>
+            <ArrowRight />
+          </span>
+        </Link>
+
+      </div>
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
         <h1 className="text-3xl font-bold text-amber-600 mb-6 text-center">Request Goods Transport</h1>
 
@@ -63,28 +126,6 @@ const Page: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Route Info */}
-          <div>
-            <h2 className="text-lg font-semibold mb-2 text-amber-700">Route Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="label">From <span className="required">*</span></label>
-                <input {...register("from", { required: "Starting location is required" })} className="input" placeholder="Pickup location" />
-                {errors.from && <p className="error">{errors.from.message}</p>}
-              </div>
-              <div>
-                <label className="label">To <span className="required">*</span></label>
-                <input {...register("to", { required: "Destination is required" })} className="input" placeholder="Drop-off location" />
-                {errors.to && <p className="error">{errors.to.message}</p>}
-              </div>
-              <div className="md:col-span-2">
-                <label className="label">Date <span className="required">*</span></label>
-                {/* <input type="datetime-local" {...register("dateTime", { required: "Date and time are required" })} className="input" />
-                {errors.dateTime && <p className="error">{errors.dateTime.message}</p>} */}
-                <DateInput control={control} name="dateTime" />
-              </div>
-            </div>
-          </div>
 
           {/* Personal Info */}
           <div>
@@ -115,6 +156,30 @@ const Page: React.FC = () => {
               </div>
             </div>
           </div>
+          {/* Route Info */}
+          <div>
+            <h2 className="text-lg font-semibold mb-2 text-amber-700">Route Information</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="label">From <span className="required">*</span></label>
+                <input {...register("from", { required: "Starting location is required" })} className="input" placeholder="Pickup location" />
+                {errors.from && <p className="error">{errors.from.message}</p>}
+              </div>
+              <div>
+                <label className="label">To <span className="required">*</span></label>
+                <input {...register("to", { required: "Destination is required" })} className="input" placeholder="Drop-off location" />
+                {errors.to && <p className="error">{errors.to.message}</p>}
+              </div>
+              <div className="md:col-span-2">
+                <label className="label">Date <span className="required">*</span></label>
+                {/* <input type="datetime-local" {...register("dateTime", { required: "Date and time are required" })} className="input" />
+                {errors.dateTime && <p className="error">{errors.dateTime.message}</p>} */}
+                <DateInput control={control} name="dateTime" />
+              </div>
+            </div>
+          </div>
+
+
 
           {/* Goods Info */}
           <div>
@@ -131,14 +196,20 @@ const Page: React.FC = () => {
                 {errors.weight && <p className="error">{errors.weight.message}</p>}
               </div>
               <div className="md:col-span-2">
-                <label className="label">Vehicle Required <span className="required">*</span></label>
+                {/* <label className="label">Vehicle Required <span className="required">*</span></label>
                 <select {...register("vehicleRequired", { required: "Vehicle requirement is required" })} className="input">
                   <option value="">Select vehicle type</option>
                   <option value="truck">Truck</option>
                   <option value="van">Van</option>
                   <option value="bike">Bike</option>
                   <option value="other">Other</option>
-                </select>
+                </select> */}
+
+                <Select
+                  options={options}
+                  components={{ Option: customOption, SingleValue: customSingleValue }}
+                  placeholder="Select an item"
+                />
                 {errors.vehicleRequired && <p className="error">{errors.vehicleRequired.message}</p>}
               </div>
               <div className="md:col-span-2">
@@ -161,7 +232,7 @@ const Page: React.FC = () => {
         </form>
       </div>
 
-
+      {/* <Map /> */}
     </div>
   );
 };

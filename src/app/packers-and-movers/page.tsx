@@ -1,8 +1,10 @@
 'use client'
 import DateInput from '@/components/DateInput'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 import React, { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-
+import { useRouter } from 'next/navigation'
 type FormData = {
   from: string,
   to: string,
@@ -10,11 +12,13 @@ type FormData = {
   description: string,
   fullName: string,
   phoneNumber: string,
-  email?: string
+  email?: string,
+  shiftingThings: string,
 }
 
 const Page: React.FC = () => {
-  const { register, handleSubmit, formState: { errors },control } = useForm<FormData>();
+  const router = useRouter()
+  const { register, handleSubmit, formState: { errors }, control } = useForm<FormData>();
   const [loading] = useState(false);
   const [submitted] = useState(false);
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -32,7 +36,7 @@ const Page: React.FC = () => {
       body: JSON.stringify(payload),
     });
 
-    alert("Submitted!");
+    router.push('/order-placed'); // Redirect to order placed page after submission
   };
 
   return (
@@ -71,6 +75,24 @@ const Page: React.FC = () => {
     // </div>
 
     <div className="min-h-screen  bg-amber-100  px-4 sm:px-6 lg:px-8">
+
+      <div className='flex justify-between items-center max-w-4xl mx-auto py-4'>
+        <Link href="/" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600  hover:text-amber-50 border px-2 py-2 mb-4">
+
+          <span>
+            <ArrowLeft />
+          </span>
+          Home
+        </Link>
+        <Link href="/goods-transport" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600  hover:text-amber-50 border px-2 py-2 mb-4">
+
+          Goods Transport
+          <span>
+            <ArrowRight />
+          </span>
+        </Link>
+
+      </div>
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
         <h1 className="text-3xl font-bold text-amber-600 mb-6 text-center">Packers and Movers</h1>
 
@@ -81,28 +103,6 @@ const Page: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Route Info */}
-          <div>
-            <h2 className="text-lg font-semibold mb-2 text-amber-700">Route Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="label">From <span className="required">*</span></label>
-                <input {...register("from", { required: "Starting location is required" })} className="input" placeholder="Pickup location" />
-                {errors.from && <p className="error">{errors.from.message}</p>}
-              </div>
-              <div>
-                <label className="label">To <span className="required">*</span></label>
-                <input {...register("to", { required: "Destination is required" })} className="input" placeholder="Drop-off location" />
-                {errors.to && <p className="error">{errors.to.message}</p>}
-              </div>
-              <div className="md:col-span-2">
-                <label className="label">Date <span className="required">*</span></label>
-                {/* <input type="datetime-local" {...register("dateTime", { required: "Date and time are required" })} className="input" />
-                    {errors.dateTime && <p className="error">{errors.dateTime.message}</p>} */}
-                <DateInput control={control} name="dateTime" />
-              </div>
-            </div>
-          </div>
 
           {/* Personal Info */}
           <div>
@@ -134,37 +134,45 @@ const Page: React.FC = () => {
             </div>
           </div>
 
-          {/* Goods Info */}
-          {/* <div>
-            <h2 className="text-lg font-semibold mb-2 text-amber-700">Goods Details</h2>
+
+          {/* Route Info */}
+          <div>
+            <h2 className="text-lg font-semibold mb-2 text-amber-700">Route Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="label">Materials <span className="required">*</span></label>
-                <input {...register("materials", { required: "Materials are required" })} className="input" placeholder="What are you transporting?" />
-                {errors.materials && <p className="error">{errors.materials.message}</p>}
+                <label className="label">From <span className="required">*</span></label>
+                <input {...register("from", { required: "Starting location is required" })} className="input" placeholder="Pickup location" />
+                {errors.from && <p className="error">{errors.from.message}</p>}
               </div>
               <div>
-                <label className="label">Weight (kg) <span className="required">*</span></label>
-                <input type="number" {...register("weight", { required: "Weight is required" })} className="input" placeholder="e.g. 100" />
-                {errors.weight && <p className="error">{errors.weight.message}</p>}
+                <label className="label">To <span className="required">*</span></label>
+                <input {...register("to", { required: "Destination is required" })} className="input" placeholder="Drop-off location" />
+                {errors.to && <p className="error">{errors.to.message}</p>}
               </div>
               <div className="md:col-span-2">
-                <label className="label">Vehicle Required <span className="required">*</span></label>
-                <select {...register("vehicleRequired", { required: "Vehicle requirement is required" })} className="input">
-                  <option value="">Select vehicle type</option>
-                  <option value="truck">Truck</option>
-                  <option value="van">Van</option>
-                  <option value="bike">Bike</option>
-                  <option value="other">Other</option>
-                </select>
-                {errors.vehicleRequired && <p className="error">{errors.vehicleRequired.message}</p>}
-              </div>
-              <div className="md:col-span-2">
-                <label className="label">Additional Notes</label>
-                <textarea {...register("description")} className="input h-24 resize-none" placeholder="Any extra information about the transport..." />
+                <label className="label">Shifting Date <span className="required">*</span></label>
+                {/* <input type="datetime-local" {...register("dateTime", { required: "Date and time are required" })} className="input" />
+                    {errors.dateTime && <p className="error">{errors.dateTime.message}</p>} */}
+                <DateInput register={{...register("dateTime", { required: "Date and time are required" })}}  control={control} name="dateTime" />
+                {errors.dateTime && <p className="error">{errors.dateTime.message}</p>}
               </div>
             </div>
-          </div> */}
+          </div>
+
+
+
+          {/* Packer Info */}
+          <div>
+            <h2 className="text-lg font-semibold mb-2 text-amber-700">Package Information</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="label">Shifting Things <span className="required">*</span></label>
+                <textarea {...register("shiftingThings", { required: "Shifting things is required" })} className="input" placeholder="Mention your things" />
+                {errors.from && <p className="error">{errors.from.message}</p>}
+              </div>
+
+            </div>
+          </div>
 
           <div className="text-center">
             <button

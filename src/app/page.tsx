@@ -194,9 +194,12 @@ const LandingPage = () => {
                     {item}
                   </a>
                 ))}
-                <button className="bg-gradient-to-r from-[#996414] to-[#DFAC81] text-white px-6 py-3 rounded-full font-semibold mt-4">
-                  Get Quote
-                </button>
+                <Link href={"/goods-transport"} className="relative bg-gradient-to-r from-[#996414] to-[#DFAC81] text-white px-8 py-3 rounded-full font-semibold overflow-hidden group transition-all duration-300  hover:from-amber-600 hover:to-amber-600 hover:shadow-2xl hover:shadow-[#996414]/25">
+                  <span className="relative z-10">Goods Transport</span>
+                </Link>
+                <Link href={"/packers-and-movers"} className="relative bg-gradient-to-r from-[#996414] to-[#DFAC81] text-white px-8 py-3 rounded-full font-semibold overflow-hidden group transition-all duration-300   hover:from-amber-600 hover:to-amber-600 hover:shadow-2xl hover:shadow-[#996414]/25">
+                  <span className="relative z-10">Packers and Movers</span>
+                </Link>
               </nav>
             </div>
           </div>
