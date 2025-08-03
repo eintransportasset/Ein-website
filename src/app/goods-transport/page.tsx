@@ -1,13 +1,12 @@
 'use client'
 import React, { useState } from 'react'
-import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { useForm, SubmitHandler, UseFormSetValue } from 'react-hook-form'
 import DateInput from '@/components/DateInput';
 import GMap from '@/components/map';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import Select from 'react-select'
-
+import Modal from '@/components/modal';
 // Add the missing LocationField type
 type LocationField = {
   address: string;
@@ -32,25 +31,35 @@ type FormData = {
   email?: string;
   materials: string;
   weight: string;
-  vehicleRequired: string;
+  vehicle: string;
 };
-
+// export interface FormData {
+//   fullName: string;
+//   phoneNumber: string;
+//   email?: string;
+//   from: string;
+//   to: string;
+//   dateTime: string;
+//   materials: string;
+//   weight: number;
+//   vehicle?: string;
+//   description?: string;
+// }
 const Page: React.FC = () => {
   const router = useRouter();
-  // Add getValues to the destructuring
-  const { register, handleSubmit, control, formState: { errors }, reset, getValues, setValue } = useForm<FormData>();
+  const { register, handleSubmit, control, formState: { errors }, reset, setValue } = useForm<FormData>();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [showMap, setShowMap] = useState<'from' | 'to' | null>(null);
-
   // Store selected locations for from/to
   const [fromLocation, setFromLocation] = useState<LocationField | null>(null);
   const [toLocation, setToLocation] = useState<LocationField | null>(null);
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true);
     setSubmitted(false);
 
+    console.log("Form data before submission:", data);
     const payload = {
       ...data,
       targetTab: "goodsTransportRequests",
@@ -94,60 +103,14 @@ const Page: React.FC = () => {
       reset(); // Reset form after successful submission
       setFromLocation(null);
       setToLocation(null);
-      router.push('/order-placed');
+      router.push('/goods-transport/orderPlaced');
     } catch (error) {
-      console.log("error in create ", error)
+      console.log("erron in create ", error)
       alert("Something went wrong. Please try again.");
     }
 
     setLoading(false);
   };
-
-  // Options with label and description
-  const vehicleOptions = [
-    {
-      value: "truck",
-      label: "Truck",
-      description: "Large capacity vehicle for heavy goods",
-    },
-    {
-      value: "van",
-      label: "Van",
-      description: "Medium capacity vehicle for moderate loads",
-    },
-    {
-      value: "bike",
-      label: "Bike",
-      description: "Small capacity for light items",
-    },
-    {
-      value: "other",
-      label: "Other",
-      description: "Specify your custom vehicle requirement",
-    },
-  ];
-
-  // Custom render for each option
-  const customSingleValue = ({ data }: any) => (
-    <div>
-      {data.label}
-    </div>
-  );
-
-  const customOption = (props: any) => {
-    const { data, innerRef, innerProps } = props;
-    return (
-      <div
-        ref={innerRef}
-        {...innerProps}
-        className="p-2 hover:bg-gray-100 cursor-pointer"
-      >
-        <div style={{ fontWeight: "bold" }}>{data.label}</div>
-        <div style={{ fontSize: "12px", color: "#666" }}>{data.description}</div>
-      </div>
-    );
-  };
-
   // Handler for map selection
   const handleMapLocationSelect = (locationData: LocationField) => {
     if (showMap === 'from') {
@@ -169,35 +132,52 @@ const Page: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-amber-100 px-4 sm:px-6 lg:px-8">
-      <div className='flex justify-between items-center max-w-4xl mx-auto py-4'>
-        <Link href="/" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600 hover:text-amber-50 border px-2 py-2 mb-4">
-          <span>
-            <ArrowLeft />
-          </span>
-          Home
-        </Link>
-        <Link href="/packers-and-movers" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600 hover:text-amber-50 border px-2 py-2 mb-4">
-          Packers and Movers
-          <span>
-            <ArrowRight />
-          </span>
-        </Link>
-      </div>
+    <div className="h-screen bg-amber-100 p-4">
+      {/* <div className='flex justify-between items-center max-w-4xl mx-auto py-4'>
+          <Link href="/" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600  hover:text-amber-50 border px-2 py-2 mb-4">
 
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-3xl font-bold text-amber-600 mb-6 text-center">Request Goods Transport</h1>
+            <span>
+              <ArrowLeft />
+            </span>
+            Home
+          </Link>
+          <Link href="/packers-and-movers" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600  hover:text-amber-50 border px-2 py-2 mb-4">
 
-        {submitted && (
-          <div className="mb-6 p-4 bg-green-100 text-green-800 border border-green-300 rounded">
-            ✅ Your request has been submitted successfully!
-          </div>
-        )}
+            Packers and Movers
+            <span>
+              <ArrowRight />
+            </span>
+          </Link>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        </div> */}
+
+      <div className="h-full max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6 flex flex-col">
+        <div className='flex justify-between items-center mb-4'>
+          <Link href="/" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600  hover:text-amber-50 border px-2 py-2 mb-4">
+
+            <span>
+              <ArrowLeft />
+            </span>
+            Home
+          </Link>
+          <h1 className="text-2xl font-bold text-amber-600 mb-4 text-center">Goods Transport</h1>
+          <Link href="/packers-and-movers" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600  hover:text-amber-50 border px-2 py-2 mb-4">
+
+            Packers and Movers
+            <span>
+              <ArrowRight />
+            </span>
+          </Link>
+        </div>
+        <form id="transportForm" onSubmit={handleSubmit(onSubmit)} className="flex-1 overflow-y-auto space-y-4 pr-2">
+          {submitted && (
+            <div className="mb-4 p-2 bg-green-100 text-green-800 border border-green-300 rounded">
+              ✅ Request submitted successfully!
+            </div>
+          )}
           {/* Personal Info */}
           <div>
-            <h2 className="text-lg font-semibold mb-2 text-amber-700">Contact Information</h2>
+            <h2 className="text-lg font-semibold mt-2 mb-2 text-amber-700">Contact Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="label">Full Name <span className="required">*</span></label>
@@ -213,7 +193,7 @@ const Page: React.FC = () => {
                   },
                   maxLength: {
                     value: 10,
-                    message: "maximum 10 characters allowed"
+                    message: "maximum 10 charactors allowed"
                   }
                 })} className="input" placeholder="e.g. 234 567 8920" />
                 {errors.phoneNumber && <p className="error">{errors.phoneNumber.message}</p>}
@@ -224,7 +204,6 @@ const Page: React.FC = () => {
               </div>
             </div>
           </div>
-
           {/* Route Info */}
           <div>
             <h2 className="text-lg font-semibold mb-2 text-amber-700">Route Information</h2>
@@ -248,13 +227,13 @@ const Page: React.FC = () => {
                   </button>
                 </div>
                 {errors.fromAddress && <p className="error">{errors.fromAddress.message}</p>}
-                
+
                 {/* Hidden fields for lat/lng */}
                 <input type="hidden" {...register("fromLat", { required: true })} />
                 <input type="hidden" {...register("fromLng", { required: true })} />
                 <input type="hidden" {...register("fromDistrict")} />
               </div>
-              
+
               <div>
                 <label className="label">To <span className="required">*</span></label>
                 <div className="flex gap-2">
@@ -274,13 +253,13 @@ const Page: React.FC = () => {
                   </button>
                 </div>
                 {errors.toAddress && <p className="error">{errors.toAddress.message}</p>}
-                
+
                 {/* Hidden fields for lat/lng */}
                 <input type="hidden" {...register("toLat", { required: true })} />
                 <input type="hidden" {...register("toLng", { required: true })} />
                 <input type="hidden" {...register("toDistrict")} />
               </div>
-              
+
               <div className="md:col-span-2">
                 <label className="label">Date <span className="required">*</span></label>
                 <DateInput control={control} name="dateTime" />
@@ -305,22 +284,15 @@ const Page: React.FC = () => {
               </div>
               <div className="md:col-span-2">
                 <label className="label">Vehicle Required <span className="required">*</span></label>
-                <Controller
-                  name="vehicleRequired"
-                  control={control}
-                  rules={{ required: "Vehicle requirement is required" }}
-                  render={({ field }) => (
-                    <Select
-                      {...field}
-                      options={vehicleOptions}
-                      components={{ Option: customOption, SingleValue: customSingleValue }}
-                      placeholder="Select vehicle type"
-                      onChange={(selectedOption) => field.onChange(selectedOption?.value)}
-                      value={vehicleOptions.find(option => option.value === field.value)}
-                    />
-                  )}
+                <input onFocus={() => {
+                  setIsOpen(true)
+                }} type="text" {...register("vehicle")} placeholder='click me' className='input' />
+                {/* <Select
+                  options={options}
+                  components={{ Option: customOption, SingleValue: customSingleValue }}
+                  placeholder="Select an item"
                 />
-                {errors.vehicleRequired && <p className="error">{errors.vehicleRequired.message}</p>}
+                {errors.vehicleRequired && <p className="error">{errors.vehicleRequired.message}</p>} */}
               </div>
               <div className="md:col-span-2">
                 <label className="label">Additional Notes</label>
@@ -329,20 +301,23 @@ const Page: React.FC = () => {
             </div>
           </div>
 
-          <div className="text-center">
-            <button
-              type="submit"
-              disabled={loading}
-              className={`bg-amber-600 text-white px-6 py-2 rounded-md transition-all duration-200 ${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-amber-700"
-                }`}
-            >
-              {loading ? "Submitting..." : "Submit Request"}
-            </button>
-          </div>
         </form>
+        <div className="mt-4 text-center">
+          <button
+            type="submit"
+            form="transportForm"
+            disabled={loading}
+            className={`bg-amber-600 text-white px-6 py-2 rounded-md ${loading ? "opacity-50" : "hover:bg-amber-700"}`}
+          >
+            {loading ? "Submitting..." : "Submit Request"}
+          </button>
+        </div>
       </div>
-
-      {/* Show map picker modal */}
+      {
+        isOpen && (
+          <Modal isOpen={isOpen} setIsOpen={setIsOpen} selectValue={setValue} />
+        )
+      }
       {showMap && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-2xl h-[500px] relative">
