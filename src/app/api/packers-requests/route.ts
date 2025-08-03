@@ -8,23 +8,44 @@ export async function POST(request: NextRequest) {
     await connectDB();
     const data = await request.json();
 
-    const { name, email, phoneNumber, from, to, dateTime, description } = data;
+    const {
+      fullName,
+      email,
+      phoneNumber,
+      fromAddress,
+      fromLat,
+      fromLng,
+      fromDistrict,
+      toAddress,
+      toLat,
+      toLng,
+      toDistrict,
+      dateTime,
+      description,
+      shiftingThings,
+    } = data;
 
     // Check for existing user
     let user = await User.findOne({ phoneNumber });
 
     if (!user) {
-      // Create new user
-      user = await User.create({ name, email, phoneNumber });
+      user = await User.create({ fullName, email, phoneNumber });
     }
 
     // Create Packers and Movers request
     const packersAndMovers = await PackersAndMovers.create({
       userId: user._id,
-      from,
-      to,
+      fromAddress,
+      fromLat,
+      fromLng,
+      fromDistrict,
+      toAddress,
+      toLat,
+      toLng,
+      toDistrict,
       dateTime: new Date(dateTime),
       description: description || '',
+      shiftingThings,
     });
 
     return NextResponse.json({

@@ -1,18 +1,40 @@
 import mongoose from 'mongoose';
 
 const goodsTransportSchema = new mongoose.Schema({
-    userId:{
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'User',
+        ref: 'User',
         required: true,
     },
-    from: {
+    fromAddress: {
         type: String,
         required: true,
     },
-    to:{
+    fromLat: {
+        type: Number,
+        required: true,
+    },
+    fromLng: {
+        type: Number,
+        required: true,
+    },
+    fromDistrict: {
+        type: String,
+    },
+    toAddress: {
         type: String,
         required: true,
+    },
+    toLat: {
+        type: Number,
+        required: true,
+    },
+    toLng: {
+        type: Number,
+        required: true,
+    },
+    toDistrict: {
+        type: String,
     },
     dateTime: {
         type: Date,
@@ -38,8 +60,7 @@ const goodsTransportSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-
 });
 
-const GoodsTransport = mongoose.models.GoodsTransport || mongoose.model("GoodsTranport", goodsTransportSchema);
+const GoodsTransport = mongoose.models.GoodsTransport || mongoose.model("GoodsTransport", goodsTransportSchema);
 export default GoodsTransport;

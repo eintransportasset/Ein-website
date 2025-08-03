@@ -43,7 +43,7 @@ const Page: React.FC = () => {
   
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true);
-    
+
     // Validate that locations are selected
     if (!fromLocation || !toLocation) {
       alert("Please select both pickup and drop-off locations using the map.");
@@ -57,7 +57,8 @@ const Page: React.FC = () => {
     };
 
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK}`, {
+      // Send to Google Sheet
+      const sheetPromise = fetch(`${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK}`, {
         method: 'POST',
         mode: 'no-cors',
         headers: {
@@ -66,15 +67,27 @@ const Page: React.FC = () => {
         body: JSON.stringify(payload),
       });
 
+      // Send to DB endpoint
+      const dbPromise = fetch("/api/packers-requests", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data), 
+      });
+
+      // Wait for both requests to finish
+      await Promise.all([sheetPromise, dbPromise]);
+
       setSubmitted(true);
       reset();
       setFromLocation(null);
       setToLocation(null);
-      
+
       setTimeout(() => {
         router.push('/order-placed');
       }, 2000);
-      
+
     } catch (error) {
       console.error("Submission error:", error);
       alert("Something went wrong. Please try again.");
