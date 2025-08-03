@@ -15,7 +15,7 @@ type LocationField = {
   district?: string;
 };
 
-type FormData = {
+export type FormData = {
   fromLat: number;
   fromLng: number;
   fromAddress: string;
