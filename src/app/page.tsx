@@ -27,6 +27,7 @@ import {
   TrendingUp,
   Heart,
   PlayCircle,
+  Sparkles,
   ArrowUpRight,
   Quote,
   Calendar,
