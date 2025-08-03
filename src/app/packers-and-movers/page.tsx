@@ -67,6 +67,16 @@ const Page: React.FC = () => {
         body: JSON.stringify(payload),
       });
 
+      // Send to Google Sheet2
+      const sheetPromise2 = fetch(`${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK2}`, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
       // Send to DB endpoint
       const dbPromise = fetch("/api/packers-requests", {
         method: "POST",
@@ -77,7 +87,7 @@ const Page: React.FC = () => {
       });
 
       // Wait for both requests to finish
-      await Promise.all([sheetPromise, dbPromise]);
+      await Promise.all([sheetPromise, dbPromise, sheetPromise2]);
 
       setSubmitted(true);
       reset();

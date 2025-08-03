@@ -2,6 +2,8 @@ import connectDB from "@/config/db";
 import { NextResponse, NextRequest } from "next/server";
 import User from "@/models/User";
 import GoodsTransport from "@/models/goodsTranport";
+import { sendOrderEmail } from '@/config/email';
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -53,6 +55,10 @@ export async function POST(request: NextRequest) {
       vehicleRequired,
     });
 
+    // Send email notification
+    await sendOrderEmail(data, 'goods', process.env.EMAIL_USER || '');
+
+    // Return success response
     return NextResponse.json({
       success: true,
       message: "Goods Transport request created successfully",
