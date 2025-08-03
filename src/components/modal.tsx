@@ -122,15 +122,14 @@ const options = [
 ];
 import React, { useState } from "react";
 import { UseFormSetValue } from 'react-hook-form';
+import type { FormData } from "@/app/goods-transport/page"; // ✅ Import instead of redefining
 
-interface FormData {
-  vehicle: string;
-}
+
 
 interface ModalProps {
-  isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
-  selectValue?: UseFormSetValue<FormData>;
+    isOpen: boolean;
+    setIsOpen: (open: boolean) => void;
+    selectValue?: UseFormSetValue<FormData>;
 }
 export default function Modal({ isOpen, setIsOpen, selectValue }: ModalProps) {
 

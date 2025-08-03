@@ -40,10 +40,10 @@ const Page: React.FC = () => {
   const [showMap, setShowMap] = useState<'from' | 'to' | null>(null);
   const [fromLocation, setFromLocation] = useState<LocationField | null>(null);
   const [toLocation, setToLocation] = useState<LocationField | null>(null);
-  
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true);
-    
+
     // Validate that locations are selected
     if (!fromLocation || !toLocation) {
       alert("Please select both pickup and drop-off locations using the map.");
@@ -70,11 +70,11 @@ const Page: React.FC = () => {
       reset();
       setFromLocation(null);
       setToLocation(null);
-      
+
       setTimeout(() => {
-        router.push('/order-placed');
+        router.push('/packers-and-movers/orderPlaced');
       }, 2000);
-      
+
     } catch (error) {
       console.error("Submission error:", error);
       alert("Something went wrong. Please try again.");
@@ -103,8 +103,8 @@ const Page: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-amber-100 px-4 sm:px-6 lg:px-8">
-      <div className='flex justify-between items-center max-w-4xl mx-auto py-4'>
+    <div className="h-screen bg-amber-100 p-4">
+      {/* <div className='flex justify-between items-center max-w-4xl mx-auto py-4'>
         <Link href="/" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600 hover:text-amber-50 border px-2 py-2 mb-4">
           <span>
             <ArrowLeft />
@@ -117,18 +117,34 @@ const Page: React.FC = () => {
             <ArrowRight />
           </span>
         </Link>
-      </div>
-      
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-3xl font-bold text-amber-600 mb-6 text-center">Packers and Movers</h1>
+      </div> */}
 
-        {submitted && (
+      <div className="h-full max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6 flex flex-col">
+        <div className='flex justify-between items-center mb-4'>
+          <Link href="/" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600  hover:text-amber-50 border px-2 py-2 mb-4">
+
+            <span>
+              <ArrowLeft />
+            </span>
+            Home
+          </Link>
+          <h1 className="text-2xl font-bold text-amber-600 mb-4 text-center">Packers and Movers</h1>
+          <Link href="/goods-transport" className="flex gap-1 text-amber-600 bg-amber-50 rounded hover:bg-amber-600  hover:text-amber-50 border px-2 py-2 mb-4">
+
+            goods Transport
+            <span>
+              <ArrowRight />
+            </span>
+          </Link>
+        </div>
+
+        {/* {submitted && (
           <div className="mb-6 p-4 bg-green-100 text-green-800 border border-green-300 rounded">
             ✅ Your request has been submitted successfully!
           </div>
-        )}
+        )} */}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form id="packersandmovers" onSubmit={handleSubmit(onSubmit)} className="flex-1 overflow-y-auto space-y-4 pr-2">
           {/* Personal Info */}
           <div>
             <h2 className="text-lg font-semibold mb-2 text-amber-700">Contact Information</h2>
@@ -182,13 +198,13 @@ const Page: React.FC = () => {
                   </button>
                 </div>
                 {errors.fromAddress && <p className="error">{errors.fromAddress.message}</p>}
-                
+
                 {/* Hidden fields for lat/lng */}
                 <input type="hidden" {...register("fromLat", { required: true })} />
                 <input type="hidden" {...register("fromLng", { required: true })} />
                 <input type="hidden" {...register("fromDistrict")} />
               </div>
-              
+
               <div>
                 <label className="label">To <span className="required">*</span></label>
                 <div className="flex gap-2">
@@ -208,13 +224,13 @@ const Page: React.FC = () => {
                   </button>
                 </div>
                 {errors.toAddress && <p className="error">{errors.toAddress.message}</p>}
-                
+
                 {/* Hidden fields for lat/lng */}
                 <input type="hidden" {...register("toLat", { required: true })} />
                 <input type="hidden" {...register("toLng", { required: true })} />
                 <input type="hidden" {...register("toDistrict")} />
               </div>
-              
+
               <div className="md:col-span-2">
                 <label className="label">Shifting Date <span className="required">*</span></label>
                 <DateInput control={control} name="dateTime" />
@@ -235,16 +251,17 @@ const Page: React.FC = () => {
             </div>
           </div>
 
-          <div className="text-center">
-            <button
-              type="submit"
-              disabled={loading}
-              className={`bg-amber-600 text-white px-6 py-2 rounded-md transition-all duration-200 ${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-amber-700"}`}
-            >
-              {loading ? "Submitting..." : "Submit Request"}
-            </button>
-          </div>
         </form>
+        <div className="text-center">
+          <button
+            type="submit"
+            disabled={loading}
+            form="packersandmovers"
+            className={`bg-amber-600 text-white px-6 py-2 rounded-md transition-all duration-200 ${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-amber-700"}`}
+          >
+            {loading ? "Submitting..." : "Submit Request"}
+          </button>
+        </div>
 
         {showMap && (
           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
