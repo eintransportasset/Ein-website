@@ -20,9 +20,17 @@ export default function Component() {
   };
 
   const handleLetsMove = () => {
+    if (fromLocation || toLocation) {
     // Save to localStorage for transfer (or use context in next page)
     localStorage.setItem("fromLocation", JSON.stringify(fromLocation));
     localStorage.setItem("toLocation", JSON.stringify(toLocation));
+  }
+  if (!fromLocation) {
+    localStorage.removeItem("fromLocation");
+  }
+  if (!toLocation) {
+    localStorage.removeItem("toLocation");
+  }
     router.push("/packers-and-movers");
   };
 
@@ -102,7 +110,6 @@ export default function Component() {
             <button
               className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-[#0086FF] text-white rounded-lg hover:bg-blue-700 transition-colors"
               onClick={handleLetsMove}
-              disabled={!fromLocation || !toLocation}
             >
               <ArrowBigRight className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
               <span className="text-sm sm:text-base font-semibold">Let's Move</span>

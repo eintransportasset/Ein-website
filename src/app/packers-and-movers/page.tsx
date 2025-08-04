@@ -43,6 +43,21 @@ const Page: React.FC = () => {
   const [toLocation, setToLocation] = useState<LocationField | null>(null);
   const { fromLocation: contextFromLocation, toLocation: contextToLocation } = useLocationContext();
 
+
+  //if page reload remove from localStorage
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.removeItem("fromLocation");
+      localStorage.removeItem("toLocation");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []); 
+
+
   useEffect(() => {
     // Try context first, fallback to localStorage
     const from = contextFromLocation || JSON.parse(localStorage.getItem("fromLocation") || "null");
@@ -115,6 +130,10 @@ const Page: React.FC = () => {
       reset();
       setFromLocation(null);
       setToLocation(null);
+
+      //remove from localStorage
+      localStorage.removeItem("fromLocation");
+      localStorage.removeItem("toLocation");
 
       setTimeout(() => {
         router.push('/packers-and-movers/orderPlaced');
