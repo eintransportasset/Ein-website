@@ -207,7 +207,7 @@ const Page: React.FC = () => {
 
                   <div className="space-y-5">
                     <div className="group">
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">
+                      <label className="block text-sm  text-slate-700 mb-2">
                         Full Name <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
@@ -228,7 +228,7 @@ const Page: React.FC = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div className="group">
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">
+                        <label className="block text-sm  text-slate-700 mb-2">
                           Phone Number <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
@@ -252,7 +252,7 @@ const Page: React.FC = () => {
                       </div>
 
                       <div className="group">
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">
+                        <label className="block text-sm  text-slate-700 mb-2">
                           Email <span className="text-slate-400 text-xs font-normal">(optional)</span>
                         </label>
                         <div className="relative">
@@ -280,7 +280,7 @@ const Page: React.FC = () => {
 
                   <div className="space-y-5">
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">
+                      <label className="block text-sm  text-slate-700 mb-2">
                         Pickup Location <span className="text-red-500">*</span>
                       </label>
                       <div className="relative group cursor-pointer" onClick={() => setShowMap("from")}>
@@ -305,7 +305,7 @@ const Page: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">
+                      <label className="block text-sm  text-slate-700 mb-2">
                         Drop-off Location <span className="text-red-500">*</span>
                       </label>
                       <div className="relative group cursor-pointer" onClick={() => setShowMap("to")}>
@@ -330,7 +330,7 @@ const Page: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">
+                      <label className="block text-sm  text-slate-700 mb-2">
                         Transport Date & Time <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
@@ -360,7 +360,7 @@ const Page: React.FC = () => {
 
                   <div className="space-y-5">
                     <div className="group">
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">
+                      <label className="block text-sm  text-slate-700 mb-2">
                         Materials/Goods <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
@@ -380,7 +380,7 @@ const Page: React.FC = () => {
                     </div>
 
                     <div className="group">
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">
+                      <label className="block text-sm  text-slate-700 mb-2">
                         Weight (kg) <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
@@ -401,7 +401,7 @@ const Page: React.FC = () => {
                     </div>
 
                     <div className="group">
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">
+                      <label className="block text-sm  text-slate-700 mb-2">
                         Vehicle Required <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
@@ -424,7 +424,7 @@ const Page: React.FC = () => {
                     </div>
 
                     <div className="group">
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">Additional Notes</label>
+                      <label className="block text-sm  text-slate-700 mb-2">Additional Notes</label>
                       <div className="relative">
                         <FileText className="absolute left-4 top-4 w-5 h-5 text-blue-600 group-focus-within:text-blue-700 transition-colors duration-300" />
                         <textarea
