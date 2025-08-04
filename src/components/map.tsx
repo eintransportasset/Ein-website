@@ -352,7 +352,7 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
                         <input
                             type="text"
                             id="auto-complete-input"
-                            placeholder="🔍 Search Location"
+                            placeholder=" Search Location"
                             className="w-full p-3 rounded-xl border border-gray-200 outline-none 
                                  text-sm shadow-lg bg-white/95 backdrop-blur-sm
                                  focus:ring-2 focus:ring-blue-400 focus:border-transparent
@@ -362,7 +362,7 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
 
                     {/* Center Marker */}
                     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
-                        <MapPin className="w-8 h-8 text-amber-600 drop-shadow-lg animate-bounce" strokeWidth={2} />
+                        <MapPin className="w-8 h-8 text-blue-600 drop-shadow-lg animate-bounce" strokeWidth={2} />
                     </div>
 
                     {/* Location info and controls */}
@@ -394,7 +394,7 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
                             <button
                                 className={`font-medium py-3 px-4 rounded-xl transition-all duration-200 
                                       ${selectedLocation
-                                        ? 'bg-amber-600 hover:bg-amber-700 text-white shadow-lg'
+                                        ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg'
                                         : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}
                                 onClick={finalizeSelection}
                                 disabled={!selectedLocation || isGeocoding}
