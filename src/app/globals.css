@@ -1,3 +1,4 @@
+
 @import "tailwindcss";
 
 :root {
@@ -54,3 +55,22 @@ body {
   color: #e53e3e;
   margin-top: 0.25rem;
 }
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee linear infinite;
+}
+
+.animate-none {
+  animation: none;
+}
+
