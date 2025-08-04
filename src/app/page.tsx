@@ -3,8 +3,28 @@
 
 import { ArrowBigRight, Facebook, Instagram, Linkedin, Mail, MapPin, MoveRight, Phone, Youtube } from "lucide-react"
 import Link from "next/link"
+import GMap from "@/components/map";
+import { useLocationContext } from "@/app/context/LocationContext";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Component() {
+  const { fromLocation, toLocation, setFromLocation, setToLocation } = useLocationContext();
+  const [showMap, setShowMap] = useState<"from" | "to" | null>(null);
+  const router = useRouter();
+
+  const handleLocationSelect = (locationData) => {
+    if (showMap === "from") setFromLocation(locationData);
+    else if (showMap === "to") setToLocation(locationData);
+    setShowMap(null);
+  };
+
+  const handleLetsMove = () => {
+    // Save to localStorage for transfer (or use context in next page)
+    localStorage.setItem("fromLocation", JSON.stringify(fromLocation));
+    localStorage.setItem("toLocation", JSON.stringify(toLocation));
+    router.push("/packers-and-movers");
+  };
 
 
   const testimonials = [
@@ -66,16 +86,24 @@ export default function Component() {
               Packers & Movers
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-md">
-              <input
-                placeholder="Pickup Location"
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-              />
-              <input
-                placeholder="Drop Location"
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-              />
+              <button
+                className="w-full p-2 border border-gray-300 rounded-lg bg-white text-left"
+                onClick={() => setShowMap("from")}
+              >
+                {fromLocation?.address || "Pickup Location"}
+              </button>
+              <button
+                className="w-full p-2 border border-gray-300 rounded-lg bg-white text-left"
+                onClick={() => setShowMap("to")}
+              >
+                {toLocation?.address || "Drop Location"}
+              </button>
             </div>
-            <button className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-[#0086FF] text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <button
+              className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-[#0086FF] text-white rounded-lg hover:bg-blue-700 transition-colors"
+              onClick={handleLetsMove}
+              disabled={!fromLocation || !toLocation}
+            >
               <ArrowBigRight className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
               <span className="text-sm sm:text-base font-semibold">Let's Move</span>
             </button>
@@ -376,6 +404,22 @@ export default function Component() {
           </div>
         </div>
       </footer>
+      {showMap && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-2xl h-[500px] relative">
+            <GMap
+              onLocationSelect={handleLocationSelect}
+              onBack={() => setShowMap(null)}
+            />
+            <button
+              className="absolute top-2 right-2 text-gray-600 hover:text-red-600"
+              onClick={() => setShowMap(null)}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

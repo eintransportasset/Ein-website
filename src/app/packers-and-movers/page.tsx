@@ -3,9 +3,10 @@ import DateInput from '@/components/DateInput'
 import GMap from '@/components/map';
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
+import { useLocationContext } from "@/app/context/LocationContext";
 
 // Add the missing LocationField type
 type LocationField = {
@@ -40,6 +41,27 @@ const Page: React.FC = () => {
   const [showMap, setShowMap] = useState<'from' | 'to' | null>(null);
   const [fromLocation, setFromLocation] = useState<LocationField | null>(null);
   const [toLocation, setToLocation] = useState<LocationField | null>(null);
+  const { fromLocation: contextFromLocation, toLocation: contextToLocation } = useLocationContext();
+
+  useEffect(() => {
+    // Try context first, fallback to localStorage
+    const from = contextFromLocation || JSON.parse(localStorage.getItem("fromLocation") || "null");
+    const to = contextToLocation || JSON.parse(localStorage.getItem("toLocation") || "null");
+    if (from) {
+      setFromLocation(from);
+      setValue("fromAddress", from.address);
+      setValue("fromLat", from.lat);
+      setValue("fromLng", from.lng);
+      setValue("fromDistrict", from.district);
+    }
+    if (to) {
+      setToLocation(to);
+      setValue("toAddress", to.address);
+      setValue("toLat", to.lng);
+      setValue("toLng", to.lng);
+      setValue("toDistrict", to.district);
+    }
+  }, []);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true);
