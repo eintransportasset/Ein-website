@@ -159,10 +159,10 @@ export default function Modal({ isOpen, setIsOpen, selectValue }: ModalProps) {
                                     onClick={() => handleSelect(option.value)}
                                     className="cursor-pointer transform transition-all duration-300 hover:scale-105
                                              bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden
-                                             border border-gray-200 dark:border-gray-600 hover:border-amber-500"
+                                             border border-gray-200 dark:border-gray-600 hover:border-blue-500"
                                 >
                                     <div className="p-3">
-                                        <h3 className="text-xl font-bold text-amber-600 dark:text-amber-400 mb-4">
+                                        <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-4">
                                             {option.label}
                                         </h3>
                                         <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
