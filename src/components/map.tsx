@@ -73,7 +73,7 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
             setCenter({ lat, lng });
             geocodePlace(lat, lng);
         }
-    },[]);
+    }, []);
 
     // Debounced drag end handler
     const onMapDragEnd = useCallback(() => {
@@ -330,207 +330,106 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
         );
     }
 
-    // return isLoaded ? (
-    //     <div className="absolute inset-0 w-full h-full">
-    //         <div className="absolute inset-0 backdrop-blur-sm bg-opacity-0" ></div>
-    //         <div className="relative w-full h-full max-w-3xl bg-white rounded-lg shadow-2xl">
-    //             <GoogleMap
-    //                 mapContainerStyle={containerStyle}
-    //                 center={center}
-    //                 zoom={15}
-    //                 onLoad={onMapLoad}
-    //                 onClick={onMapClick}
-    //                 onDragEnd={onMapDragEnd}
-    //                 options={mapOptions}
-    //             >
-    //                 {/* Search Input - Improved styling */}
-    //                 <div className="absolute z-10 w-11/12 px-4 pt-4">
-    //                     <input
-    //                         type="text"
-    //                         id="auto-complete-input"
-    //                         placeholder="🔍 Search Location"
-    //                         className="w-full p-3 rounded-xl border border-gray-200 outline-none 
-    //                              text-sm shadow-lg bg-white/95 backdrop-blur-sm
-    //                              focus:ring-2 focus:ring-blue-400 focus:border-transparent
-    //                              transition-all duration-200"
-    //                     />
-    //                 </div>
+    return isLoaded ? (
+        <div className="absolute inset-0 w-full h-full bg-transparent">
+            {/* Remove the background image style if not needed */}
+            {/* Optional dark overlay for contrast (keep or remove based on need) */}
+            <div className="absolute inset-0 bg-white/20"></div>
 
-    //                 {/* Center Marker */}
-    //                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
-    //                     <MapPin className="w-8 h-8 text-amber-600 drop-shadow-lg animate-bounce"
-    //                         strokeWidth={2} />
-    //                 </div>
-
-    //                 {/* Location info and controls - Improved layout */}
-    //                 <div className="absolute z-10 bottom-0 left-0 right-0 p-4 space-y-3
-    //                            bg-gradient-to-t from-white/95 to-transparent">
-    //                     {selectedLocation && (
-    //                         <div className="bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-lg 
-    //                                   border border-gray-100">
-    //                             <p className="text-sm font-semibold text-gray-800">Selected Location</p>
-    //                             <p className="text-xs text-gray-600 mt-1 break-words">
-    //                                 {selectedLocation.address}
-    //                             </p>
-    //                             <div className="flex justify-between mt-2 text-xs text-gray-500">
-    //                                 <span>District: {selectedLocation.district || 'N/A'}</span>
-    //                                 <span>{selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}</span>
-    //                             </div>
-    //                         </div>
-    //                     )}
-
-    //                     <div className="bg-blue-50/90 backdrop-blur-sm border border-blue-100 
-    //                               rounded-xl p-3">
-    //                         <p className="text-xs text-blue-800">
-    //                             💡 Click on the map, drag to move, or search to select a location
-    //                         </p>
-    //                         {isGeocoding && (
-    //                             <p className="text-xs text-blue-600 mt-1">🔄 Getting address...</p>
-    //                         )}
-    //                     </div>
-
-    //                     <div className="flex flex-col gap-2">
-    //                         <button
-    //                             className={`font-medium py-3 px-4 rounded-xl transition-all duration-200 
-    //                                   ${selectedLocation
-    //                                     ? 'bg-amber-600 hover:bg-amber-700 text-white shadow-lg'
-    //                                     : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}
-    //                             onClick={finalizeSelection}
-    //                             disabled={!selectedLocation || isGeocoding}
-    //                         >
-    //                             {isGeocoding ? '🔄 Getting Location...' : '✓ Select this Location'}
-    //                         </button>
-    //                         <div className="grid grid-cols-2 gap-2">
-    //                             <button
-    //                                 className="bg-green-500 hover:bg-green-600 text-white font-medium 
-    //                                      py-2 px-4 rounded-xl transition-all duration-200 shadow-md"
-    //                                 onClick={fetchCurrentLocation}
-    //                             >
-    //                                 📍 Current Location
-    //                             </button>
-    //                             {onBack && (
-    //                                 <button
-    //                                     className="bg-gray-500 hover:bg-gray-600 text-white font-medium 
-    //                                          py-2 px-4 rounded-xl transition-all duration-200 shadow-md"
-    //                                     onClick={() => onBack(false)}
-    //                                 >
-    //                                     ✕ Cancel
-    //                                 </button>
-    //                             )}
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             </GoogleMap>
-    //         </div>
-    //     </div>
-    // ) : (
-    //     <div className="flex items-center justify-center h-full">
-    //         <div className="text-center">
-    //             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
-    //             <p className="text-sm text-gray-600">Loading Google Maps...</p>
-    //         </div>
-    //     </div>
-    // );
-   return isLoaded ? (
- <div className="absolute inset-0 w-full h-full bg-transparent">
-    {/* Remove the background image style if not needed */}
-    {/* Optional dark overlay for contrast (keep or remove based on need) */}
-    <div className="absolute inset-0 bg-white/20"></div>
-
-    <div className="relative w-full h-full max-w-3xl mx-auto rounded-lg shadow-2xl bg-white/80 backdrop-blur-md">
-        {/* Rest of your GoogleMap and other components remain unchanged */}
-        <GoogleMap
-            mapContainerStyle={{ width: "100%", height: "100%", background: "transparent" }}
-            center={center}
-            zoom={15}
-            onLoad={onMapLoad}
-            onClick={onMapClick}
-            onDragEnd={onMapDragEnd}
-            options={mapOptions}
-        >
-                {/* Search Input */}
-                <div className="absolute z-10 w-11/12 px-4 pt-4">
-                    <input
-                        type="text"
-                        id="auto-complete-input"
-                        placeholder="🔍 Search Location"
-                        className="w-full p-3 rounded-xl border border-gray-200 outline-none 
+            <div className="relative w-full h-full max-w-3xl mx-auto rounded-lg shadow-2xl bg-white/80 backdrop-blur-md">
+                {/* Rest of your GoogleMap and other components remain unchanged */}
+                <GoogleMap
+                    mapContainerStyle={{ width: "100%", height: "100%", background: "transparent" }}
+                    center={center}
+                    zoom={15}
+                    onLoad={onMapLoad}
+                    onClick={onMapClick}
+                    onDragEnd={onMapDragEnd}
+                    options={mapOptions}
+                >
+                    {/* Search Input */}
+                    <div className="absolute z-10 w-11/12 px-4 pt-4">
+                        <input
+                            type="text"
+                            id="auto-complete-input"
+                            placeholder="🔍 Search Location"
+                            className="w-full p-3 rounded-xl border border-gray-200 outline-none 
                                  text-sm shadow-lg bg-white/95 backdrop-blur-sm
                                  focus:ring-2 focus:ring-blue-400 focus:border-transparent
                                  transition-all duration-200"
-                    />
-                </div>
-
-                {/* Center Marker */}
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
-                    <MapPin className="w-8 h-8 text-amber-600 drop-shadow-lg animate-bounce" strokeWidth={2} />
-                </div>
-
-                {/* Location info and controls */}
-                <div className="absolute z-10 bottom-0 left-0 right-0 p-4 space-y-3
-                               bg-gradient-to-t from-white/90 to-transparent">
-                    {selectedLocation && (
-                        <div className="bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-gray-100">
-                            <p className="text-sm font-semibold text-gray-800">Selected Location</p>
-                            <p className="text-xs text-gray-600 mt-1 break-words">
-                                {selectedLocation.address}
-                            </p>
-                            <div className="flex justify-between mt-2 text-xs text-gray-500">
-                                <span>District: {selectedLocation.district || 'N/A'}</span>
-                                <span>{selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}</span>
-                            </div>
-                        </div>
-                    )}
-                    
-                    <div className="bg-blue-50/90 backdrop-blur-sm border border-blue-100 rounded-xl p-3">
-                        <p className="text-xs text-blue-800">
-                            💡 Click on the map, drag to move, or search to select a location
-                        </p>
-                        {isGeocoding && (
-                            <p className="text-xs text-blue-600 mt-1">🔄 Getting address...</p>
-                        )}
+                        />
                     </div>
-                    
-                    <div className="flex flex-col gap-2">
-                        <button
-                            className={`font-medium py-3 px-4 rounded-xl transition-all duration-200 
-                                      ${selectedLocation
-                                ? 'bg-amber-600 hover:bg-amber-700 text-white shadow-lg'
-                                : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}
-                            onClick={finalizeSelection}
-                            disabled={!selectedLocation || isGeocoding}
-                        >
-                            {isGeocoding ? '🔄 Getting Location...' : '✓ Select this Location'}
-                        </button>
-                        <div className="grid grid-cols-2 gap-2">
-                            <button
-                                className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 shadow-md"
-                                onClick={fetchCurrentLocation}
-                            >
-                                📍 Current Location
-                            </button>
-                            {onBack && (
-                                <button
-                                    className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 shadow-md"
-                                    onClick={() => onBack(false)}
-                                >
-                                    ✕ Cancel
-                                </button>
+
+                    {/* Center Marker */}
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+                        <MapPin className="w-8 h-8 text-amber-600 drop-shadow-lg animate-bounce" strokeWidth={2} />
+                    </div>
+
+                    {/* Location info and controls */}
+                    <div className="absolute z-10 bottom-0 left-0 right-0 p-4 space-y-3
+                               bg-gradient-to-t from-white/90 to-transparent">
+                        {selectedLocation && (
+                            <div className="bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-gray-100">
+                                <p className="text-sm font-semibold text-gray-800">Selected Location</p>
+                                <p className="text-xs text-gray-600 mt-1 break-words">
+                                    {selectedLocation.address}
+                                </p>
+                                <div className="flex justify-between mt-2 text-xs text-gray-500">
+                                    <span>District: {selectedLocation.district || 'N/A'}</span>
+                                    <span>{selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}</span>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="bg-blue-50/90 backdrop-blur-sm border border-blue-100 rounded-xl p-3">
+                            <p className="text-xs text-blue-800">
+                                💡 Click on the map, drag to move, or search to select a location
+                            </p>
+                            {isGeocoding && (
+                                <p className="text-xs text-blue-600 mt-1">🔄 Getting address...</p>
                             )}
                         </div>
+
+                        <div className="flex flex-col gap-2">
+                            <button
+                                className={`font-medium py-3 px-4 rounded-xl transition-all duration-200 
+                                      ${selectedLocation
+                                        ? 'bg-amber-600 hover:bg-amber-700 text-white shadow-lg'
+                                        : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}
+                                onClick={finalizeSelection}
+                                disabled={!selectedLocation || isGeocoding}
+                            >
+                                {isGeocoding ? '🔄 Getting Location...' : '✓ Select this Location'}
+                            </button>
+                            <div className="grid grid-cols-2 gap-2">
+                                <button
+                                    className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 shadow-md"
+                                    onClick={fetchCurrentLocation}
+                                >
+                                    📍 Current Location
+                                </button>
+                                {onBack && (
+                                    <button
+                                        className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 shadow-md"
+                                        onClick={() => onBack(false)}
+                                    >
+                                        ✕ Cancel
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </GoogleMap>
+                </GoogleMap>
+            </div>
         </div>
-    </div>
-) : (
-    <div className="flex items-center justify-center h-full">
-        <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
-            <p className="text-sm text-gray-600">Loading Google Maps...</p>
+    ) : (
+        <div className="flex items-center justify-center h-full">
+            <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                <p className="text-sm text-gray-600">Loading Google Maps...</p>
+            </div>
         </div>
-    </div>
-);
+    );
 
 
 }

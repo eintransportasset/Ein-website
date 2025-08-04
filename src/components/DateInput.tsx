@@ -1,6 +1,4 @@
-// DateInput.tsx
-'use client'; // if using Next.js app directory
-
+'use client'; 
 import { useState, useRef, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { DayPicker } from 'react-day-picker';
