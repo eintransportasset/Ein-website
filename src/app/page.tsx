@@ -11,7 +11,7 @@ import {
   Youtube,
   Menu,
   Milestone,
-  // X,
+  X,
   // Shield,
   Clock,
   Star,
