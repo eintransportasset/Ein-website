@@ -117,7 +117,7 @@ const Page: React.FC = () => {
       setToLocation(null)
 
       setTimeout(() => {
-        router.push("/goods-transport/orderPlaced")
+        router.push("/trucks-service/orderPlaced")
       }, 2000)
     } catch (error) {
       console.log("Error in create ", error)
@@ -163,7 +163,7 @@ const Page: React.FC = () => {
           <div className="text-center flex flex-row items-center gap-2">
             <Truck className="w-6 h-6 text-blue-600" />
             <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 via-blue-600 to-blue-600 bg-clip-text text-transparent">
-              Goods Transport
+              Trucks Service
             </h1>
           </div>
 
@@ -390,6 +390,7 @@ const Page: React.FC = () => {
                           {...register("weight", { required: "Weight is required" })}
                           className="w-full pl-12 pr-4 py-3.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 bg-white/70 hover:bg-white/90 text-sm font-medium placeholder:text-slate-400"
                           placeholder="e.g. 100"
+                          min={1}
                         />
                       </div>
                       {errors.weight && (
@@ -444,11 +445,10 @@ const Page: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`group relative px-8 py-4 bg-gradient-to-r from-blue-600 via-blue-600 to-blue-600 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg ${
-                  loading
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105 active:scale-95 hover:-translate-y-0.5"
-                }`}
+                className={`group relative px-8 py-4 bg-gradient-to-r from-blue-600 via-blue-600 to-blue-600 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg ${loading
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105 active:scale-95 hover:-translate-y-0.5"
+                  }`}
               >
                 <span className="flex items-center gap-3">
                   {loading ? (

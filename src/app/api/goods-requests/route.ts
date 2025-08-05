@@ -56,12 +56,12 @@ export async function POST(request: NextRequest) {
     });
 
     // Send email notification
-    await sendOrderEmail(data, 'goods', process.env.EMAIL_USER || '');
+    await sendOrderEmail(data, 'trucks', process.env.EMAIL_USER || '');
 
     // Return success response
     return NextResponse.json({
       success: true,
-      message: "Goods Transport request created successfully",
+      message: "Trucks service request created successfully",
       data: goodsTransport,
     });
 

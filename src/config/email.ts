@@ -1,14 +1,14 @@
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail', 
+  service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 });
 
-type OrderType = 'goods' | 'packers';
+type OrderType = 'trucks' | 'packers';
 
 interface GoodsOrder {
   fullName: string;
@@ -44,12 +44,12 @@ export async function sendOrderEmail(
   to: string
 ) {
   const subject =
-    type === 'goods'
-      ? 'New Goods Transport Order'
+    type === 'trucks'
+      ? 'New Truc Service Order'
       : 'New Packers & Movers Order';
 
   const html =
-    type === 'goods'
+    type === 'trucks'
       ? goodsOrderTemplate(order as GoodsOrder)
       : packersOrderTemplate(order as PackersOrder);
 
@@ -64,7 +64,7 @@ export async function sendOrderEmail(
 function goodsOrderTemplate(order: GoodsOrder) {
   return `
   <div style="font-family: Arial, sans-serif; background: #fffbe6; padding: 24px; border-radius: 8px; border: 1px solid #ffe58f; max-width: 600px; margin: auto;">
-    <h2 style="color: #d97706;">Goods Transport Order</h2>
+    <h2 style="color: #d97706;">Truck Service Order</h2>
     <table style="width:100%; border-collapse:collapse;">
       <tr><td><strong>Name:</strong></td><td>${order.fullName}</td></tr>
       <tr><td><strong>Phone:</strong></td><td>${order.phoneNumber}</td></tr>

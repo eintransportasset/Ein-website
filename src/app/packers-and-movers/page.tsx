@@ -191,11 +191,11 @@ const Page: React.FC = () => {
           </div>
 
           <Link
-            href="/goods-transport"
+            href="/trucks-service"
             className="group flex items-center gap-3 text-slate-600 hover:text-[#0086FF] bg-white/90 backdrop-blur-sm rounded-xl border border-slate-200 hover:border-[#0086FF]/30 px-4 py-3 transition-all duration-300 hover:shadow-lg hover:shadow-slate-200/50 text-sm"
           >
-            <span className="font-semibold hidden sm:inline">Goods Transport</span>
-            <span className="font-semibold sm:hidden">Transport</span>
+            <span className="font-semibold hidden sm:inline">Trucks Service</span>
+            <span className="font-semibold sm:hidden">Service</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
           </Link>
         </div>
