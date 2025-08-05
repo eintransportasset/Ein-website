@@ -473,26 +473,11 @@ const Page: React.FC = () => {
           {/* Enhanced Map Modal */}
           {showMap && (
             <div className="fixed inset-0 bg-black/5 backdrop-blur-sm flex justify-center z-50">
-              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl  mt-13 h-[75vh] relative overflow-hidden border border-slate-200">
-                {/* <div className="absolute top-4 left-4 z-10">
-                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-slate-200">
-                    <p className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-blue-600" />
-                      Select {showMap === "from" ? "Pickup" : "Drop-off"} Location
-                    </p>
-                  </div>
-                </div> */}
+              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl  mt-13 h-[75vh] relative overflow-hidden border border-slate-200">
 
                 <GMap onLocationSelect={handleMapLocationSelect} onBack={() => setShowMap(null)} />
 
-                <button
-                  className="absolute top-4 right-4 z-10 p-3 bg-white/95 backdrop-blur-sm text-slate-600 hover:text-red-500 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 border border-slate-200"
-                  onClick={() => setShowMap(null)}
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+               
               </div>
             </div>
           )}

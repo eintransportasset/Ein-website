@@ -443,7 +443,7 @@ export default function Component() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl sm:text-5xl font-bold mb-6">
+            <h2 className="text-4xl sm:text-5xl  text-gray-800 font-bold mb-6">
               Our <span className="text-blue-600">Premium</span> Services
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -533,7 +533,7 @@ export default function Component() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl sm:text-5xl font-bold mb-8">
+            <h2 className="text-4xl sm:text-5xl text-gray-600 font-bold mb-8">
               Why Do Millions Move With{" "}
               <span className="text-blue-600">Eintransport?</span>
             </h2>
@@ -594,7 +594,7 @@ export default function Component() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl sm:text-5xl font-bold mb-6">
+            <h2 className="text-4xl text-gray-600 sm:text-5xl font-bold mb-6">
               What Our <span className="text-blue-600">Customers</span> Say
             </h2>
             <p className="text-xl text-gray-600">
@@ -658,7 +658,7 @@ export default function Component() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6">
+          <h2 className="text-4xl text-gray-600 sm:text-5xl font-bold mb-6">
             Frequently Asked Questions
           </h2>
           <p className="text-xl text-gray-600">
@@ -871,18 +871,13 @@ export default function Component() {
 
       {/* Original Map Modal Logic */}
       {showMap && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/60 bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-2xl h-[500px] relative">
             <GMap
               onLocationSelect={handleLocationSelect}
               onBack={() => setShowMap(null)}
             />
-            <button
-              className="absolute top-2 right-2 text-gray-600 hover:text-red-600"
-              onClick={() => setShowMap(null)}
-            >
-              ✕
-            </button>
+            
           </div>
         </div>
       )}
