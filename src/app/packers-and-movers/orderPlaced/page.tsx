@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default function OrderConfirmation() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-amber-200 p-4">
+        <div className="min-h-screen flex items-center justify-center bg-blue-200 p-4">
             <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8">
                 <div className="text-center">
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
@@ -18,8 +18,8 @@ export default function OrderConfirmation() {
                     <div className="border-t border-gray-200 pt-6 mt-6">
                         <Link
                             href="/"
-                            className="inline-block bg-[#996414] text-white px-6 py-3 rounded-full
-                                     hover:bg-[#845510] transition-colors duration-200"
+                            className="inline-block bg-[#5d72fa] text-white px-6 py-3 rounded-full
+                                     hover:bg-[#143a99] transition-colors duration-200"
                         >
                             Return to Home
                         </Link>
