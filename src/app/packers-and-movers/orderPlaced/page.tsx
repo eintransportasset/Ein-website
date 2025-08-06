@@ -1,8 +1,24 @@
+"use client";
+
 import React from 'react'
 import { CheckCircle } from 'lucide-react'
 import Link from 'next/link'
+import { useEffect } from 'react'
+
 
 export default function OrderConfirmation() {
+    useEffect(() => {
+        if (localStorage.getItem("fromLocation") || localStorage.getItem("toLocation")) {
+            localStorage?.removeItem("fromLocation")
+            localStorage?.removeItem("toLocation")
+
+        }
+        // localStorage?.removeItem("fromLocation")
+        // localStorage?.removeItem("toLocation")
+
+
+    }, [])
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-blue-200 p-4">
             <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8">

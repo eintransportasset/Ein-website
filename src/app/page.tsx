@@ -34,6 +34,10 @@ export default function Component() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
   useEffect(() => {
     setIsVisible(true)
+    if(localStorage.getItem("fromLocation") || localStorage.getItem("toLocation")) {
+      localStorage.removeItem("fromLocation")
+      localStorage.removeItem("toLocation")
+    }
   }, [])
 
   const { fromLocation, toLocation, setFromLocation, setToLocation } = useLocationContext();

@@ -384,8 +384,13 @@ const Page: React.FC = () => {
                               dateTime: (value) => {
                                 const selectedDate = new Date(value);
                                 const currentDate = new Date();
+
+                                // Normalize both to ignore time for same-day validation
+                                selectedDate.setHours(0, 0, 0, 0);
+                                currentDate.setHours(0, 0, 0, 0);
+
                                 if (selectedDate < currentDate) {
-                                  return "Please select a future date and time";
+                                  return "Please select a future date";
                                 }
                                 return true;
                               },
