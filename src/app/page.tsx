@@ -20,13 +20,13 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
 import GMap from "@/components/map";
 import { useLocationContext } from "@/app/context/LocationContext";
 import { useRouter } from "next/navigation"
 import RotatingText from "@/components/RotatingText"
 
-
+import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 
 export default function Component() {
@@ -39,7 +39,11 @@ export default function Component() {
   const { fromLocation, toLocation, setFromLocation, setToLocation } = useLocationContext();
   const [showMap, setShowMap] = useState<"from" | "to" | null>(null);
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
   const handleLocationSelect = (locationData: any) => {
     if (showMap === "from") setFromLocation(locationData);
     else if (showMap === "to") setToLocation(locationData);
@@ -111,24 +115,93 @@ export default function Component() {
         "We offer a wide range of vehicles including TATA 407, open-body trucks, and container trucks. Whether you need a small vehicle or a high-capacity one, we'll provide the right fit for your move.",
     },
   ]
-
+  console.log("venkii", fromLocation, toLocation);
   return (
     <div className="min-h-screen bg-white overflow-hidden">
       {/* Header */}
       <header
-        className={`text-white bg-gray-100 py-4 px-4 sm:px-6 sticky top-0 z-50 backdrop-blur-sm transition-all duration-500 ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}
+        className={`text-white bg-gray-800 py-3 px-4 sm:px-6 md:px-36 sticky top-0 z-50 backdrop-blur-sm transition-all duration-500 ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+          }`}
       >
         <div className="container mx-auto flex justify-between items-center">
-          <div className="text-2xl sm:text-3xl font-bold text-[#0086FF] hover:scale-105 transition-transform duration-300 cursor-pointer">
+          <div className="text-xl sm:text-2xl md:text-3xl font-bold text-[#0086FF] hover:scale-105 transition-transform duration-300 cursor-pointer">
             Eintransport
           </div>
+          {/* Desktop Navigation */}
+          <nav className="hidden sm:flex text-base sm:text-lg md:text-xl space-x-4 md:space-x-6">
+            <a
+              href="#services"
+              className="text-white hover:text-[#0086FF] transition-colors duration-300 font-medium"
+            >
+              Service
+            </a>
+            <a
+              href="#about"
+              className="text-white hover:text-[#0086FF] transition-colors duration-300 font-medium"
+            >
+              About
+            </a>
+            <a
+              href="#faq"
+              className="text-white hover:text-[#0086FF] transition-colors duration-300 font-medium"
+            >
+              FAQ
+            </a>
+          </nav>
+          {/* Hamburger Button */}
+          <button
+            className="flex sm:hidden text-white focus:outline-none"
+            onClick={toggleMenu}
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMenuOpen}
+          >
+            {isMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
         </div>
-
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.nav
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="sm:hidden bg-gray-800 overflow-hidden"
+            >
+              <div className="flex flex-col items-center space-y-4 py-4">
+                <a
+                  href="#services"
+                  className="text-white w-full flex justify-center px-auto hover:text-[#0086FF] text-lg font-medium transition-colors duration-300"
+                  onClick={toggleMenu}
+                >
+                  Service
+                </a>
+                <a
+                  href="#about"
+                  className="text-white  w-full flex justify-center hover:text-[#0086FF] text-lg font-medium transition-colors duration-300"
+                  onClick={toggleMenu}
+                >
+                  About
+                </a>
+                <a
+                  href="#faq"
+                  className="text-white  w-full flex justify-center hover:text-[#0086FF] text-lg font-medium transition-colors duration-300"
+                  onClick={toggleMenu}
+                >
+                  FAQ
+                </a>
+              </div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* Hero Section */}
 
-      <section className="h-screen bg-gradient-to-br from-gray-50 to-blue-100 py-20 sm:py-28 px-4 sm:px-6 relative overflow-hidden">
+      <section className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 py-12 sm:py-20 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-50">
           {/* Subtle background pattern */}
           <div className="absolute inset-0 bg-[url('/path-to-your-subtle-pattern.svg')] bg-repeat"></div>
@@ -144,11 +217,11 @@ export default function Component() {
               >
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
                   <span className="block">Where's it going?</span>
-                  <span className="block text-blue-600">We'll take it there.</span>
+                  <span className="block">We'll take it there.</span>
                 </h1>
                 <RotatingText
                   texts={["Fast", "Hassle-Free", "Safe"]}
-                  mainClassName=" mx-auto sm:px-2 w-fit md:px-3 text-7xl font-bold bg-[#eeee] text-[#0086FF] overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+                  mainClassName=" mx-auto sm:px-2 w-fit md:px-3 text-5xl sm:text-7xl font-bold bg-[#0086FF] text-white overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
                   staggerFrom={"last"}
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
@@ -182,29 +255,30 @@ export default function Component() {
               <div className="space-y-4">
                 <div className="relative">
                   <button
-                    // value="Pickup Location"
+                    // value={fromLocation ? fromLocation.address : "Pickup Location" }
                     className="w-full p-4 pl-10 text-gray-400 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onClick={() => setShowMap("from")}
                   >
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    Pickup Location
+                    {fromLocation ? fromLocation.address : "Pickup Location"}
                   </button>
                 </div>
                 <div className="relative">
                   <button
                     // value="Drop-off Location"
                     className="w-full p-4 pl-10 text-gray-400 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    onClick={() => setShowMap("from")}
+                    onClick={() => setShowMap("to")}
                   >
                     <MapPinHouse className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    Drop-off Location
+
+                    {toLocation ? toLocation.address : "  Drop-off Location"}
                   </button>
                 </div>
 
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full flex items-center justify-center px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 transform text-lg font-semibold"
+                  className="w-full flex items-center justify-center px-8 py-4 bg-[#0086FF] text-white rounded-lg  transition-colors duration-300 transform text-lg font-semibold"
                   onClick={handleLetsMove}
                 >
                   <span className="relative z-10">Let's Move</span>
@@ -219,12 +293,12 @@ export default function Component() {
       <section id="services" className="py-16 sm:py-24 px-4 sm:px-6 bg-white">
         <div className="container mx-auto max-w-7xl">
           <h2
-            className={`text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-16 transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+            className={`text-3xl text-gray-900 sm:text-4xl md:text-5xl font-bold text-center mb-16 transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
           >
             Our Secure{" "}
-            <span className="text-blue-600 relative">
+            <span className="text-[#0086FF] relative">
               Service
-              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-blue-600 rounded-full transform scale-x-0 animate-scale-x animation-delay-1000"></div>
+              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-[#0086FF] rounded-full transform scale-x-0 animate-scale-x animation-delay-1000"></div>
             </span>
           </h2>
 
@@ -320,7 +394,7 @@ export default function Component() {
               </p>
               <Link
                 href="/packers-and-movers"
-                className="group inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-lg font-semibold"
+                className="group inline-flex items-center bg-[#0086FF] text-white px-8 py-4 rounded-xl  transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-lg font-semibold"
               >
                 Book Your Move
                 <MoveRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -424,7 +498,7 @@ export default function Component() {
               </p>
               <Link
                 href="/trucks-service"
-                className="group inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-lg font-semibold"
+                className="group inline-flex items-center bg-[#0086FF] text-white px-8 py-4 rounded-xl  transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-lg font-semibold"
               >
                 Start Shipping
                 <MoveRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -439,11 +513,11 @@ export default function Component() {
         <div
           className={`container mx-auto max-w-6xl text-center transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"} animation-delay-600`}
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 sm:mb-12 leading-tight">
+          <h2 className="text-gray-900 text-4xl sm:text-5xl md:text-6xl font-bold mb-8 sm:mb-12 leading-tight">
             Why Do Millions Move With{" "}
-            <span className="text-blue-600 relative">
+            <span className="text-[#0086FF] relative">
               Eintransport?
-              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-blue-600 rounded-full transform scale-x-0 animate-scale-x animation-delay-1200"></div>
+              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-[#0086FF] rounded-full transform scale-x-0 animate-scale-x animation-delay-1200"></div>
             </span>
           </h2>
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 sm:p-12 shadow-xl border border-white/20">
@@ -451,11 +525,11 @@ export default function Component() {
               At Eintransport, we've helped millions of people and businesses move smoothly—from homes shifting to goods
               transport across cities. With a trusted team, reliable vehicles, and a focus on quick and safe service, we
               make every move{" "}
-              <span className="text-blue-600 font-bold bg-blue-50 px-2 py-1 rounded-lg">
+              <span className="text-[#0086FF] font-bold bg-blue-50 px-2 py-1 rounded-lg">
                 simple, fast, and stress-free
               </span>
               . Whether it's a single box or a full truckload, we've done it all, and{" "}
-              <span className="text-blue-600 font-bold bg-blue-50 px-2 py-1 rounded-lg">
+              <span className="text-[#0086FF] font-bold bg-blue-50 px-2 py-1 rounded-lg">
                 Are You Ready to Move? We Are.
               </span>
             </p>
@@ -465,14 +539,16 @@ export default function Component() {
 
       {/* What Our Customers Say - Enhanced Marquee */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 bg-white">
+        {/* <section className="py-16 sm:py-24 px-4 sm:px-6 bg-gray-900"> */}
         <div className="container mx-auto max-w-7xl">
           <h2
-            className={`text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-16 transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"} animation-delay-800`}
+            className={`text-3xl text-gray-900 sm:text-4xl md:text-5xl font-bold text-center mb-16 transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"} animation-delay-800`}
+          // className={`text-3xl text-white sm:text-4xl md:text-5xl font-bold text-center mb-16 transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"} animation-delay-800`}
           >
             What Our{" "}
-            <span className="text-blue-600 relative">
+            <span className="text-[#0086FF] relative">
               Customers
-              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-blue-600 rounded-full transform scale-x-0 animate-scale-x animation-delay-1400"></div>
+              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-[#0086FF] rounded-full transform scale-x-0 animate-scale-x animation-delay-1400"></div>
             </span>{" "}
             Say
           </h2>
@@ -480,56 +556,44 @@ export default function Component() {
           <div className="relative overflow-hidden rounded-2xl">
             <div
               className="flex animate-marquee hover:pause-animation"
-              style={{ width: `${testimonials.length * 100}%`, animationDuration: `${testimonials.length * 15}s` }}
+              style={{
+                width: `${testimonials.length * 2 * 420}px`, // multiply by 2 since we duplicate
+                animationDuration: `${testimonials.length * 15}s`
+              }}
             >
               {[...testimonials, ...testimonials].map((testimonial, index) => (
-                <div key={index} className="flex-shrink-0 px-4 py-4 " style={{ width: "420px" }}>
+                <div
+                  key={index}
+                  className="flex-shrink-0 px-4 py-4"
+                  style={{ width: '420px' }}
+                >
                   <div className="bg-gray-100 p-8 rounded-2xl shadow-lg border border-gray-100 h-80 flex flex-col hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 group">
                     <div className="flex items-center mb-6">
                       <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mr-6 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                        <span className="text-blue-600 font-bold text-lg">{testimonial.initials}</span>
+                        <span className="text-[#0086FF] font-bold text-lg">{testimonial.initials}</span>
                       </div>
                       <div className="min-w-0">
-                        <h4 className="font-bold  text-lg text-blue-600 break-words">{testimonial.name}</h4>
+                        <h4 className="font-bold text-lg text-[#0086FF] break-words">{testimonial.name}</h4>
                         <p className="text-gray-600 font-medium break-words">{testimonial.role}</p>
                       </div>
                     </div>
                     <p className="text-gray-600 italic text-base leading-relaxed overflow-hidden flex-1 break-words">
                       {`"${testimonial.text}"`}
                     </p>
-                    {/* <div className="flex text-yellow-400 mt-4">
-                      {[...Array(5)].map((_, i) => (
-                        <span key={i} className="text-lg">
-                          ⭐
-                        </span>
-                      ))}
-                    </div> */}
                   </div>
                 </div>
-                // <div key={index} className="flex-shrink-0 px-4 py-4" style={{ width: "420px" }}>
-                //   <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 h-80 flex flex-col hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 group">
-
-                //     <p className="text-gray-600 italic text-base leading-relaxed overflow-hidden flex-1 break-words">
-                //       {`"${testimonial.text}"`}
-                //     </p>
-                //     <div className="flex justify-end text-gray-400 mt-4">
-                //       <h4 className="font-sm text-lg text-gray-800 break-words">{testimonial.name}</h4>.,
-                //       <p className="text-gray-800 font-sm break-words">{testimonial.role}</p>
-
-                //     </div>
-                //   </div>
-                // </div>
               ))}
             </div>
           </div>
+
         </div>
       </section>
 
       {/* Enhanced FAQ Section */}
-      <section className="bg-gradient-to-br from-gray-50 to-blue-50 py-16 sm:py-24 px-4 sm:px-6">
+      <section id="faq" className="bg-gradient-to-br from-gray-50 to-blue-50 py-16 sm:py-24 px-4 sm:px-6">
         <div className="container mx-auto max-w-4xl">
           <h2
-            className={`text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-6 transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"} animation-delay-1000`}
+            className={`text-3xl text-gray-900 sm:text-4xl md:text-5xl font-bold text-center mb-6 transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"} animation-delay-1000`}
           >
             Frequently Asked Questions?
           </h2>
@@ -550,7 +614,7 @@ export default function Component() {
                 >
                   <h3 className="font-bold text-lg text-gray-800 pr-4">{faq.question}</h3>
                   <ChevronDown
-                    className={`h-6 w-6 text-blue-600 transition-transform duration-300 flex-shrink-0 ${expandedFaq === index ? "rotate-180" : ""}`}
+                    className={`h-6 w-6 text-[#0086FF] transition-transform duration-300 flex-shrink-0 ${expandedFaq === index ? "rotate-180" : ""}`}
                   />
                 </button>
                 <div
@@ -573,7 +637,7 @@ export default function Component() {
             <div
               className={`transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"} animation-delay-1600`}
             >
-              <h3 className="text-2xl sm:text-3xl font-bold mb-6 text-[#0086FF]">Eintransport</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold mb-6 text-white">Eintransport</h3>
               <p className="text-gray-400 text-base leading-relaxed mb-6">
                 Your trusted partner for sustainable and efficient transportation services. Moving forward together
                 towards a better future.
@@ -678,255 +742,42 @@ export default function Component() {
                 </div>
               </div>
             </div>
-            {/* <div
-  className={`transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"} animation-delay-2200`}
->
-  <h4 className="font-bold text-xl mb-6 text-[#0086FF]">Contact Info</h4>
-  <div className="space-y-4 text-gray-400">
-    <div className="flex gap-3 items-center group">
-      <span className="bg-[#1E2939] rounded-xl p-3 text-white group-hover:bg-[#0086FF] transition-colors duration-300">
-        <Phone width={18} height={18} />
-      </span>
-      <Link className="hover:text-white transition-colors duration-300" href="tel:+919043384332">
-        +91 9043384332
-      </Link>
-    </div>
 
-    <div className="flex gap-3 items-center group">
-      <span className="bg-[#1E2939] rounded-xl p-3 text-white group-hover:bg-[#0086FF] transition-colors duration-300">
-        <Mail width={18} height={18} />
-      </span>
-      <Link
-        className="hover:text-white transition-colors duration-300 break-all"
-        href="mailto:eintransport.booking@gmail.com"
-      >
-        eintransport.booking@gmail.com
-      </Link>
-    </div>
-
-    <h4 className="font-bold text-[#0086FF] mt-6 mb-4">Registered Office</h4>
-    <div className="flex gap-3 items-start group">
-      <span className="bg-[#1E2939] rounded-xl p-3 text-white shrink-0 mt-1 group-hover:bg-[#0086FF] transition-colors duration-300">
-        <MapPin width={18} height={18} />
-      </span>
-      <p className="text-gray-400 text-sm leading-tight">
-        No. 1, 3rd Floor, Joseph K Building,
-        <br />
-        Huskur, Electronics City, Bangalore South,
-        <br />
-        Bangalore – 560100, Karnataka, India
-      </p>
-    </div>
-  </div>
-</div> */}
           </div>
 
           <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-            <p className="text-gray-400">&copy; 2024 Eintransport. All rights reserved.</p>
+            <p className="text-gray-400">&copy; 2025 Eintransport. All rights reserved.</p>
           </div>
         </div>
       </footer>
 
-      <style jsx>{`
-          @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-          }
-          
-          @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-          }
-          
-          @keyframes fade-in-up {
-            0% {
-              opacity: 0;
-              transform: translateY(30px);
-            }
-            100% {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-          
-          @keyframes scale-x {
-            0% { transform: scaleX(0); }
-            100% { transform: scaleX(1); }
-          }
-          
-          @keyframes slide-in-left {
-            0% {
-              opacity: 0;
-              transform: translateX(-50px);
-            }
-            100% {
-              opacity: 1;
-              transform: translateX(0);
-            }
-          }
-          
-          @keyframes slide-in-right {
-            0% {
-              opacity: 0;
-              transform: translateX(50px);
-            }
-            100% {
-              opacity: 1;
-              transform: translateX(0);
-            }
-          }
-          
-          @keyframes bounce-in {
-            0% {
-              opacity: 0;
-              transform: scale(0.3) translateY(50px);
-            }
-            50% {
-              opacity: 1;
-              transform: scale(1.05) translateY(-10px);
-            }
-            70% {
-              transform: scale(0.95) translateY(0px);
-            }
-            100% {
-              opacity: 1;
-              transform: scale(1) translateY(0px);
-            }
-          }
-          
-          @keyframes slide-right {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-          }
-          
-          @keyframes slide-left {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-          }
-          
-          @keyframes pulse-slow {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-          }
-          
-          .animate-marquee {
-            animation: marquee linear infinite;
-          }
-          
-          .animate-float {
-            animation: float 6s ease-in-out infinite;
-          }
-          
-          .animate-fade-in-up {
-            animation: fade-in-up 0.8s ease-out forwards;
-          }
-          
-          .animate-scale-x {
-            animation: scale-x 0.8s ease-out forwards;
-          }
-          
-          .animate-slide-in-left {
-            animation: slide-in-left 0.8s ease-out forwards;
-          }
-          
-          .animate-slide-in-right {
-            animation: slide-in-right 0.8s ease-out forwards;
-          }
-          
-          .animate-bounce-in {
-            animation: bounce-in 1s ease-out forwards;
-          }
-          
-          .animate-slide-right {
-            animation: slide-right 8s linear infinite;
-          }
-          
-          .animate-slide-left {
-            animation: slide-left 8s linear infinite;
-          }
-          
-          .animate-pulse-slow {
-            animation: pulse-slow 3s ease-in-out infinite;
-          }
-          
-          .animation-delay-200 {
-            animation-delay: 200ms;
-          }
-          
-          .animation-delay-300 {
-            animation-delay: 300ms;
-          }
-          
-          .animation-delay-400 {
-            animation-delay: 400ms;
-          }
-          
-          .animation-delay-500 {
-            animation-delay: 500ms;
-          }
-          
-          .animation-delay-600 {
-            animation-delay: 600ms;
-          }
-          
-          .animation-delay-800 {
-            animation-delay: 800ms;
-          }
-          
-          .animation-delay-1000 {
-            animation-delay: 1000ms;
-          }
-          
-          .animation-delay-1200 {
-            animation-delay: 1200ms;
-          }
-          
-          .animation-delay-1400 {
-            animation-delay: 1400ms;
-          }
-          
-          .animation-delay-1500 {
-            animation-delay: 1500ms;
-          }
-          
-          .animation-delay-1600 {
-            animation-delay: 1600ms;
-          }
-          
-          .animation-delay-1800 {
-            animation-delay: 1800ms;
-          }
-          
-          .animation-delay-2000 {
-            animation-delay: 2000ms;
-          }
-          
-          .pause-animation:hover {
-            animation-play-state: paused;
-          }
-          
-          .hover\\:pause-animation:hover {
-            animation-play-state: paused;
-        }
-      `}</style>
+
+
 
       {showMap && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-2xl h-[500px] relative">
+        <motion.div
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div
+            className="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-3xl h-[600px] relative border border-gray-200"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             <GMap
               onLocationSelect={handleLocationSelect}
               onBack={() => setShowMap(null)}
             />
-            <button
-              className="absolute top-2 right-2 text-gray-600 hover:text-red-600"
-              onClick={() => setShowMap(null)}
-            >
-              ✕
-            </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
     </div>
   )
+
 }
+
 

@@ -33,7 +33,7 @@ export default function DateInput({ control, name ,register}: any) {
             readOnly
             onClick={() => setShowCalendar((prev) => !prev)}
             placeholder="Select date"
-            style={{ padding: '8px', width: '280px' }}
+            style={{ padding: '8px', width: '300px' }}
             className='input'
             {...register}
           />

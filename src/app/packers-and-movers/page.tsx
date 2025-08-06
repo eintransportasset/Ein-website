@@ -2,7 +2,7 @@
 
 import DateInput from "@/components/DateInput"
 import GMap from "@/components/map"
-import { ArrowLeft, Truck,ArrowRight, MapPin, Calendar, Package, User, Phone, Mail, Navigation } from "lucide-react"
+import { ArrowLeft, Truck, ArrowRight, MapPin, Calendar, Package, User, Phone, Mail, Navigation, MapPinHouse } from "lucide-react"
 import Link from "next/link"
 import type React from "react"
 import { useState, useEffect } from "react"
@@ -142,9 +142,9 @@ const Page: React.FC = () => {
       localStorage.removeItem("fromLocation")
       localStorage.removeItem("toLocation")
 
-      setTimeout(() => {
-        router.push("/packers-and-movers/orderPlaced")
-      }, 2000)
+
+      router.push("/packers-and-movers/orderPlaced")
+
     } catch (error) {
       console.error("Submission error:", error)
       alert("Something went wrong. Please try again.")
@@ -170,108 +170,117 @@ const Page: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 p-2 sm:p-4">
-      <div className="max-w-6xl mx-auto flex flex-col">
-        {/* Enhanced Header Navigation */}
-        <div className="flex justify-between items-center mb-2 pt-2">
+
+    // <div className="h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 p-2 sm:p-4 flex flex-col">
+    <div className="h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 p-2 sm:p-4 flex">
+
+      {/* <div className="max-w-6xl mx-auto flex flex-col flex-1"> */}
+      <div className="max-w-6xl mx-auto flex flex-col flex-1">
+
+        {/* Header Navigation */}
+        <div className="relative flex items-center mb-1.5 pt-1.5 sm:mb-2 sm:pt-2">
           <Link
             href="/"
-            className="group flex items-center gap-3 text-slate-600 hover:text-[#0086FF] bg-white/90 backdrop-blur-sm rounded-xl border border-slate-200 hover:border-[#0086FF]/30 px-4 py-3 transition-all duration-300 hover:shadow-lg hover:shadow-slate-200/50 text-sm"
+            className="group flex items-center gap-2 text-slate-600 hover:text-blue-600 bg-white/90 backdrop-blur-sm rounded-lg border border-slate-200 hover:border-blue-500/30 px-3 py-2 transition-all duration-300 hover:shadow-md text-xs sm:text-sm"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
             <span className="font-semibold hidden sm:inline">Back to Home</span>
             <span className="font-semibold sm:hidden">Home</span>
           </Link>
-
-          <div className="text-center flex flex-row items-center gap-2">
-            <Truck className="w-6 h-6 text-[#0086FF]" />
-            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-[#0086FF] via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+          <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-row items-center gap-1 sm:gap-2">
+            <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#0086FF]" />
+            <h1
+              className="text-xs sm:text-base md:text-lg font-bold bg-gradient-to-r from-[#0086FF] via-blue-600 to-indigo-600 bg-clip-text text-transparent truncate"
+              title="Packers & Movers"
+            >
               Packers & Movers
             </h1>
           </div>
-
-          <Link
-            href="/trucks-service"
-            className="group flex items-center gap-3 text-slate-600 hover:text-[#0086FF] bg-white/90 backdrop-blur-sm rounded-xl border border-slate-200 hover:border-[#0086FF]/30 px-4 py-3 transition-all duration-300 hover:shadow-lg hover:shadow-slate-200/50 text-sm"
-          >
-            <span className="font-semibold hidden sm:inline">Trucks Service</span>
-            <span className="font-semibold sm:hidden">Service</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-          </Link>
         </div>
 
-        {/* Enhanced Main Form Container */}
-        <div className="bg-white backdrop-blur-sm shadow-2xl shadow-slate-200/50 rounded-2xl p-6 sm:p-8 border border-slate-200/50 ">
-          <form id="packersandmovers" onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-            {/* Form Content - Enhanced Grid Layout */}
-            <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Left Column */}
-              <div className="space-y-8">
-                {/* Enhanced Contact Information Section */}
-                <div className="space-y-5">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-gradient-to-r from-[#0086FF] to-blue-600 rounded-xl shadow-lg">
-                      <User className="w-5 h-5 text-white" />
-                    </div>
-                    <h2 className="text-xl font-bold text-slate-800">Contact Information</h2>
-                  </div>
 
-                  <div className="space-y-5">
+
+        {/* Main Form Container */}
+        <div className="bg-white backdrop-blur-sm shadow-lg rounded-xl p-4 sm:p-6 border border-slate-200/50 flex-1 flex flex-col overflow-hidden">
+          {/* <div className="bg-white backdrop-blur-sm shadow-2xl shadow-slate-200/50 rounded-2xl p-6 sm:p-8 border border-slate-200/50 "> */}
+
+          <form id="packersandmovers" onSubmit={handleSubmit(onSubmit)} className="flex flex-col flex-1 overflow-y-auto">
+            {/* Form Content - Grid Layout */}
+            <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              {/* Left Column */}
+              <div className="space-y-4">
+                {/* Contact Information Section */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-gradient-to-r from-[#0086FF] to-blue-600 rounded-lg shadow-md">
+                      <User className="w-4 h-4 text-white" />
+                    </div>
+                    <h2 className="text-base sm:text-lg font-bold text-slate-800">Contact Information</h2>
+                  </div>
+                  <div className="space-y-3">
                     <div className="group">
-                      <label className="block text-sm  text-slate-700 mb-2">
+                      <label className="block text-xs sm:text-sm text-slate-700 mb-1">
                         Full Name <span className="text-red-500">*</span>
                       </label>
-                      <div className="relative items-center">
-                        <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-700 group-focus-within:text-[#0086FF] transition-colors duration-300" />
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-focus-within:text-[#0086FF]" />
                         <input
                           {...register("fullName", { required: "Full name is required" })}
-                          className="w-full pl-12 pr-4 py-3.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#0086FF]/20 focus:border-[#0086FF] transition-all duration-300 bg-white/70  hover:bg-white/90 text-sm font-medium placeholder:text-slate-400"
+                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="Enter your full name"
                         />
                       </div>
                       {errors.fullName && (
-                        <p className="text-red-500 text-xs mt-2 flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                        <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                          <span className="w-1 h-1 bg-red-500 rounded-full"></span>
                           {errors.fullName.message}
                         </p>
                       )}
                     </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="group">
-                        <label className="block text-sm  text-slate-700 mb-2">
+                        <label className="block text-xs sm:text-sm text-slate-700 mb-1">
                           Phone Number <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
-                          <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-700 group-focus-within:text-[#0086FF] transition-colors duration-300" />
+                          <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-focus-within:text-[#0086FF]" />
                           <input
-                            type="tel"
+                            type="text"
                             {...register("phoneNumber", {
                               required: "Phone number is required",
                               maxLength: { value: 10, message: "Maximum 10 characters allowed" },
+                              minLength: { value: 10, message: "Minimum 10 characters required" },
+                              pattern: {
+                                value: /^[0-9]{10}$/,
+                                message: "Phone number must be 10 digits",
+                              },
                             })}
-                            className="w-full pl-12 pr-4 py-3.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#0086FF]/20 focus:border-[#0086FF] transition-all duration-300 bg-white/70 hover:bg-white/90 text-sm font-medium placeholder:text-slate-400"
+                            onInput={(e) => {
+                              e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "");
+                            }}
+                            className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                             placeholder="1234567890"
+                            maxLength={10}
                           />
+
                         </div>
                         {errors.phoneNumber && (
-                          <p className="text-red-500 text-xs mt-2 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                          <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                            <span className="w-1 h-1 bg-red-500 rounded-full"></span>
                             {errors.phoneNumber.message}
                           </p>
                         )}
                       </div>
-
                       <div className="group">
-                        <label className="block text-sm  text-slate-700 mb-2">
-                          Email <span className="text-slate-400 text-xs font-normal">(optional)</span>
+                        <label className="block text-xs sm:text-sm text-slate-700 mb-1">
+                          Email <span className="text-slate-400 text-xs">(optional)</span>
                         </label>
                         <div className="relative">
-                          <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-700 group-focus-within:text-[#0086FF] transition-colors duration-300" />
+                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-focus-within:text-[#0086FF]" />
                           <input
                             type="email"
                             {...register("email")}
-                            className="w-full pl-12 pr-4 py-3.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#0086FF]/20 focus:border-[#0086FF] transition-all duration-300 bg-white/70 hover:bg-white/90 text-sm font-medium placeholder:text-slate-400"
+                            className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                             placeholder="you@example.com"
                           />
                         </div>
@@ -280,34 +289,32 @@ const Page: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Enhanced Route Information Section */}
-                <div className="space-y-5">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-gradient-to-r from-[#0086FF] to-blue-600 rounded-xl shadow-lg">
-                      <Navigation className="w-5 h-5 text-white" />
+                {/* Route Information Section */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-gradient-to-r from-[#0086FF] to-blue-600 rounded-lg shadow-md">
+                      <Navigation className="w-4 h-4 text-white" />
                     </div>
-                    <h2 className="text-xl font-bold text-slate-800">Route Information</h2>
+                    <h2 className="text-base sm:text-lg font-bold text-slate-800">Route Information</h2>
                   </div>
-
-                  <div className="space-y-5">
+                  <div className="space-y-3">
                     <div>
-                      <label className="block text-sm  text-slate-700 mb-2">
+                      <label className="block text-xs sm:text-sm text-slate-700 mb-1">
                         Pickup Location <span className="text-red-500">*</span>
                       </label>
                       <div className="relative group cursor-pointer" onClick={() => setShowMap("from")}>
-                        <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-700 group-hover:text-[#0086FF] transition-colors duration-300" />
+                        <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-hover:text-[#0086FF]" />
                         <input
                           {...register("fromAddress", { required: "Pickup address is required" })}
-                          className="w-full pl-12 pr-4 py-3.5 border border-slate-200 rounded-xl bg-gradient-to-r from-slate-50 to-white hover:from-blue-50 hover:to-white cursor-pointer transition-all duration-300 text-sm font-medium group-hover:border-[#0086FF]/50 group-hover:shadow-md"
+                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg bg-gradient-to-r from-slate-50 to-white hover:from-blue-50 hover:to-white cursor-pointer text-xs sm:text-sm group-hover:border-[#0086FF]/50"
                           placeholder="Click to select pickup location on map"
                           value={fromLocation?.address || ""}
                           readOnly
                         />
-                       
                       </div>
                       {errors.fromAddress && (
-                        <p className="text-red-500 text-xs mt-2 flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                        <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                          <span className="w-1 h-1 bg-red-500 rounded-full"></span>
                           {errors.fromAddress.message}
                         </p>
                       )}
@@ -315,25 +322,23 @@ const Page: React.FC = () => {
                       <input type="hidden" {...register("fromLng", { required: true })} />
                       <input type="hidden" {...register("fromDistrict")} />
                     </div>
-
                     <div>
-                      <label className="block text-sm  text-slate-700 mb-2">
+                      <label className="block text-xs sm:text-sm text-slate-700 mb-1">
                         Drop-off Location <span className="text-red-500">*</span>
                       </label>
                       <div className="relative group cursor-pointer" onClick={() => setShowMap("to")}>
-                        <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-700 group-hover:text-[#0086FF] transition-colors duration-300" />
+                        <MapPinHouse className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-hover:text-[#0086FF]" />
                         <input
                           {...register("toAddress", { required: "Drop-off address is required" })}
-                          className="w-full pl-12 pr-4 py-3.5 border border-slate-200 rounded-xl bg-gradient-to-r from-slate-50 to-white hover:from-blue-50 hover:to-white cursor-pointer transition-all duration-300 text-sm font-medium group-hover:border-[#0086FF]/50 group-hover:shadow-md"
+                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg bg-gradient-to-r from-slate-50 to-white hover:from-blue-50 hover:to-white cursor-pointer text-xs sm:text-sm group-hover:border-[#0086FF]/50"
                           placeholder="Click to select drop-off location on map"
                           value={toLocation?.address || ""}
                           readOnly
                         />
-                        
                       </div>
                       {errors.toAddress && (
-                        <p className="text-red-500 text-xs mt-2 flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                        <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                          <span className="w-1 h-1 bg-red-500 rounded-full"></span>
                           {errors.toAddress.message}
                         </p>
                       )}
@@ -346,56 +351,72 @@ const Page: React.FC = () => {
               </div>
 
               {/* Right Column */}
-              <div className="space-y-8">
-                {/* Enhanced Date Section */}
-                <div className="space-y-5">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-gradient-to-r from-[#0086FF] to-blue-600 rounded-xl shadow-lg">
-                      <Calendar className="w-5 h-5 text-white" />
+              <div className="space-y-4">
+                {/* Shifting Schedule Section */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-gradient-to-r from-[#0086FF] to-blue-600 rounded-lg shadow-md">
+                      <Calendar className="w-4 h-4 text-white" />
                     </div>
-                    <h2 className="text-xl font-bold text-slate-800">Shifting Schedule</h2>
+                    <h2 className="text-base sm:text-lg font-bold text-slate-800">Shifting Schedule</h2>
                   </div>
-
                   <div>
-                    <label className="block text-sm  text-slate-700 mb-2">
-                      Select Date & Time <span className="text-red-500">*</span>
+                    <label className="block text-xs sm:text-sm text-slate-700 mb-1">
+                      Select Date<span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
-                      <DateInput control={control} name="dateTime" />
+                      <DateInput
+                        control={control}
+                        name="dateTime"
+                        register={{
+                          ...register("dateTime", {
+                            required: "Date is required",
+                            validate: {
+                              dateTime: (value) => {
+                                const selectedDate = new Date(value);
+                                const currentDate = new Date();
+                                if (selectedDate < currentDate) {
+                                  return "Please select a future date and time";
+                                }
+                                return true;
+                              },
+                            },
+                          }),
+                        }}
+                      />
                     </div>
                     {errors.dateTime && (
-                      <p className="text-red-500 text-xs mt-2 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                      <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                        <span className="w-1 h-1 bg-red-500 rounded-full"></span>
                         {errors.dateTime.message}
                       </p>
                     )}
                   </div>
                 </div>
 
-                {/* Enhanced Package Information Section */}
-                <div className="space-y-5 flex-1">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-gradient-to-r from-[#0086FF] to-blue-600 rounded-xl shadow-lg">
-                      <Package className="w-5 h-5 text-white" />
+                {/* Items Information Section */}
+                <div className="space-y-3 flex-1">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-gradient-to-r from-[#0086FF] to-blue-600 rounded-lg shadow-md">
+                      <Package className="w-4 h-4 text-white" />
                     </div>
-                    <h2 className="text-xl font-bold text-slate-800">Items Information</h2>
+                    <h2 className="text-base sm:text-lg font-bold text-slate-800">Items Information</h2>
                   </div>
-
                   <div className="flex-1">
-                    <label className="block text-sm  text-slate-700 mb-2">
+                    <label className="block text-xs sm:text-sm text-slate-700 mb-1">
                       Items to be Moved <span className="text-red-500">*</span>
                     </label>
-                    <div className="relative group h-full">
-                      <Package className="absolute left-4 top-4 w-5 h-5 text-blue-700 group-focus-within:text-[#0086FF] transition-colors duration-300" />
+                    <div className="relative group">
+                      <Package className="absolute left-3 top-3 w-4 h-4 text-blue-700 group-focus-within:text-[#0086FF]" />
                       <textarea
                         {...register("shiftingThings", { required: "Please describe items to be moved" })}
-                        className="w-full pl-12 py-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#0086FF]/20 focus:border-[#0086FF] transition-all duration-300 bg-white/70 hover:bg-white/90 text-sm font-medium placeholder:text-slate-400 h-40 lg:h-48"
+                        className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400 h-16 sm:h-20 resize-none"
                         placeholder="Please describe the items you need to move in detail"
                       />
                     </div>
                     {errors.shiftingThings && (
-                      <p className="text-red-500 text-xs mt-2 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                      <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                        <span className="w-1 h-1 bg-red-500 rounded-full"></span>
                         {errors.shiftingThings.message}
                       </p>
                     )}
@@ -404,59 +425,60 @@ const Page: React.FC = () => {
               </div>
             </div>
 
-            {/* Enhanced Submit Button */}
-            <div className="text-center pt-3 mt-2">
+            {/* Submit Button */}
+            <div className="text-center pt-4 mb-4 border-t border-slate-100">
               <button
                 type="submit"
                 disabled={loading}
                 form="packersandmovers"
-                className={`group relative px-6 py-3 bg-gradient-to-r from-[#0086FF] via-blue-600 to-indigo-600 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg ${
-                  loading
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:shadow-xl hover:shadow-[#0086FF]/30 hover:scale-105 active:scale-95 hover:-translate-y-0.5"
-                }`}
+                className={`group relative px-6 py-3 bg-gradient-to-r from-[#0086FF] via-blue-600 to-indigo-600 text-white rounded-lg font-semibold transition-all duration-300 shadow-md ${loading ? "opacity-50 cursor-not-allowed" : "hover:shadow-lg hover:shadow-[#0086FF]/30 hover:scale-105 active:scale-95"
+                  }`}
               >
-                <span className="flex items-center gap-3">
+                <span className="flex items-center gap-2 text-xs sm:text-sm">
                   {loading ? (
                     <>
-                      <div className="w-4 h-4 rounded-full animate-spin"></div>
-                      Processing Your Request...
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      Processing...
                     </>
                   ) : (
                     <>
-                      Submit Moving Request
+                      Submit Request
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                     </>
                   )}
                 </span>
               </button>
-              
             </div>
           </form>
 
-          {/* Enhanced Map Modal */}
-          {showMap && (
-            <div className="fixed inset-0 bg-black/5 backdrop-blur-sm flex justify-center z-50 p-4">
-              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl h-[75vh] mt-13 relative overflow-hidden border border-slate-200">
-                
-
+          {/* Map Modal */}
+          {/* {showMap && (
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
+              <div className="bg-white rounded-xl shadow-xl w-[90%] max-w-4xl h-[70vh] sm:h-[80vh] relative overflow-hidden border border-slate-200">
                 <GMap onLocationSelect={handleMapLocationSelect} onBack={() => setShowMap(null)} />
-
                 <button
-                  className="absolute top-4 right-4 z-10 p-3 bg-white/95 backdrop-blur-sm text-slate-600 hover:text-red-500 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 border border-slate-200"
+                  className="absolute top-2 right-2 p-2 bg-white/90 text-slate-600 hover:text-red-500 rounded-lg shadow-md transition-all duration-300 hover:scale-105 border border-slate-200"
                   onClick={() => setShowMap(null)}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
             </div>
+          )} */}
+          {showMap && (
+            <div className="fixed inset-0 bg-black/5 backdrop-blur-sm flex justify-center z-50 p-4">
+              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl h-[75vh] mt-13 relative overflow-hidden border border-slate-200">
+
+                <GMap onLocationSelect={handleMapLocationSelect} onBack={() => setShowMap(null)} />
+
+              </div>
+            </div>
           )}
         </div>
       </div>
-    </div>
-  )
+    </div>)
 }
 
 export default Page

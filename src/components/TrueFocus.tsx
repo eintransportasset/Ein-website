@@ -241,7 +241,7 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
 
     return (
         <div
-            className="relative flex gap-4 justify-center items-center flex-wrap"
+            className="relative flex gap-4  justify-center items-center flex-wrap"
             ref={containerRef}
         >
             {words.map((word, index) => {
@@ -253,7 +253,7 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
                         ref={(el) => {
                             wordRefs.current[index] = el;
                         }}
-                        className="relative text-[3rem] font-black cursor-pointer"
+                        className="text-blue-800 relative text-[3rem] font-black cursor-pointer"
                         style={{
                             filter: isFocusable && isActive ? `blur(0px)` : `blur(${blurAmount}px)`,
                             transition: `filter ${animationDuration}s ease`,

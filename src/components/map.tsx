@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import { MapPin } from 'lucide-react';
+import { MapPin, LocateFixed, X } from 'lucide-react';
 
 // Move libraries array outside component to prevent re-creation
 const GOOGLE_MAPS_LIBRARIES: ('places')[] = ['places'];
@@ -286,7 +286,7 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
     if (loadError) {
         console.error('Google Maps Load Error:', loadError);
         return (
-            <div className="flex items-center justify-center h-full">
+            <div className="flex items-center justify-center h-full border rounded-lg">
                 <div className="text-center p-4 max-w-md">
                     <h3 className="text-lg font-semibold text-red-600 mb-2">
                         Failed to load Google Maps
@@ -354,7 +354,7 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
                             id="auto-complete-input"
                             placeholder=" Search Location"
                             className="w-full p-3 rounded-xl border border-gray-200 outline-none 
-                                 text-sm shadow-lg bg-white/95 backdrop-blur-sm
+                                 text-sm text-gray-800 shadow-lg bg-white/95 backdrop-blur-sm
                                  focus:ring-2 focus:ring-blue-400 focus:border-transparent
                                  transition-all duration-200"
                         />
@@ -366,33 +366,35 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
                     </div>
 
                     {/* Location info and controls */}
-                    <div className="absolute z-10 bottom-0 left-0 right-0 p-4 space-y-3
-                               bg-gradient-to-t from-white/90 to-transparent">
-                        {selectedLocation && (
-                            <div className="bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-gray-100">
-                                <p className="text-sm font-semibold text-gray-800">Selected Location</p>
-                                <p className="text-xs text-gray-600 mt-1 break-words">
-                                    {selectedLocation.address}
-                                </p>
-                                <div className="flex justify-between mt-2 text-xs text-gray-500">
-                                    <span>District: {selectedLocation.district || 'N/A'}</span>
-                                    <span>{selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}</span>
+                    <div className="absolute z-10 bottom-0 left-0 right-0 p-2 space-y-2
+                                mx-15">
+                        {/* First row: Selected address (80%) + Current location icon (20%) */}
+                        <div className="flex gap-2 justify-end items-end">
+                            {selectedLocation && (
+                                <div className="bg-white/95 backdrop-blur-sm p-3 rounded-lg shadow-lg border border-gray-100 flex-1">
+                                    <p className="text-xs font-semibold text-gray-800 mb-1">Selected Location</p>
+                                    <p className="text-xs text-gray-600 break-words leading-tight">
+                                        {selectedLocation.address}
+                                    </p>
+                                    <div className="flex justify-between mt-1 text-xs text-gray-500">
+                                        <span>District: {selectedLocation.district || 'N/A'}</span>
+                                        <span>{selectedLocation.lat.toFixed(4)}, {selectedLocation.lng.toFixed(4)}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-
-                        <div className="bg-blue-50/90 backdrop-blur-sm border border-blue-100 rounded-xl p-3">
-                            <p className="text-xs text-blue-800">
-                                💡 Click on the map, drag to move, or search to select a location
-                            </p>
-                            {isGeocoding && (
-                                <p className="text-xs text-blue-600 mt-1">🔄 Getting address...</p>
                             )}
+                            <button
+                                className="bg-blue-600 hover:cursor-pointer hover:bg-white hover:text-black text-white p-2 rounded-lg transition-all duration-200 shadow-md flex items-center justify-center w-12 h-12"
+                                onClick={fetchCurrentLocation}
+                                title="Use Current Location"
+                            >
+                                <LocateFixed className="w-4 h-4" />
+                            </button>
                         </div>
 
-                        <div className="flex flex-col gap-2">
+                        {/* Second row: Select location button (80%) + Cancel button (20%) */}
+                        <div className="flex gap-2">
                             <button
-                                className={`font-medium py-3 px-4 rounded-xl transition-all duration-200 
+                                className={`font-medium py-2.5 px-2 rounded-lg transition-all duration-200 text-sm flex-1
                                       ${selectedLocation
                                         ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg'
                                         : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}
@@ -401,22 +403,15 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
                             >
                                 {isGeocoding ? '🔄 Getting Location...' : '✓ Select this Location'}
                             </button>
-                            <div className="grid grid-cols-2 gap-2">
+                            {onBack && (
                                 <button
-                                    className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 shadow-md"
-                                    onClick={fetchCurrentLocation}
+                                    className="bg-red-600 hover:cursor-pointer hover:bg-white hover:text-black text-white p-2 rounded-lg transition-all duration-200 shadow-md flex items-center justify-center w-12 h-12"
+                                    onClick={() => onBack(false)}
+                                    title="Cancel"
                                 >
-                                    📍 Current Location
+                                    <X className="w-4 h-4" />
                                 </button>
-                                {onBack && (
-                                    <button
-                                        className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 shadow-md"
-                                        onClick={() => onBack(false)}
-                                    >
-                                        ✕ Cancel
-                                    </button>
-                                )}
-                            </div>
+                            )}
                         </div>
                     </div>
                 </GoogleMap>
@@ -430,7 +425,6 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
             </div>
         </div>
     );
-
 
 }
 
