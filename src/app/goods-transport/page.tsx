@@ -46,7 +46,7 @@ export type FormData = {
   email?: string
   materials: string
   weight: string
-  vehicle: string
+  vehicleRequired: string
 }
 
 const Page: React.FC = () => {
@@ -115,10 +115,7 @@ const Page: React.FC = () => {
       reset() // Reset form after successful submission
       setFromLocation(null)
       setToLocation(null)
-
-      setTimeout(() => {
-        router.push("/goods-transport/orderPlaced")
-      }, 2000)
+      router.push("/goods-transport/orderPlaced")
     } catch (error) {
       console.log("Error in create ", error)
       alert("Something went wrong. Please try again.")
@@ -409,16 +406,16 @@ const Page: React.FC = () => {
                         <input
                           onFocus={() => setIsOpen(true)}
                           type="text"
-                          {...register("vehicle", { required: "Vehicle type is required" })}
+                          {...register("vehicleRequired", { required: "Vehicle type is required" })}
                           placeholder="Click to select vehicle type"
                           className="w-full pl-12 pr-4 py-3.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 bg-white/70 hover:bg-white/90 text-sm font-medium placeholder:text-slate-400 cursor-pointer"
                           readOnly
                         />
                       </div>
-                      {errors.vehicle && (
+                      {errors.vehicleRequired && (
                         <p className="text-red-500 text-xs mt-2 flex items-center gap-2">
                           <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-                          {errors.vehicle.message}
+                          {errors.vehicleRequired.message}
                         </p>
                       )}
                     </div>

@@ -141,10 +141,7 @@ const Page: React.FC = () => {
       //remove from localStorage
       localStorage.removeItem("fromLocation")
       localStorage.removeItem("toLocation")
-
-      setTimeout(() => {
-        router.push("/packers-and-movers/orderPlaced")
-      }, 2000)
+      router.push("/packers-and-movers/orderPlaced")
     } catch (error) {
       console.error("Submission error:", error)
       alert("Something went wrong. Please try again.")

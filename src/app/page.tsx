@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   ArrowBigRight,
   Facebook,
@@ -23,54 +23,55 @@ import {
   CheckCircle,
   Truck,
   // Zap,
-} from "lucide-react"
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { useRouter } from "next/navigation"
-import RotatingText from "@/components/rotating-text"
-import GMap from "@/components/map"
-import { useLocationContext } from "@/app/context/LocationContext"
-import ShinyText from "@/components/shiny-text"
+} from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+import RotatingText from "@/components/rotating-text";
+import GMap from "@/components/map";
+import { useLocationContext } from "@/app/context/LocationContext";
+import ShinyText from "@/components/shiny-text";
 
 export default function Component() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [showMap, setShowMap] = useState<"from" | "to" | null>(null)
-  const { fromLocation, toLocation, setFromLocation, setToLocation } = useLocationContext()
-  const router = useRouter()
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [showMap, setShowMap] = useState<"from" | "to" | null>(null);
+  const { fromLocation, toLocation, setFromLocation, setToLocation } =
+    useLocationContext();
+  const router = useRouter();
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggleFAQ = (index: number) => {
-    setOpenIndex((prev) => (prev === index ? null : index))
-  }
+    setOpenIndex((prev) => (prev === index ? null : index));
+  };
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleLocationSelect = (locationData: any) => {
-    if (showMap === "from") setFromLocation(locationData)
-    else if (showMap === "to") setToLocation(locationData)
-    setShowMap(null)
-  }
+    if (showMap === "from") setFromLocation(locationData);
+    else if (showMap === "to") setToLocation(locationData);
+    setShowMap(null);
+  };
 
   const handleLetsMove = () => {
     if (fromLocation || toLocation) {
-      localStorage.setItem("fromLocation", JSON.stringify(fromLocation))
-      localStorage.setItem("toLocation", JSON.stringify(toLocation))
+      localStorage.setItem("fromLocation", JSON.stringify(fromLocation));
+      localStorage.setItem("toLocation", JSON.stringify(toLocation));
     }
     if (!fromLocation) {
-      localStorage.removeItem("fromLocation")
+      localStorage.removeItem("fromLocation");
     }
     if (!toLocation) {
-      localStorage.removeItem("toLocation")
+      localStorage.removeItem("toLocation");
     }
-    router.push("/packers-and-movers")
-  }
+    router.push("/packers-and-movers");
+  };
 
   const testimonials = [
     {
@@ -97,13 +98,13 @@ export default function Component() {
       role: "Coimbatore",
       text: "I've moved houses before, but never this smoothly. The eintransport team packed everything perfectly and handled my fragile items with care. It felt like I had friends helping me move.",
     },
-  ]
+  ];
 
   const navItems = [
     { name: "Services", href: "#services" },
     { name: "About", href: "#about" },
     { name: "Testimonials", href: "#testimonials" },
-  ]
+  ];
 
   const faqs = [
     {
@@ -126,14 +127,16 @@ export default function Component() {
       answer:
         "We offer a wide range of vehicles including TATA 407, open-body trucks, and container trucks. Whether you need a small vehicle or a high-capacity one, we'll provide the right fit for your move.",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
       {/* Premium Navbar */}
       <motion.nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? "bg-white/90 backdrop-blur-xl shadow-2xl border-b border-gray-100" : "bg-transparent"
+          scrolled
+            ? "bg-white/90 backdrop-blur-xl shadow-2xl border-b border-gray-100"
+            : "bg-transparent"
         }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -207,7 +210,10 @@ export default function Component() {
       </motion.nav>
 
       {/* Premium Hero Section */}
-      <section id="home" className="relative min-h-screen pt-24 px-6 lg:px-8 flex items-center overflow-hidden">
+      <section
+        id="home"
+        className="relative min-h-screen pt-24 px-6 lg:px-8 flex items-center overflow-hidden"
+      >
         {/* Enhanced Background Animation */}
         <div className="absolute inset-0">
           <motion.div
@@ -296,8 +302,10 @@ export default function Component() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 1 }}
             style={{
-              background: "linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)",
-              boxShadow: "0 25px 50px -12px rgba(0, 134, 255, 0.25), 0 0 0 1px rgba(255,255,255,0.3)",
+              background:
+                "linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)",
+              boxShadow:
+                "0 25px 50px -12px rgba(0, 134, 255, 0.25), 0 0 0 1px rgba(255,255,255,0.3)",
             }}
           >
             <motion.div
@@ -307,13 +315,16 @@ export default function Component() {
               transition={{ delay: 0.6, type: "spring", stiffness: 200 }}
             >
               <div className="bg-blue-600/90 gap-2 text-white px-6 py-2 rounded-full text-xs font-bold shadow-lg flex items-center">
-              <Milestone />
+                <Milestone />
                 Packers & Movers - Booking
               </div>
             </motion.div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-              <motion.div whileHover={{ scale: 1.02, y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
+              <motion.div
+                whileHover={{ scale: 1.02, y: -5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <button
                   className="w-full p-8 border-2 border-gray-200 rounded-2xl bg-gradient-to-br from-white to-gray-50 focus:border-[#0086FF] focus:outline-none transition-all duration-500 text-left hover:border-[#0086FF] hover:shadow-xl group relative overflow-hidden"
                   onClick={() => setShowMap("from")}
@@ -325,16 +336,22 @@ export default function Component() {
                         <MapPin className="h-4 w-4 text-white" />
                       </div>
                       <div>
-                        <span className="block text-sm font-semibold text-gray-500 mb-1">PICKUP LOCATION</span>
+                        <span className="block text-sm font-semibold text-gray-500 mb-1">
+                          PICKUP LOCATION
+                        </span>
                         <span
                           className={`block font-bold ${
-                            fromLocation?.address ? "text-gray-900" : "text-gray-400"
+                            fromLocation?.address
+                              ? "text-gray-900"
+                              : "text-gray-400"
                           }`}
                         >
                           {fromLocation?.address || "Select your pickup point"}
                         </span>
                         {fromLocation?.address && (
-                          <span className="text-sm text-[#0086FF] font-medium">Tap to modify location</span>
+                          <span className="text-sm text-[#0086FF] font-medium">
+                            Tap to modify location
+                          </span>
                         )}
                       </div>
                     </div>
@@ -345,7 +362,10 @@ export default function Component() {
                 </button>
               </motion.div>
 
-              <motion.div whileHover={{ scale: 1.02, y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
+              <motion.div
+                whileHover={{ scale: 1.02, y: -5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <button
                   className="w-full p-8 border-2 border-gray-200 rounded-2xl bg-gradient-to-br from-white to-gray-50 focus:border-blue-500 focus:outline-none transition-all duration-500 text-left hover:border-blue-500 hover:shadow-xl group relative overflow-hidden"
                   onClick={() => setShowMap("to")}
@@ -357,16 +377,22 @@ export default function Component() {
                         <MapPin className="h-4 w-4 text-white" />
                       </div>
                       <div>
-                        <span className="block text-sm font-semibold text-gray-500 mb-1">DROP LOCATION</span>
+                        <span className="block text-sm font-semibold text-gray-500 mb-1">
+                          DROP LOCATION
+                        </span>
                         <span
                           className={`block font-bold ${
-                            toLocation?.address ? "text-gray-900" : "text-gray-400"
+                            toLocation?.address
+                              ? "text-gray-900"
+                              : "text-gray-400"
                           }`}
                         >
                           {toLocation?.address || "Select your destination"}
                         </span>
                         {toLocation?.address && (
-                          <span className="text-sm text-blue-600 font-medium">Tap to modify location</span>
+                          <span className="text-sm text-blue-600 font-medium">
+                            Tap to modify location
+                          </span>
                         )}
                       </div>
                     </div>
@@ -427,7 +453,10 @@ export default function Component() {
       </section>
 
       {/* Premium Services Section */}
-      <section id="services" className="py-32 px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-white">
+      <section
+        id="services"
+        className="py-32 px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-white"
+      >
         <div className="container mx-auto max-w-7xl">
           <motion.div
             className="text-center mb-20"
@@ -444,24 +473,26 @@ export default function Component() {
               viewport={{ once: true }}
             >
               <Award className="w-5 h-5 text-[#0086FF] mr-2" />
-              <span className="text-[#0086FF] font-semibold">Our Premium Services</span>
+              <span className="text-[#0086FF] font-semibold">
+                Our Services
+              </span>
             </motion.div>
 
             <h2 className="text-5xl lg:text-7xl font-black text-gray-900 mb-8">
               Luxury <span className="text-[#0086FF]">Transport</span> Solutions
             </h2>
             <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Experience world-class moving services with our professional team and state-of-the-art equipment designed
-              for premium comfort.
+              Experience world-class moving services with our professional team
+              and state-of-the-art equipment designed for premium comfort.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {[
               {
-                title: "Premium Packing & Moving",
+                title: "Packing & Moving",
                 description:
-                  "White-glove service from start to finish. Our expert team handles everything with precision and care, ensuring your belongings arrive in perfect condition.",
+                  "Service from start to finish. Our expert team handles everything with precision and care, ensuring your belongings arrive in perfect condition.",
                 icon: "📦",
                 gradient: "from-[#0086FF] to-blue-600",
                 features: [
@@ -476,11 +507,11 @@ export default function Component() {
               {
                 title: "Executive Truck Services",
                 description:
-                  "Premium fleet management for all your cargo needs. From small packages to large shipments, we deliver with excellence and reliability.",
+                  "Premium Fleet management for all your cargo needs. From small packages to large shipments, we deliver with excellence and reliability.",
                 icon: "🚛",
                 gradient: "from-indigo-500 to-purple-600",
                 features: [
-                  "Premium Vehicle Fleet",
+                  "Vehicle Fleet",
                   "Certified Professional Drivers",
                   "Advanced Route Optimization",
                   "Flexible Scheduling Options",
@@ -505,9 +536,13 @@ export default function Component() {
                     {service.icon}
                   </div>
 
-                  <h3 className="text-3xl font-black mb-6 text-gray-900">{service.title}</h3>
+                  <h3 className="text-3xl font-black mb-6 text-gray-900">
+                    {service.title}
+                  </h3>
 
-                  <p className="text-gray-600 mb-8 leading-relaxed text-lg">{service.description}</p>
+                  <p className="text-gray-600 mb-8 leading-relaxed text-lg">
+                    {service.description}
+                  </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
                     {service.features.map((feature, idx) => (
@@ -520,7 +555,9 @@ export default function Component() {
                         viewport={{ once: true }}
                       >
                         <CheckCircle className="w-5 h-5 text-[#0086FF] flex-shrink-0" />
-                        <span className="text-gray-700 font-medium">{feature}</span>
+                        <span className="text-gray-700 font-medium">
+                          {feature}
+                        </span>
                       </motion.div>
                     ))}
                   </div>
@@ -529,8 +566,17 @@ export default function Component() {
                     className={`bg-gradient-to-r ${service.gradient} text-white px-10 py-4 rounded-2xl hover:shadow-2xl transition-all duration-500 font-bold text-lg flex items-center group-hover:scale-105`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      if (index === 0) {
+                        router.push("/packers-and-movers");
+                      } else {
+                        router.push("/goods-transport");
+                      }
+                    }}
                   >
-                    {index === 0 ? "Book Premium Move" : "Start Premium Shipping"}
+                    {index === 0
+                      ? "Book Move"
+                      : "Start Shipping"}
                     <MoveRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
                   </motion.button>
                 </div>
@@ -560,17 +606,20 @@ export default function Component() {
               viewport={{ once: true }}
             >
               <Users className="w-5 h-5 text-[#0086FF] mr-2" />
-              <span className="text-[#0086FF] font-semibold">Trusted by Millions</span>
+              <span className="text-[#0086FF] font-semibold">
+                Trusted by Millions
+              </span>
             </motion.div>
 
             <h2 className="text-5xl lg:text-7xl font-black text-gray-900 mb-10">
-              Why Choose <span className="text-[#0086FF]">Eintransport</span> Premium?
+              Why Choose <span className="text-[#0086FF]">Eintransport</span>
             </h2>
 
             <div className="max-w-5xl mx-auto space-y-8">
               <p className="text-2xl text-gray-700 leading-relaxed">
-                At Eintransport, we've revolutionized the moving industry by combining cutting-edge technology with
-                personalized service. Our premium approach ensures every move is executed with{" "}
+                At Eintransport, we've revolutionized the moving industry by
+                combining cutting-edge technology with personalized service. Our
+                 approach ensures every move is executed with {" "}
                 <span className="text-[#0086FF] font-bold bg-[#0086FF]/10 px-4 py-2 rounded-xl">
                   precision, care, and excellence
                 </span>
@@ -590,8 +639,12 @@ export default function Component() {
             {/* Premium Stats */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-20">
               {[
-                { number: "1M+", label: "Premium Customers", icon: Users },
-                { number: "50K+", label: "Successful Moves", icon: CheckCircle },
+                { number: "1M+", label: "Successful Moves", icon: Users },
+                {
+                  number: "50K+",
+                  label: "Customers",
+                  icon: CheckCircle,
+                },
                 { number: "5", label: "Major Cities", icon: MapPin },
                 { number: "24/7", label: "Elite Support", icon: Clock },
               ].map((stat, index) => (
@@ -605,8 +658,12 @@ export default function Component() {
                   whileHover={{ scale: 1.05, y: -5 }}
                 >
                   <stat.icon className="w-8 h-8 text-[#0086FF] mx-auto mb-4" />
-                  <div className="text-4xl lg:text-5xl font-black text-[#0086FF] mb-3">{stat.number}</div>
-                  <div className="text-gray-600 font-semibold text-lg">{stat.label}</div>
+                  <div className="text-4xl lg:text-5xl font-black text-[#0086FF] mb-3">
+                    {stat.number}
+                  </div>
+                  <div className="text-gray-600 font-semibold text-lg">
+                    {stat.label}
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -632,13 +689,17 @@ export default function Component() {
               viewport={{ once: true }}
             >
               <Star className="w-5 h-5 text-[#0086FF] mr-2" />
-              <span className="text-[#0086FF] font-semibold">Customer Stories</span>
+              <span className="text-[#0086FF] font-semibold">
+                Customer Stories
+              </span>
             </motion.div>
 
             <h2 className="text-5xl lg:text-7xl font-black text-gray-900 mb-8">
-              What Our <span className="text-[#0086FF]">Premium</span> Customers Say
+              What Our <span className="text-[#0086FF]">Customers</span> Say
             </h2>
-            <p className="text-2xl text-gray-600">Real experiences from our valued premium clients</p>
+            <p className="text-2xl text-gray-600">
+              Real experiences from our valued clients
+            </p>
           </motion.div>
 
           <div className="relative overflow-hidden rounded-3xl">
@@ -667,12 +728,18 @@ export default function Component() {
                         {testimonial.initials}
                       </div>
                       <div>
-                        <h4 className="font-black text-xl text-gray-900">{testimonial.name}</h4>
-                        <p className="text-[#0086FF] font-bold text-lg">{testimonial.role}</p>
+                        <h4 className="font-black text-xl text-gray-900">
+                          {testimonial.name}
+                        </h4>
+                        <p className="text-[#0086FF] font-bold text-lg">
+                          {testimonial.role}
+                        </p>
                       </div>
                     </div>
 
-                    <p className="text-gray-700 italic leading-relaxed text-lg mb-6">"{testimonial.text}"</p>
+                    <p className="text-gray-700 italic leading-relaxed text-lg mb-6">
+                      "{testimonial.text}"
+                    </p>
 
                     <div className="flex text-yellow-400">
                       {[...Array(5)].map((_, i) => (
@@ -705,11 +772,17 @@ export default function Component() {
               viewport={{ once: true }}
             >
               <CheckCircle className="w-5 h-5 text-[#0086FF] mr-2" />
-              <span className="text-[#0086FF] font-semibold">Got Questions?</span>
+              <span className="text-[#0086FF] font-semibold">
+                Got Questions?
+              </span>
             </motion.div>
 
-            <h2 className="text-5xl lg:text-7xl font-black text-gray-900 mb-8">Frequently Asked Questions</h2>
-            <p className="text-2xl text-gray-600">Everything you need to know about our premium services</p>
+            <h2 className="text-5xl lg:text-7xl font-black text-gray-900 mb-8">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-2xl text-gray-600">
+              Everything you need to know about our services
+            </p>
           </motion.div>
 
           <div className="space-y-6">
@@ -725,7 +798,9 @@ export default function Component() {
                 whileHover={{ y: -5 }}
               >
                 <div className="flex justify-between items-center">
-                  <h3 className="font-black text-xl lg:text-2xl text-gray-900 pr-8">{faq.question}</h3>
+                  <h3 className="font-black text-xl lg:text-2xl text-gray-900 pr-8">
+                    {faq.question}
+                  </h3>
                   <motion.div
                     animate={{ rotate: openIndex === index ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
@@ -777,15 +852,24 @@ export default function Component() {
                 Eintransport
               </h3>
               <p className="text-gray-400 mb-8 leading-relaxed text-lg">
-                Your premium partner for luxury transportation services. Moving forward together towards excellence and
-                innovation.
+                Your partner for luxury transportation services. Moving
+                forward together towards excellence and innovation.
               </p>
               <div className="flex space-x-4">
                 {[
-                  { href: "https://www.facebook.com/share/1CMLVRUx1y/", icon: Facebook },
+                  {
+                    href: "https://www.facebook.com/share/1CMLVRUx1y/",
+                    icon: Facebook,
+                  },
                   { href: "https://youtube.com/@eintransport", icon: Youtube },
-                  { href: "https://www.instagram.com/eintransport_pvt_ltd", icon: Instagram },
-                  { href: "https://www.linkedin.com/company/eintransport/", icon: Linkedin },
+                  {
+                    href: "https://www.instagram.com/eintransport_pvt_ltd",
+                    icon: Instagram,
+                  },
+                  {
+                    href: "https://www.linkedin.com/company/eintransport/",
+                    icon: Linkedin,
+                  },
                 ].map((link, index) => (
                   <motion.a
                     key={index}
@@ -804,22 +888,22 @@ export default function Component() {
 
             {[
               {
-                title: "Premium Services",
+                title: "Services",
                 items: [
-                  "Luxury Packers & Movers",
+                  "Packers & Movers",
                   "Executive Truck Service",
-                  "Premium Local Moving",
-                  "Long Distance Premium",
+                  "Local Moving",
+                  "Long Distance",
                   "Corporate Relocations",
                 ],
               },
               {
                 title: "Service Locations",
                 items: [
-                  "Bangalore Premium",
-                  "Chennai Executive",
-                  "Coimbatore Elite",
-                  "Kochi Premium",
+                  "Bangalore",
+                  "Chennai",
+                  "Coimbatore",
+                  "Kochi",
                   "Thiruvananthapuram",
                 ],
               },
@@ -831,7 +915,9 @@ export default function Component() {
                 transition={{ delay: index * 0.1, duration: 0.6 }}
                 viewport={{ once: true }}
               >
-                <h4 className="font-black text-xl mb-8 text-[#0086FF]">{section.title}</h4>
+                <h4 className="font-black text-xl mb-8 text-[#0086FF]">
+                  {section.title}
+                </h4>
                 <ul className="space-y-4">
                   {section.items.map((item, idx) => (
                     <li key={idx}>
@@ -853,24 +939,32 @@ export default function Component() {
               transition={{ delay: 0.3, duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h4 className="font-black text-xl mb-8 text-[#0086FF]">Premium Contact</h4>
+              <h4 className="font-black text-xl mb-8 text-[#0086FF]">
+                Contact Details
+              </h4>
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
                   <div className="bg-gradient-to-br from-[#0086FF] to-blue-600 rounded-2xl p-3">
                     <Phone className="h-6 w-6" />
                   </div>
-                  <span className="text-gray-300 text-lg font-medium">+91 9043384332</span>
+                  <span className="text-gray-300 text-lg font-medium">
+                    +91 9043384332
+                  </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="bg-gradient-to-br from-[#0086FF] to-blue-600 rounded-2xl p-3">
                     <Mail className="h-6 w-6" />
                   </div>
-                  <span className="text-gray-300 text-lg font-medium">eintransport.order@gmail.com</span>
+                  <span className="text-gray-300 text-lg font-medium">
+                    eintransport.order@gmail.com
+                  </span>
                 </div>
                 <div className="mt-8">
-                  <h5 className="font-black text-[#0086FF] mb-4 text-lg">Corporate Headquarters</h5>
+                  <h5 className="font-black text-[#0086FF] mb-4 text-lg">
+                    Corporate Headquarters
+                  </h5>
                   <div className="flex gap-4">
-                    <div className="bg-gradient-to-br from-[#0086FF] to-blue-600 rounded-2xl p-3 mt-1">
+                    <div className="bg-gradient-to-br from-[#0086FF] to-blue-600 rounded-2xl p-3 h-12 mt-1">
                       <MapPin className="h-6 w-6" />
                     </div>
                     <p className="text-gray-400 leading-relaxed">
@@ -892,8 +986,8 @@ export default function Component() {
 
           <div className="border-t border-gray-800 pt-10 text-center">
             <p className="text-gray-400 text-lg">
-              &copy; 2024 Eintransport Premium. All rights reserved. | Crafted with ❤️ for exceptional transportation
-              experiences
+              &copy; 2025 Eintransport . All rights reserved. | Crafted
+              with ❤️ for exceptional transportation experiences
             </p>
           </div>
         </div>
@@ -914,10 +1008,13 @@ export default function Component() {
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <GMap onLocationSelect={handleLocationSelect} onBack={() => setShowMap(null)} />
+            <GMap
+              onLocationSelect={handleLocationSelect}
+              onBack={() => setShowMap(null)}
+            />
           </motion.div>
         </motion.div>
       )}
     </div>
-  )
+  );
 }
