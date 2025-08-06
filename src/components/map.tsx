@@ -36,10 +36,6 @@ interface GMapProps {
 
 function GMap({ onLocationSelect, onBack }: GMapProps) {
     // Debug API key
-    console.log('API Key status:', {
-        hasKey: !!googleMap_APIKEY,
-        keyPrefix: googleMap_APIKEY ? googleMap_APIKEY.substring(0, 10) + '...' : 'No key'
-    });
 
     const { isLoaded, loadError } = useJsApiLoader({
         id: 'google-map-script',
@@ -151,7 +147,6 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
                 handlePlaceSelection(place);
             });
 
-            console.log('Autocomplete initialized successfully');
         } catch (error) {
             console.error('Error initializing autocomplete:', error);
             setTimeout(initializeAutocomplete, 500);
@@ -228,7 +223,6 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
                         district
                     };
 
-                    console.log('Geocoded location:', locationData);
                     setSelectedLocation(locationData);
                 } else {
                     console.error('Geocoder failed:', status);

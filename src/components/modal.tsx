@@ -134,7 +134,6 @@ interface ModalProps {
 export default function Modal({ isOpen, setIsOpen, selectValue }: ModalProps) {
 
     const handleSelect = (value: string) => {
-        console.log("Selected value:", value);
         if (selectValue) {
             selectValue("vehicle", value);
         }

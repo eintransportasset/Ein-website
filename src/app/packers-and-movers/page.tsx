@@ -9,6 +9,8 @@ import { useState, useEffect } from "react"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { useRouter } from "next/navigation"
 import { useLocationContext } from "@/app/context/LocationContext"
+import Loading from "@/components/fileLoading"
+
 
 // Add the missing LocationField type
 type LocationField = {
@@ -138,6 +140,7 @@ const Page: React.FC = () => {
       reset()
       setFromLocation(null)
       setToLocation(null)
+
       //remove from localStorage
       localStorage.removeItem("fromLocation")
       localStorage.removeItem("toLocation")
@@ -145,11 +148,15 @@ const Page: React.FC = () => {
 
       router.push("/packers-and-movers/orderPlaced")
 
+
     } catch (error) {
       console.error("Submission error:", error)
       alert("Something went wrong. Please try again.")
     }
-    setLoading(false)
+    setTimeout(() => {
+      setLoading(false)
+    }, 800)
+
   }
 
   const handleMapLocationSelect = (locationData: LocationField) => {
@@ -181,7 +188,8 @@ const Page: React.FC = () => {
         <div className="relative flex items-center mb-1.5 pt-1.5 sm:mb-2 sm:pt-2">
           <Link
             href="/"
-            className="group flex items-center gap-2 text-slate-600 hover:text-blue-600 bg-white/90 backdrop-blur-sm rounded-lg border border-slate-200 hover:border-blue-500/30 px-3 py-2 transition-all duration-300 hover:shadow-md text-xs sm:text-sm"
+            className={`group flex items-center gap-2 text-slate-600 hover:text-blue-600 bg-white/90 backdrop-blur-sm rounded-lg border border-slate-200 hover:border-blue-500/30 px-3 py-2 transition-all duration-300 hover:shadow-md text-xs sm:text-sm
+    ${loading ? "pointer-events-none opacity-50" : ""}`}
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
             <span className="font-semibold hidden sm:inline">Back to Home</span>
@@ -204,6 +212,7 @@ const Page: React.FC = () => {
         <div className="bg-white backdrop-blur-sm shadow-lg rounded-xl p-4 sm:p-6 border border-slate-200/50 flex-1 flex flex-col overflow-hidden">
           {/* <div className="bg-white backdrop-blur-sm shadow-2xl shadow-slate-200/50 rounded-2xl p-6 sm:p-8 border border-slate-200/50 "> */}
 
+          {loading && <Loading />}
           <form id="packersandmovers" onSubmit={handleSubmit(onSubmit)} className="flex flex-col flex-1 overflow-y-auto">
             {/* Form Content - Grid Layout */}
             <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">

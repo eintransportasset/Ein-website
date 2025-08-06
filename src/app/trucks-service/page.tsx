@@ -22,6 +22,7 @@ import type React from "react"
 import { useState } from "react"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { useRouter } from "next/navigation"
+import Loading from "@/components/fileLoading"
 
 // LocationField type
 type LocationField = {
@@ -72,7 +73,6 @@ const Page: React.FC = () => {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
     setSubmitted(false)
-    console.log("Form data before submission:", data)
 
     const payload = {
       ...data,
@@ -116,15 +116,18 @@ const Page: React.FC = () => {
       reset() // Reset form after successful submission
       setFromLocation(null)
       setToLocation(null)
-
-      setTimeout(() => {
-        router.push("/trucks-service/orderPlaced")
-      }, 2000)
+      localStorage.removeItem("fromLocation")
+      localStorage.removeItem("toLocation")
+      // setTimeout(() => {
+      router.push("/trucks-service/orderPlaced")
+      // }, 2000)
     } catch (error) {
       console.log("Error in create ", error)
       alert("Something went wrong. Please try again.")
     }
-    setLoading(false)
+    setTimeout(() => {
+      setLoading(false)
+    }, 800)
   }
 
   // Handler for map selection
@@ -156,12 +159,14 @@ const Page: React.FC = () => {
         <div className="relative flex items-center mb-1.5 pt-1.5 sm:mb-2 sm:pt-2">
           <Link
             href="/"
-            className="group flex items-center gap-2 text-slate-600 hover:text-blue-600 bg-white/90 backdrop-blur-sm rounded-lg border border-slate-200 hover:border-blue-500/30 px-3 py-2 transition-all duration-300 hover:shadow-md text-xs sm:text-sm"
+            className={`group flex items-center gap-2 text-slate-600 hover:text-blue-600 bg-white/90 backdrop-blur-sm rounded-lg border border-slate-200 hover:border-blue-500/30 px-3 py-2 transition-all duration-300 hover:shadow-md text-xs sm:text-sm
+    ${loading ? "pointer-events-none opacity-50" : ""}`}
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
             <span className="font-semibold hidden sm:inline">Back to Home</span>
             <span className="font-semibold sm:hidden">Home</span>
           </Link>
+
           <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-row items-center gap-1 sm:gap-2">
             <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#0086FF]" />
             <h1
@@ -175,6 +180,8 @@ const Page: React.FC = () => {
 
         {/* Main Form Container */}
         <div className="bg-white backdrop-blur-sm shadow-lg rounded-xl p-4 sm:p-6 border border-slate-200/50 flex-1 flex flex-col overflow-hidden">
+          {loading && <Loading />}
+
           {/* Success Message */}
           {submitted && (
             <div className="mb-4 p-3 bg-blue-50 text-blue-800 border border-blue-200 rounded-lg flex items-center gap-2 text-sm">
@@ -261,11 +268,22 @@ const Page: React.FC = () => {
                           <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
                           <input
                             type="email"
-                            {...register("email")}
+                            {...register("email", {
+                              pattern: {
+                                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                message: "Invalid email address",
+                              }
+                            })}
                             className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                             placeholder="you@example.com"
                           />
                         </div>
+                        {errors.email && (
+                          <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                            <span className="w-1 h-1 bg-red-500 rounded-full"></span>
+                            {errors.email.message}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -282,7 +300,7 @@ const Page: React.FC = () => {
                   <div className="space-y-3">
                     <div>
                       <label className="block text-xs sm:text-sm text-slate-700 mb-1">
-                        Transport Date & Time <span className="text-red-500">*</span>
+                        Transport Date <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
                         <DateInput
@@ -427,7 +445,7 @@ const Page: React.FC = () => {
                           {...register("vehicle", { required: "Vehicle type is required" })}
                           placeholder="Enter required vehicle type"
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
-                          // readOnly
+                        // readOnly
                         />
                       </div>
                       {errors.vehicle && (
