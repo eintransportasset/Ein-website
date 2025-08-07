@@ -135,7 +135,7 @@ export default function Modal({ isOpen, setIsOpen, selectValue }: ModalProps) {
 
     const handleSelect = (value: string) => {
         if (selectValue) {
-            selectValue("vehicle", value);
+            selectValue("vehicleRequired", value);
         }
         setIsOpen(false);
     };
