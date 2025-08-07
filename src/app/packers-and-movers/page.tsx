@@ -1,34 +1,17 @@
 "use client"
 
 import DateInput from "@/components/DateInput"
-import GMap from "@/components/map"
 import { ArrowLeft, Truck, ArrowRight, MapPin, Calendar, Package, User, Phone, Mail, Navigation, MapPinHouse } from "lucide-react"
 import Link from "next/link"
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { useRouter } from "next/navigation"
-import { useLocationContext } from "@/app/context/LocationContext"
 import Loading from "@/components/fileLoading"
-
-
-// Add the missing LocationField type
-type LocationField = {
-  address: string
-  lat: number
-  lng: number
-  district?: string
-}
 
 type FormData = {
   fromAddress: string
-  fromLat: number
-  fromLng: number
-  fromDistrict?: string
   toAddress: string
-  toLat: number
-  toLng: number
-  toDistrict?: string
   dateTime: string
   description: string
   fullName: string
@@ -45,59 +28,13 @@ const Page: React.FC = () => {
     formState: { errors },
     control,
     reset,
-    getValues,
-    setValue,
   } = useForm<FormData>()
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
-  const [showMap, setShowMap] = useState<"from" | "to" | null>(null)
-  const [fromLocation, setFromLocation] = useState<LocationField | null>(null)
-  const [toLocation, setToLocation] = useState<LocationField | null>(null)
-  const { fromLocation: contextFromLocation, toLocation: contextToLocation } = useLocationContext()
-
-  //if page reload remove from localStorage
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      localStorage.removeItem("fromLocation")
-      localStorage.removeItem("toLocation")
-    }
-    window.addEventListener("beforeunload", handleBeforeUnload)
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload)
-    }
-  }, [])
-
-  useEffect(() => {
-    // Try context first, fallback to localStorage
-    const from = contextFromLocation || JSON.parse(localStorage.getItem("fromLocation") || "null")
-    const to = contextToLocation || JSON.parse(localStorage.getItem("toLocation") || "null")
-
-    if (from) {
-      setFromLocation(from)
-      setValue("fromAddress", from.address)
-      setValue("fromLat", from.lat)
-      setValue("fromLng", from.lng)
-      setValue("fromDistrict", from.district)
-    }
-
-    if (to) {
-      setToLocation(to)
-      setValue("toAddress", to.address)
-      setValue("toLat", to.lng)
-      setValue("toLng", to.lng)
-      setValue("toDistrict", to.district)
-    }
-  }, [contextFromLocation, contextToLocation, setValue])
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
-    // Validate that locations are selected
-    if (!fromLocation || !toLocation) {
-      alert("Please select both pickup and drop-off locations using the map.")
-      setLoading(false)
-      return
-    }
-
+    
     const payload = {
       ...data,
       targetTab: "PackersAndMoversRequests",
@@ -138,50 +75,17 @@ const Page: React.FC = () => {
 
       setSubmitted(true)
       reset()
-      setFromLocation(null)
-      setToLocation(null)
-
-      //remove from localStorage
-      localStorage.removeItem("fromLocation")
-      localStorage.removeItem("toLocation")
-
 
       router.push("/packers-and-movers/orderPlaced")
-
 
     } catch (error) {
       console.error("Submission error:", error)
       alert("Something went wrong. Please try again.")
     }
-    // setTimeout(() => {
-    //   setLoading(false)
-    // }, 800)
-
-  }
-
-  const handleMapLocationSelect = (locationData: LocationField) => {
-    if (showMap === "from") {
-      setFromLocation(locationData)
-      setValue("fromAddress", locationData.address)
-      setValue("fromLat", locationData.lat)
-      setValue("fromLng", locationData.lng)
-      setValue("fromDistrict", locationData.district)
-    } else if (showMap === "to") {
-      setToLocation(locationData)
-      setValue("toAddress", locationData.address)
-      setValue("toLat", locationData.lat)
-      setValue("toLng", locationData.lng)
-      setValue("toDistrict", locationData.district)
-    }
-    setShowMap(null)
   }
 
   return (
-
-    // <div className="h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 p-2 sm:p-4 flex flex-col">
     <div className="h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 p-2 sm:p-4 flex">
-
-      {/* <div className="max-w-6xl mx-auto flex flex-col flex-1"> */}
       <div className="max-w-6xl mx-auto flex flex-col flex-1">
 
         {/* Header Navigation */}
@@ -206,12 +110,8 @@ const Page: React.FC = () => {
           </div>
         </div>
 
-
-
         {/* Main Form Container */}
         <div className="bg-white backdrop-blur-sm shadow-lg rounded-xl p-4 sm:p-6 border border-slate-200/50 flex-1 flex flex-col overflow-hidden">
-          {/* <div className="bg-white backdrop-blur-sm shadow-2xl shadow-slate-200/50 rounded-2xl p-6 sm:p-8 border border-slate-200/50 "> */}
-
           {loading && <Loading />}
           <form id="packersandmovers" onSubmit={handleSubmit(onSubmit)} className="flex flex-col flex-1 overflow-y-auto">
             {/* Form Content - Grid Layout */}
@@ -311,14 +211,12 @@ const Page: React.FC = () => {
                       <label className="block text-xs sm:text-sm text-slate-700 mb-1">
                         Pickup Location <span className="text-red-500">*</span>
                       </label>
-                      <div className="relative group cursor-pointer" onClick={() => setShowMap("from")}>
-                        <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-hover:text-[#0086FF]" />
+                      <div className="relative group">
+                        <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-focus-within:text-[#0086FF]" />
                         <input
                           {...register("fromAddress", { required: "Pickup address is required" })}
-                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg bg-gradient-to-r from-slate-50 to-white hover:from-blue-50 hover:to-white cursor-pointer text-xs sm:text-sm group-hover:border-[#0086FF]/50"
-                          placeholder="Click to select pickup location on map"
-                          value={fromLocation?.address || ""}
-                          readOnly
+                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
+                          placeholder="Enter pickup address"
                         />
                       </div>
                       {errors.fromAddress && (
@@ -327,22 +225,17 @@ const Page: React.FC = () => {
                           {errors.fromAddress.message}
                         </p>
                       )}
-                      <input type="hidden" {...register("fromLat", { required: true })} />
-                      <input type="hidden" {...register("fromLng", { required: true })} />
-                      <input type="hidden" {...register("fromDistrict")} />
                     </div>
                     <div>
                       <label className="block text-xs sm:text-sm text-slate-700 mb-1">
                         Drop-off Location <span className="text-red-500">*</span>
                       </label>
-                      <div className="relative group cursor-pointer" onClick={() => setShowMap("to")}>
-                        <MapPinHouse className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-hover:text-[#0086FF]" />
+                      <div className="relative group">
+                        <MapPinHouse className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-focus-within:text-[#0086FF]" />
                         <input
                           {...register("toAddress", { required: "Drop-off address is required" })}
-                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg bg-gradient-to-r from-slate-50 to-white hover:from-blue-50 hover:to-white cursor-pointer text-xs sm:text-sm group-hover:border-[#0086FF]/50"
-                          placeholder="Click to select drop-off location on map"
-                          value={toLocation?.address || ""}
-                          readOnly
+                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
+                          placeholder="Enter drop-off address"
                         />
                       </div>
                       {errors.toAddress && (
@@ -351,9 +244,6 @@ const Page: React.FC = () => {
                           {errors.toAddress.message}
                         </p>
                       )}
-                      <input type="hidden" {...register("toLat", { required: true })} />
-                      <input type="hidden" {...register("toLng", { required: true })} />
-                      <input type="hidden" {...register("toDistrict")} />
                     </div>
                   </div>
                 </div>
@@ -464,32 +354,6 @@ const Page: React.FC = () => {
               </button>
             </div>
           </form>
-
-          {/* Map Modal */}
-          {/* {showMap && (
-            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
-              <div className="bg-white rounded-xl shadow-xl w-[90%] max-w-4xl h-[70vh] sm:h-[80vh] relative overflow-hidden border border-slate-200">
-                <GMap onLocationSelect={handleMapLocationSelect} onBack={() => setShowMap(null)} />
-                <button
-                  className="absolute top-2 right-2 p-2 bg-white/90 text-slate-600 hover:text-red-500 rounded-lg shadow-md transition-all duration-300 hover:scale-105 border border-slate-200"
-                  onClick={() => setShowMap(null)}
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          )} */}
-          {showMap && (
-            <div className="fixed inset-0 bg-black/5 backdrop-blur-sm flex justify-center z-50 p-4">
-              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl h-[75vh] mt-13 relative overflow-hidden border border-slate-200">
-
-                <GMap onLocationSelect={handleMapLocationSelect} onBack={() => setShowMap(null)} />
-
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>)

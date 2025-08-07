@@ -1,8 +1,5 @@
 "use client"
 
-// import RotatingText from "@/components/RotatingText"
-// import ShinyText from "@/components/ShinyText"
-// import TrueFocus from "@/components/TrueFocus"
 import {
   ArrowBigRight,
   Facebook,
@@ -20,55 +17,36 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import GMap from "@/components/map";
-import { useLocationContext } from "@/app/context/LocationContext";
 import { useRouter } from "next/navigation"
 import RotatingText from "@/components/RotatingText"
 
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-
 export default function Component() {
   const [isVisible, setIsVisible] = useState(false)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
-  useEffect(() => {
-    setIsVisible(true)
-    if (localStorage.getItem("fromLocation") || localStorage.getItem("toLocation")) {
-      localStorage.removeItem("fromLocation")
-      localStorage.removeItem("toLocation")
-    }
-  }, [])
-
-  const { fromLocation, toLocation, setFromLocation, setToLocation } = useLocationContext();
-  const [showMap, setShowMap] = useState<"from" | "to" | null>(null);
+  const [fromAddress, setFromAddress] = useState("")
+  const [toAddress, setToAddress] = useState("")
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  const handleLocationSelect = (locationData: any) => {
-    if (showMap === "from") setFromLocation(locationData);
-    else if (showMap === "to") setToLocation(locationData);
-    setShowMap(null);
-  };
 
   const handleLetsMove = () => {
-    if (fromLocation || toLocation) {
-      // Save to localStorage for transfer (or use context in next page)
-      localStorage.setItem("fromLocation", JSON.stringify(fromLocation));
-      localStorage.setItem("toLocation", JSON.stringify(toLocation));
-    }
-    if (!fromLocation) {
-      localStorage.removeItem("fromLocation");
-    }
-    if (!toLocation) {
-      localStorage.removeItem("toLocation");
+    if (fromAddress && toAddress) {
+      // Save to localStorage for transfer
+      localStorage.setItem("fromAddress", fromAddress);
+      localStorage.setItem("toAddress", toAddress);
     }
     router.push("/packers-and-movers");
   };
-
 
   const testimonials = [
     {
@@ -269,25 +247,24 @@ export default function Component() {
               <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Packers & Movers</h2>
               <div className="space-y-4">
                 <div className="relative">
-                  <button
-                    // value={fromLocation ? fromLocation.address : "Pickup Location" }
-                    className="w-full p-4 pl-10 text-gray-400 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    onClick={() => setShowMap("from")}
-                  >
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    {fromLocation ? fromLocation.address : "Pickup Location"}
-                  </button>
+                  <input
+                    type="text"
+                    value={fromAddress}
+                    onChange={(e) => setFromAddress(e.target.value)}
+                    className="w-full p-4 pl-10 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter pickup address"
+                  />
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 </div>
                 <div className="relative">
-                  <button
-                    // value="Drop-off Location"
-                    className="w-full p-4 pl-10 text-gray-400 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    onClick={() => setShowMap("to")}
-                  >
-                    <MapPinHouse className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-
-                    {toLocation ? toLocation.address : "  Drop-off Location"}
-                  </button>
+                  <input
+                    type="text"
+                    value={toAddress}
+                    onChange={(e) => setToAddress(e.target.value)}
+                    className="w-full p-4 pl-10 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter drop-off address"
+                  />
+                  <MapPinHouse className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 </div>
 
                 <motion.button
@@ -295,6 +272,7 @@ export default function Component() {
                   whileTap={{ scale: 0.98 }}
                   className="w-full flex items-center justify-center px-8 py-4 bg-[#0086FF] text-white rounded-lg  transition-colors duration-300 transform text-lg font-semibold"
                   onClick={handleLetsMove}
+                  disabled={!fromAddress || !toAddress}
                 >
                   <span className="relative z-10">Let's Move</span>
                   <ArrowBigRight className="relative z-10 h-6 w-6 ml-2" />
@@ -765,34 +743,8 @@ export default function Component() {
           </div>
         </div>
       </footer>
-
-
-
-
-      {showMap && (
-        <motion.div
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <motion.div
-            className="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-3xl h-[600px] relative border border-gray-200"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <GMap
-              onLocationSelect={handleLocationSelect}
-              onBack={() => setShowMap(null)}
-            />
-          </motion.div>
-        </motion.div>
-      )}
     </div>
   )
-
 }
 
 

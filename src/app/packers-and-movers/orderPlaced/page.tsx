@@ -8,15 +8,10 @@ import { useEffect } from 'react'
 
 export default function OrderConfirmation() {
     useEffect(() => {
-        if (localStorage.getItem("fromLocation") || localStorage.getItem("toLocation")) {
-            localStorage?.removeItem("fromLocation")
-            localStorage?.removeItem("toLocation")
-
+        if (localStorage.getItem("fromAddress") || localStorage.getItem("toAddress")) {
+            localStorage?.removeItem("fromAddress")
+            localStorage?.removeItem("toAddress")
         }
-        // localStorage?.removeItem("fromLocation")
-        // localStorage?.removeItem("toLocation")
-
-
     }, [])
 
     return (

@@ -10,31 +10,9 @@ const packersAndMoversSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  fromLat: {
-    type: Number,
-    required: true,
-  },
-  fromLng: {
-    type: Number,
-    required: true,
-  },
-  fromDistrict: {
-    type: String,
-  },
   toAddress: {
     type: String,
     required: true,
-  },
-  toLat: {
-    type: Number,
-    required: true,
-  },
-  toLng: {
-    type: Number,
-    required: true,
-  },
-  toDistrict: {
-    type: String,
   },
   dateTime: {
     type: Date,

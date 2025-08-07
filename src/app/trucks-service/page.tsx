@@ -1,7 +1,6 @@
 "use client"
 
 import DateInput from "@/components/DateInput"
-import GMap from "@/components/map"
 import Modal from "@/components/modal"
 import {
   ArrowLeft,
@@ -24,23 +23,9 @@ import { useForm, type SubmitHandler } from "react-hook-form"
 import { useRouter } from "next/navigation"
 import Loading from "@/components/fileLoading"
 
-// LocationField type
-type LocationField = {
-  address: string
-  lat: number
-  lng: number
-  district?: string
-}
-
 export type FormData = {
-  fromLat: number
-  fromLng: number
   fromAddress: string
-  fromDistrict?: string
-  toLat: number
-  toLng: number
   toAddress: string
-  toDistrict?: string
   dateTime: string
   description: string
   fullName: string
@@ -64,11 +49,6 @@ const Page: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const [showMap, setShowMap] = useState<"from" | "to" | null>(null)
-
-  // Store selected locations for from/to
-  const [fromLocation, setFromLocation] = useState<LocationField | null>(null)
-  const [toLocation, setToLocation] = useState<LocationField | null>(null)
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
@@ -115,44 +95,14 @@ const Page: React.FC = () => {
 
       setSubmitted(true)
       reset() // Reset form after successful submission
-      setFromLocation(null)
-      setToLocation(null)
-      localStorage.removeItem("fromLocation")
-      localStorage.removeItem("toLocation")
-      // setTimeout(() => {
       router.push("/trucks-service/orderPlaced")
-      // }, 2000)
     } catch (error) {
       console.log("Error in create ", error)
       alert("Something went wrong. Please try again.")
     }
-    // setTimeout(() => {
-    //   setLoading(false)
-    // }, 800)
-  }
-
-  // Handler for map selection
-  const handleMapLocationSelect = (locationData: LocationField) => {
-    if (showMap === "from") {
-      setFromLocation(locationData)
-      // Set the form values properly
-      setValue("fromLat", locationData.lat)
-      setValue("fromLng", locationData.lng)
-      setValue("fromAddress", locationData.address)
-      setValue("fromDistrict", locationData.district)
-    } else if (showMap === "to") {
-      setToLocation(locationData)
-      // Set the form values properly
-      setValue("toLat", locationData.lat)
-      setValue("toLng", locationData.lng)
-      setValue("toAddress", locationData.address)
-      setValue("toDistrict", locationData.district)
-    }
-    setShowMap(null)
   }
 
   return (
-
     <div className="h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 p-2 sm:p-4 flex flex-col">
       <div className="max-w-6xl mx-auto flex flex-col flex-1">
         {/* Header Navigation */}
@@ -340,14 +290,12 @@ const Page: React.FC = () => {
                       <label className="block text-xs sm:text-sm text-slate-700 mb-1">
                         Pickup Location <span className="text-red-500">*</span>
                       </label>
-                      <div className="relative group cursor-pointer" onClick={() => setShowMap("from")}>
-                        <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-hover:text-blue-700" />
+                      <div className="relative group">
+                        <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
                         <input
                           {...register("fromAddress", { required: "Pickup location is required" })}
-                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg bg-gradient-to-r from-slate-50 to-white hover:from-blue-50 hover:to-white cursor-pointer text-xs sm:text-sm group-hover:border-blue-500/50"
-                          placeholder="Click to select pickup location on map"
-                          value={fromLocation?.address || ""}
-                          readOnly
+                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
+                          placeholder="Enter pickup address"
                         />
                       </div>
                       {errors.fromAddress && (
@@ -356,22 +304,17 @@ const Page: React.FC = () => {
                           {errors.fromAddress.message}
                         </p>
                       )}
-                      <input type="hidden" {...register("fromLat", { required: true })} />
-                      <input type="hidden" {...register("fromLng", { required: true })} />
-                      <input type="hidden" {...register("fromDistrict")} />
                     </div>
                     <div>
                       <label className="block text-xs sm:text-sm text-slate-700 mb-1">
                         Drop-off Location <span className="text-red-500">*</span>
                       </label>
-                      <div className="relative group cursor-pointer" onClick={() => setShowMap("to")}>
-                        <MapPinHouse className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-hover:text-blue-700" />
+                      <div className="relative group">
+                        <MapPinHouse className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
                         <input
                           {...register("toAddress", { required: "Destination is required" })}
-                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg bg-gradient-to-r from-slate-50 to-white hover:from-blue-50 hover:to-white cursor-pointer text-xs sm:text-sm group-hover:border-blue-500/50"
-                          placeholder="Click to select drop-off location on map"
-                          value={toLocation?.address || ""}
-                          readOnly
+                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
+                          placeholder="Enter drop-off address"
                         />
                       </div>
                       {errors.toAddress && (
@@ -380,9 +323,6 @@ const Page: React.FC = () => {
                           {errors.toAddress.message}
                         </p>
                       )}
-                      <input type="hidden" {...register("toLat", { required: true })} />
-                      <input type="hidden" {...register("toLng", { required: true })} />
-                      <input type="hidden" {...register("toDistrict")} />
                     </div>
                   </div>
                 </div>
@@ -446,12 +386,10 @@ const Page: React.FC = () => {
                       <div className="relative">
                         <Truck className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
                         <input
-                          // onFocus={() => setIsOpen(true)}
                           type="text"
                           {...register("vehicleRequired", { required: "Vehicle type is required" })}
                           placeholder="Enter required vehicle type"
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
-                        // readOnly
                         />
                       </div>
                       {errors.vehicleRequired && (
@@ -461,17 +399,6 @@ const Page: React.FC = () => {
                         </p>
                       )}
                     </div>
-                    {/* <div className="group">
-                      <label className="block text-xs sm:text-sm text-slate-700 mb-1">Additional Notes</label>
-                      <div className="relative">
-                        <FileText className="absolute left-3 top-3 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
-                        <textarea
-                          {...register("description")}
-                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400 h-16 sm:h-20 resize-none"
-                          placeholder="Any extra information about the transport..."
-                        />
-                      </div>
-                    </div> */}
                   </div>
                 </div>
               </div>
@@ -504,23 +431,6 @@ const Page: React.FC = () => {
 
           {/* Vehicle Selection Modal */}
           {isOpen && <Modal isOpen={isOpen} setIsOpen={setIsOpen} selectValue={setValue} />}
-
-          {/* Map Modal */}
-          {showMap && (
-            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-              <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl h-[80vh] sm:h-[90vh] relative overflow-hidden border border-slate-200">
-                <GMap onLocationSelect={handleMapLocationSelect} onBack={() => setShowMap(null)} />
-                <button
-                  className="absolute top-2 right-2 p-2 bg-white/90 text-slate-600 hover:text-red-500 rounded-lg shadow-md transition-all duration-300 hover:scale-105 border border-slate-200"
-                  onClick={() => setShowMap(null)}
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
