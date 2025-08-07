@@ -424,7 +424,7 @@ const Page: React.FC = () => {
                       <Package className="absolute left-3 top-3 w-4 h-4 text-blue-700 group-focus-within:text-[#0086FF]" />
                       <textarea
                         {...register("shiftingThings", { required: "Please describe items to be moved" })}
-                        className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400 h-20 sm:h-20 "
+                        className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400 h-30 sm:h-45 "
                         placeholder="Please describe the items you need to Move in details or BHK"
                       />
                     </div>

@@ -197,7 +197,7 @@ const Page: React.FC = () => {
 
           <form id="transportForm" onSubmit={handleSubmit(onSubmit)} className="flex flex-col flex-1 overflow-y-auto">
             {/* Form Content - Grid Layout */}
-            <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+            <div className="flex-1 text-gray-900 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {/* Left Column */}
               <div className="space-y-4">
                 {/* Contact Information Section */}
@@ -217,7 +217,7 @@ const Page: React.FC = () => {
                         <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
                         <input
                           {...register("fullName", { required: "Full name is required" })}
-                          className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
+                          className="w-full pl-10 pr-3 py-2 border text-black border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="Enter your full name"
                         />
                       </div>
@@ -461,7 +461,7 @@ const Page: React.FC = () => {
                         </p>
                       )}
                     </div>
-                    <div className="group">
+                    {/* <div className="group">
                       <label className="block text-xs sm:text-sm text-slate-700 mb-1">Additional Notes</label>
                       <div className="relative">
                         <FileText className="absolute left-3 top-3 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
@@ -471,7 +471,7 @@ const Page: React.FC = () => {
                           placeholder="Any extra information about the transport..."
                         />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

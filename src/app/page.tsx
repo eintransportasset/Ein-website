@@ -92,7 +92,7 @@ export default function Component() {
     {
       name: "Kaviyarasan G",
       initials: "KG",
-      role: "Coimbatore",
+      role: "Kochi",
       text: "I've moved houses before, but never this smoothly. The eintransport team packed everything perfectly and handled my fragile items with care. It felt like I had friends helping me move.",
     },
   ]
