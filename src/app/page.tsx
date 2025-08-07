@@ -34,7 +34,7 @@ export default function Component() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
   useEffect(() => {
     setIsVisible(true)
-    if(localStorage.getItem("fromLocation") || localStorage.getItem("toLocation")) {
+    if (localStorage.getItem("fromLocation") || localStorage.getItem("toLocation")) {
       localStorage.removeItem("fromLocation")
       localStorage.removeItem("toLocation")
     }
@@ -204,13 +204,13 @@ export default function Component() {
 
       {/* Hero Section */}
 
-      <section className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 py-12 sm:py-20 px-4 sm:px-6 relative overflow-hidden">
+      <section className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 py-6 sm:py-20 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-50">
           {/* Subtle background pattern */}
           <div className="absolute inset-0 bg-[url('/path-to-your-subtle-pattern.svg')] bg-repeat"></div>
         </div>
         <div className={`container mx-auto max-w-6xl relative z-10`}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-12 items-center">
             {/* Left Column: Headings and Subtitle */}
             <div className="text-center md:text-left">
               <motion.div
@@ -223,8 +223,8 @@ export default function Component() {
                   <span className="block">We'll take it there.</span>
                 </h1>
                 <RotatingText
-                  texts={["Fast", "Hassle-Free", "Safe"]}
-                  mainClassName=" mx-auto sm:px-2 w-fit md:px-3 text-5xl sm:text-7xl font-bold bg-[#0086FF] text-white overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+                  texts={["Safe Transport", "On Time", "Reliable"]}
+                  mainClassName=" mx-auto sm:px-2 w-fit md:px-3 text-4xl sm:text-7xl font-bold bg-[#0086FF] text-white overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
                   staggerFrom={"last"}
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
@@ -243,8 +243,7 @@ export default function Component() {
                 transition={{ delay: 0.3, duration: 0.7 }}
                 className="mt-6 text-lg sm:text-xl text-gray-600 max-w-lg mx-auto md:mx-0"
               >
-                Professional moving services you can trust. Get your free, no-obligation quote today and let us handle the heavy lifting.
-              </motion.p>
+                Get fast and secure moving solutions from professionals. Request your free, no-obligation quote today and let us handle the shifting.              </motion.p>
             </div>
 
             {/* Right Column: Enhanced Form */}
@@ -252,7 +251,7 @@ export default function Component() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5, duration: 0.7 }}
-              className="bg-white p-8 rounded-2xl shadow-2xl"
+              className="bg-white p-8 rounded-2xl shadow-2xl "
             >
               <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Packers & Movers</h2>
               <div className="space-y-4">
@@ -390,7 +389,7 @@ export default function Component() {
                   </defs>
                 </svg>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-800">Packing & Moving</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-800">Packers & Movers</h3>
               <p className="text-gray-600 text-base sm:text-lg mb-8 leading-relaxed">
                 We pack it, move, and set it smoothly. Whether you're shifting your home or office, we've got you
                 covered from start to finish.
@@ -532,9 +531,9 @@ export default function Component() {
                 simple, fast, and stress-free
               </span>
               . Whether it's a single box or a full truckload, we've done it all, and{" "}
-              <span className="text-[#0086FF] font-bold bg-blue-50 px-2 py-1 rounded-lg">
+              <Link href={"/packers-and-movers"} prefetch className="text-[#0086FF] underline hover:text-blue-800 font-bold bg-blue-50 px-2 py-1 rounded-lg">
                 Are You Ready to Move? We Are.
-              </span>
+              </Link>
             </p>
           </div>
         </div>
