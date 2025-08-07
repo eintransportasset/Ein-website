@@ -145,6 +145,12 @@ export default function Component() {
               About
             </a>
             <a
+              href="#contact"
+              className="text-white hover:text-[#0086FF] transition-colors duration-300 font-medium"
+            >
+              Contact
+            </a>
+            <a
               href="#faq"
               className="text-white hover:text-[#0086FF] transition-colors duration-300 font-medium"
             >
@@ -188,6 +194,13 @@ export default function Component() {
                   onClick={toggleMenu}
                 >
                   About
+                </a>
+                 <a
+                  href="#contact"
+                  className="text-white  w-full flex justify-center hover:text-[#0086FF] text-lg font-medium transition-colors duration-300"
+                  onClick={toggleMenu}
+                >
+                  Contact
                 </a>
                 <a
                   href="#faq"
