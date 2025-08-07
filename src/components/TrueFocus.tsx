@@ -27,15 +27,14 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
     animationDuration = 0.5,
     pauseBetweenAnimations = 1,
 }) => {
-    const words = sentence.split(" ");
-    // Filter out "and" for focusable words but keep all words for rendering
- const { focusableWords, focusableIndices } = useMemo(() => {
-    const focusableWords = words
-      .map((word, index) => ({ word, index }))
-      .filter(({ word }) => word.toLowerCase() !== "and");
-    const focusableIndices = focusableWords.map(({ index }) => index);
-    return { focusableWords, focusableIndices };
-  }, [sentence]);
+    const { words, focusableWords, focusableIndices } = useMemo(() => {
+        const words = sentence.split(" ");
+        const focusableWords = words
+          .map((word, index) => ({ word, index }))
+          .filter(({ word }) => word.toLowerCase() !== "and");
+        const focusableIndices = focusableWords.map(({ index }) => index);
+        return { words, focusableWords, focusableIndices };
+    }, [sentence]);
 
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [lastActiveIndex, setLastActiveIndex] = useState<number | null>(null);

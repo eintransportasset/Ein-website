@@ -1,3 +1,4 @@
+// // // D:\Freelance\eintransport\Ein-website\src\components\map.tsx
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import { MapPin, LocateFixed, X } from 'lucide-react';
@@ -35,13 +36,11 @@ interface GMapProps {
 }
 
 function GMap({ onLocationSelect, onBack }: GMapProps) {
-    // Debug API key
-
     const { isLoaded, loadError } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: googleMap_APIKEY || '',
         libraries: GOOGLE_MAPS_LIBRARIES,
-        preventGoogleFontsLoading: true, // Prevent additional font loading
+        preventGoogleFontsLoading: true,
     });
 
     // Add mounted state to prevent hydration issues
@@ -61,6 +60,66 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
         setIsMounted(true);
     }, []);
 
+    // Extract district helper function (regular function, not useCallback since it doesn't use state)
+    const extractDistrict = (addressComponents: google.maps.GeocoderAddressComponent[]): string => {
+        let district = '';
+        addressComponents.forEach((component) => {
+            if (
+                component.types.includes('administrative_area_level_3') ||
+                component.types.includes('locality') ||
+                (component.types.includes('political') && component.types.includes('sublocality'))
+            ) {
+                district = component.long_name;
+            }
+        });
+        return district;
+    };
+
+    // Geocode function - MUST be declared before functions that use it
+    const geocodePlace = useCallback(async (lat: number, lng: number) => {
+        if (!window.google || !window.google.maps || isGeocoding) {
+            return;
+        }
+
+        setIsGeocoding(true);
+
+        try {
+            const geocoder = new window.google.maps.Geocoder();
+            const latLng = { lat, lng };
+
+            geocoder.geocode({ location: latLng }, (results, status) => {
+                setIsGeocoding(false);
+
+                if (status === 'OK' && results && results[0]) {
+                    const district = extractDistrict(results[0].address_components);
+
+                    const locationData: LocationData = {
+                        lat,
+                        lng,
+                        address: results[0].formatted_address,
+                        district
+                    };
+
+                    setSelectedLocation(locationData);
+                } else {
+                    console.error('Geocoder failed:', status);
+                    const locationData: LocationData = {
+                        lat,
+                        lng,
+                        address: `${lat.toFixed(6)}, ${lng.toFixed(6)}`,
+                        district: 'Unknown'
+                    };
+                    setSelectedLocation(locationData);
+                }
+            });
+        } catch (error) {
+            setIsGeocoding(false);
+            console.error('Geocoding error:', error);
+        }
+    }, [isGeocoding]);
+
+    // Now we can declare functions that depend on geocodePlace
+    
     // Handle map click to get lat/lng
     const onMapClick = useCallback((event: google.maps.MapMouseEvent) => {
         if (event.latLng) {
@@ -69,7 +128,7 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
             setCenter({ lat, lng });
             geocodePlace(lat, lng);
         }
-    }, []);
+    }, [geocodePlace]);
 
     // Debounced drag end handler
     const onMapDragEnd = useCallback(() => {
@@ -80,7 +139,6 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
                 const lng = newCenter.lng();
                 setCenter({ lat, lng });
 
-                // Debounce geocoding on drag
                 const timeoutId = setTimeout(() => {
                     geocodePlace(lat, lng);
                 }, 500);
@@ -88,9 +146,33 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
                 return () => clearTimeout(timeoutId);
             }
         }
-    }, [map, isGeocoding]);
+    }, [map, isGeocoding, geocodePlace]);
 
-    const fetchCurrentLocation = () => {
+    // Handle place selection from autocomplete
+    const handlePlaceSelection = useCallback((place: any) => {
+        if (place.geometry && place.geometry.location) {
+            const lat = place.geometry.location.lat();
+            const lng = place.geometry.location.lng();
+            setCenter({ lat, lng });
+
+            if (place.formatted_address) {
+                const locationData: LocationData = {
+                    lat,
+                    lng,
+                    address: place.formatted_address,
+                    district: extractDistrict(place.address_components || [])
+                };
+                setSelectedLocation(locationData);
+            } else {
+                geocodePlace(lat, lng);
+            }
+        } else {
+            console.error('No geometry found for the selected place.');
+        }
+    }, [geocodePlace]);
+
+    // Fetch current location
+    const fetchCurrentLocation = useCallback(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -112,13 +194,13 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
         } else {
             alert('Geolocation is not supported by this browser.');
         }
-    };
+    }, [geocodePlace]);
 
     const onMapLoad = useCallback((mapInstance: google.maps.Map) => {
         setMap(mapInstance);
     }, []);
 
-    // Simplified autocomplete initialization - stick to the old API for now
+    // Simplified autocomplete initialization
     const initializeAutocomplete = useCallback(() => {
         const input = document.getElementById('auto-complete-input') as HTMLInputElement;
 
@@ -151,29 +233,7 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
             console.error('Error initializing autocomplete:', error);
             setTimeout(initializeAutocomplete, 500);
         }
-    }, []);
-
-    const handlePlaceSelection = (place: any) => {
-        if (place.geometry && place.geometry.location) {
-            const lat = place.geometry.location.lat();
-            const lng = place.geometry.location.lng();
-            setCenter({ lat, lng });
-
-            if (place.formatted_address) {
-                const locationData: LocationData = {
-                    lat,
-                    lng,
-                    address: place.formatted_address,
-                    district: extractDistrict(place.address_components || [])
-                };
-                setSelectedLocation(locationData);
-            } else {
-                geocodePlace(lat, lng);
-            }
-        } else {
-            console.error('No geometry found for the selected place.');
-        }
-    };
+    }, [handlePlaceSelection]);
 
     useEffect(() => {
         if (isLoaded && isMounted) {
@@ -185,71 +245,14 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
         }
     }, [isLoaded, isMounted, initializeAutocomplete]);
 
-    const extractDistrict = (addressComponents: google.maps.GeocoderAddressComponent[]): string => {
-        let district = '';
-        addressComponents.forEach((component) => {
-            if (
-                component.types.includes('administrative_area_level_3') ||
-                component.types.includes('locality') ||
-                (component.types.includes('political') && component.types.includes('sublocality'))
-            ) {
-                district = component.long_name;
-            }
-        });
-        return district;
-    };
-
-    const geocodePlace = async (lat: number, lng: number) => {
-        if (!window.google || !window.google.maps || isGeocoding) {
-            return;
-        }
-
-        setIsGeocoding(true);
-
-        try {
-            const geocoder = new window.google.maps.Geocoder();
-            const latLng = { lat, lng };
-
-            geocoder.geocode({ location: latLng }, (results, status) => {
-                setIsGeocoding(false);
-
-                if (status === 'OK' && results && results[0]) {
-                    const district = extractDistrict(results[0].address_components);
-
-                    const locationData: LocationData = {
-                        lat,
-                        lng,
-                        address: results[0].formatted_address,
-                        district
-                    };
-
-                    setSelectedLocation(locationData);
-                } else {
-                    console.error('Geocoder failed:', status);
-                    // Set basic location data even if geocoding fails
-                    const locationData: LocationData = {
-                        lat,
-                        lng,
-                        address: `${lat.toFixed(6)}, ${lng.toFixed(6)}`,
-                        district: 'Unknown'
-                    };
-                    setSelectedLocation(locationData);
-                }
-            });
-        } catch (error) {
-            setIsGeocoding(false);
-            console.error('Geocoding error:', error);
-        }
-    };
-
-    const finalizeSelection = () => {
+    const finalizeSelection = useCallback(() => {
         if (selectedLocation && onLocationSelect) {
             onLocationSelect(selectedLocation);
         } else {
             // If no location is selected yet, geocode the current center
             geocodePlace(center.lat, center.lng);
         }
-    };
+    }, [selectedLocation, onLocationSelect, geocodePlace, center]);
 
     // Map options memoized to prevent re-creation
     const mapOptions = useMemo(() => ({
@@ -326,12 +329,10 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
 
     return isLoaded ? (
         <div className="absolute inset-0 w-full h-full bg-transparent">
-            {/* Remove the background image style if not needed */}
-            {/* Optional dark overlay for contrast (keep or remove based on need) */}
+            {/* Optional dark overlay for contrast */}
             <div className="absolute inset-0 bg-white/20"></div>
 
             <div className="relative w-full h-full max-w-3xl mx-auto rounded-lg shadow-2xl bg-white/80 backdrop-blur-md">
-                {/* Rest of your GoogleMap and other components remain unchanged */}
                 <GoogleMap
                     mapContainerStyle={{ width: "100%", height: "100%", background: "transparent" }}
                     center={center}
@@ -360,8 +361,7 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
                     </div>
 
                     {/* Location info and controls */}
-                    <div className="absolute z-10 bottom-0 left-0 right-0 p-2 space-y-2
-                                mx-15">
+                    <div className="absolute z-10 bottom-0 left-0 right-0 p-2 space-y-2 mx-15">
                         {/* First row: Selected address (80%) + Current location icon (20%) */}
                         <div className="flex gap-2 justify-end items-end">
                             {selectedLocation && (
@@ -419,7 +419,6 @@ function GMap({ onLocationSelect, onBack }: GMapProps) {
             </div>
         </div>
     );
-
 }
 
 export default React.memo(GMap);

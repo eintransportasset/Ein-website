@@ -48,7 +48,7 @@ export type FormData = {
   email?: string
   materials: string
   weight: string
-  vehicle: string
+  vehicleRequired: string
 }
 
 const Page: React.FC = () => {
@@ -79,6 +79,7 @@ const Page: React.FC = () => {
       targetTab: "goodsTransportRequests",
     }
 
+    console.log("payload Data", payload)
     try {
       // Send to Google Sheet
       const sheetPromise = fetch(`${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK}`, {
@@ -125,9 +126,9 @@ const Page: React.FC = () => {
       console.log("Error in create ", error)
       alert("Something went wrong. Please try again.")
     }
-    setTimeout(() => {
-      setLoading(false)
-    }, 800)
+    // setTimeout(() => {
+    //   setLoading(false)
+    // }, 800)
   }
 
   // Handler for map selection
@@ -447,16 +448,16 @@ const Page: React.FC = () => {
                         <input
                           // onFocus={() => setIsOpen(true)}
                           type="text"
-                          {...register("vehicle", { required: "Vehicle type is required" })}
+                          {...register("vehicleRequired", { required: "Vehicle type is required" })}
                           placeholder="Enter required vehicle type"
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                         // readOnly
                         />
                       </div>
-                      {errors.vehicle && (
+                      {errors.vehicleRequired && (
                         <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
                           <span className="w-1 h-1 bg-red-500 rounded-full"></span>
-                          {errors.vehicle.message}
+                          {errors.vehicleRequired.message}
                         </p>
                       )}
                     </div>

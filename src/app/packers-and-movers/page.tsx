@@ -87,7 +87,7 @@ const Page: React.FC = () => {
       setValue("toLng", to.lng)
       setValue("toDistrict", to.district)
     }
-  }, [])
+  }, [contextFromLocation, contextToLocation, setValue])
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
@@ -153,9 +153,9 @@ const Page: React.FC = () => {
       console.error("Submission error:", error)
       alert("Something went wrong. Please try again.")
     }
-    setTimeout(() => {
-      setLoading(false)
-    }, 800)
+    // setTimeout(() => {
+    //   setLoading(false)
+    // }, 800)
 
   }
 
@@ -215,7 +215,7 @@ const Page: React.FC = () => {
           {loading && <Loading />}
           <form id="packersandmovers" onSubmit={handleSubmit(onSubmit)} className="flex flex-col flex-1 overflow-y-auto">
             {/* Form Content - Grid Layout */}
-            <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+            <div className="flex-1 text-gray-900 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {/* Left Column */}
               <div className="space-y-4">
                 {/* Contact Information Section */}
@@ -425,7 +425,7 @@ const Page: React.FC = () => {
                       <textarea
                         {...register("shiftingThings", { required: "Please describe items to be moved" })}
                         className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400 h-20 sm:h-20 "
-                        placeholder="Move in details or BHK"
+                        placeholder="Please describe the items you need to Move in details or BHK"
                       />
                     </div>
                     {errors.shiftingThings && (
