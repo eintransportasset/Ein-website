@@ -34,7 +34,7 @@ export default function Component() {
   useEffect(() => {
     sessionStorage.setItem('isMove', "false");
     if (sessionStorage.getItem('isMove') === "false") {
-      cookieStore.set('isMove', "false");
+      document.cookie = "isMove=false; path=/";
     }
 
     setIsVisible(true)

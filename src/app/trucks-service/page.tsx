@@ -95,7 +95,7 @@ const Page: React.FC = () => {
 
       sessionStorage.setItem('isMove', "true");
       if (sessionStorage.getItem('isMove') === "true") {
-        cookieStore.set('isMove', "true");
+        document.cookie = "isMove=true; path=/";
       }
 
 

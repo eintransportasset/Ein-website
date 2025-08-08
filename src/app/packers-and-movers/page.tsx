@@ -74,7 +74,7 @@ const Page: React.FC = () => {
       await Promise.all([sheetPromise, dbPromise, sheetPromise2])
       sessionStorage.setItem('isMove', "true");
       if (sessionStorage.getItem('isMove') === "true") {
-        cookieStore.set('isMove', "true");
+        document.cookie = "isMove=true; path=/";
       }
 
       setSubmitted(true)
