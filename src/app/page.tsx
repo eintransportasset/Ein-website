@@ -32,6 +32,11 @@ export default function Component() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
+    sessionStorage.setItem('isMove', "false");
+    if (sessionStorage.getItem('isMove') === "false") {
+      cookieStore.set('isMove', "false");
+    }
+
     setIsVisible(true)
   }, [])
 
@@ -173,7 +178,7 @@ export default function Component() {
                 >
                   About
                 </a>
-                 <a
+                <a
                   href="#contact"
                   className="text-white  w-full flex justify-center hover:text-[#0086FF] text-lg font-medium transition-colors duration-300"
                   onClick={toggleMenu}

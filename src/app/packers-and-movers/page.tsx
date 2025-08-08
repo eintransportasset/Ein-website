@@ -34,7 +34,7 @@ const Page: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
-    
+
     const payload = {
       ...data,
       targetTab: "PackersAndMoversRequests",
@@ -72,6 +72,10 @@ const Page: React.FC = () => {
 
       // Wait for both requests to finish
       await Promise.all([sheetPromise, dbPromise, sheetPromise2])
+      sessionStorage.setItem('isMove', "true");
+      if (sessionStorage.getItem('isMove') === "true") {
+        cookieStore.set('isMove', "true");
+      }
 
       setSubmitted(true)
       reset()

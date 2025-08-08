@@ -93,6 +93,13 @@ const Page: React.FC = () => {
       // Wait for all requests to finish
       await Promise.all([sheetPromise, dbPromise, sheetPromise2])
 
+      sessionStorage.setItem('isMove', "true");
+      if (sessionStorage.getItem('isMove') === "true") {
+        cookieStore.set('isMove', "true");
+      }
+
+
+
       setSubmitted(true)
       reset() // Reset form after successful submission
       router.push("/trucks-service/orderPlaced")
