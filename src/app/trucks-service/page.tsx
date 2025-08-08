@@ -98,7 +98,8 @@ const Page: React.FC = () => {
         document.cookie = "isMove=true; path=/";
       }
 
-
+      sessionStorage.removeItem("fromAddress")
+      sessionStorage.removeItem("toAddress")
 
       setSubmitted(true)
       reset() // Reset form after successful submission

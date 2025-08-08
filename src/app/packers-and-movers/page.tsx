@@ -28,10 +28,18 @@ const Page: React.FC = () => {
     formState: { errors },
     control,
     reset,
+    setValue,
   } = useForm<FormData>()
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  useEffect(() => {
+    // Check if sessionStorage has addresses and set them in the form
+    const fromAddress = sessionStorage.getItem("fromAddress") || "";
+    const toAddress = sessionStorage.getItem("toAddress") || "";
+    setValue("fromAddress", fromAddress);
+    setValue("toAddress", toAddress);
 
+  }, [])
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
 
@@ -79,7 +87,8 @@ const Page: React.FC = () => {
 
       setSubmitted(true)
       reset()
-
+      sessionStorage.removeItem("fromAddress")
+      sessionStorage.removeItem("toAddress")
       router.push("/packers-and-movers/orderPlaced")
 
     } catch (error) {
@@ -221,6 +230,7 @@ const Page: React.FC = () => {
                           {...register("fromAddress", { required: "Pickup address is required" })}
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="Enter pickup address"
+
                         />
                       </div>
                       {errors.fromAddress && (
@@ -240,6 +250,10 @@ const Page: React.FC = () => {
                           {...register("toAddress", { required: "Drop-off address is required" })}
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="Enter drop-off address"
+                        // value={sessionStorage.getItem("toAddress") || ""}
+                        // onChange={(e) => {
+                        //   sessionStorage.setItem("toAddress", e.target.value);
+                        // }}
                         />
                       </div>
                       {errors.toAddress && (

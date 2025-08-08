@@ -45,10 +45,11 @@ export default function Component() {
   };
 
   const handleLetsMove = () => {
-    if (fromAddress && toAddress) {
+    console.log("Let's Move clicked", fromAddress, toAddress);
+    if (fromAddress || toAddress) {
       // Save to localStorage for transfer
-      localStorage.setItem("fromAddress", fromAddress);
-      localStorage.setItem("toAddress", toAddress);
+      sessionStorage.setItem("fromAddress", fromAddress);
+      sessionStorage.setItem("toAddress", toAddress);
     }
     router.push("/packers-and-movers");
   };
@@ -277,7 +278,7 @@ export default function Component() {
                   whileTap={{ scale: 0.98 }}
                   className="w-full flex items-center justify-center px-8 py-4 bg-[#0086FF] text-white rounded-lg  transition-colors duration-300 transform text-lg font-semibold"
                   onClick={handleLetsMove}
-                  disabled={!fromAddress || !toAddress}
+                  // disabled={!fromAddress || !toAddress}
                 >
                   <span className="relative z-10">Let's Move</span>
                   <ArrowBigRight className="relative z-10 h-6 w-6 ml-2" />
