@@ -10,10 +10,13 @@ export function middleware(request: NextRequest) {
   if (isMove !== "true" && request.nextUrl.pathname === "/trucks-service/orderPlaced") {
     return NextResponse.redirect(new URL('/', request.url));
   }
+  if (isMove !== "true" && request.nextUrl.pathname === "/packers-and-movers/orderPlaced") {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/trucks-service/orderPlaced'], // Run middleware only for this route
+  matcher: ['/trucks-service/orderPlaced','/packers-and-movers/orderPlaced' ], // Run middleware only for this route
 };
