@@ -39,7 +39,7 @@ const Page: React.FC = () => {
     setValue("fromAddress", fromAddress);
     setValue("toAddress", toAddress);
 
-  }, [])
+  })
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
 
