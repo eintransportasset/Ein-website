@@ -29,9 +29,21 @@ const Page: React.FC = () => {
     control,
     reset,
     setValue,
+    watch,
   } = useForm<FormData>()
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+
+  // Watch the dateTime field specifically
+  const watchedDateTime = watch("dateTime");
+  
+  useEffect(() => {
+    if (watchedDateTime) {
+      console.log("Selected date:", watchedDateTime);
+    }
+  }, [watchedDateTime])
+
+  
   useEffect(() => {
     // Check if sessionStorage has addresses and set them in the form
     const fromAddress = sessionStorage.getItem("fromAddress") || "";

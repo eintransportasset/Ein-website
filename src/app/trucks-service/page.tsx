@@ -18,7 +18,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { useRouter } from "next/navigation"
 import Loading from "@/components/fileLoading"
@@ -45,10 +45,20 @@ const Page: React.FC = () => {
     formState: { errors },
     reset,
     setValue,
+    watch,
   } = useForm<FormData>()
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+
+  // Watch the dateTime field specifically
+  const watchedDateTime = watch("dateTime");
+  
+  useEffect(() => {
+    if (watchedDateTime) {
+      console.log("Selected date:", watchedDateTime);
+    }
+  }, [watchedDateTime])
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
