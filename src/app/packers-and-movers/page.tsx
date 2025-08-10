@@ -37,11 +37,11 @@ const Page: React.FC = () => {
   // Watch the dateTime field specifically
   const watchedDateTime = watch("dateTime");
   
-  useEffect(() => {
-    if (watchedDateTime) {
-      console.log("Selected date:", watchedDateTime);
-    }
-  }, [watchedDateTime])
+  // useEffect(() => {
+  //   if (watchedDateTime) {
+  //     console.log("Selected date:", watchedDateTime);
+  //   }
+  // }, [watchedDateTime])
 
   
   useEffect(() => {

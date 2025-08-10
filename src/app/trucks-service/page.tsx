@@ -54,11 +54,11 @@ const Page: React.FC = () => {
   // Watch the dateTime field specifically
   const watchedDateTime = watch("dateTime");
   
-  useEffect(() => {
-    if (watchedDateTime) {
-      console.log("Selected date:", watchedDateTime);
-    }
-  }, [watchedDateTime])
+  // useEffect(() => {
+  //   if (watchedDateTime) {
+  //     console.log("Selected date:", watchedDateTime);
+  //   }
+  // }, [watchedDateTime])
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
@@ -69,7 +69,7 @@ const Page: React.FC = () => {
       targetTab: "goodsTransportRequests",
     }
 
-    console.log("payload Data", payload)
+    
     try {
       // Send to Google Sheet
       const sheetPromise = fetch(`${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK}`, {
