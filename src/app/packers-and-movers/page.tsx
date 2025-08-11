@@ -45,13 +45,12 @@ const Page: React.FC = () => {
 
   
   useEffect(() => {
-    // Check if sessionStorage has addresses and set them in the form
-    const fromAddress = sessionStorage.getItem("fromAddress") || "";
-    const toAddress = sessionStorage.getItem("toAddress") || "";
-    setValue("fromAddress", fromAddress);
-    setValue("toAddress", toAddress);
-
-  })
+    // Initialize from sessionStorage once on mount; don't overwrite user input on re-renders
+    const fromAddress = sessionStorage.getItem("fromAddress");
+    const toAddress = sessionStorage.getItem("toAddress");
+    if (fromAddress) setValue("fromAddress", fromAddress);
+    if (toAddress) setValue("toAddress", toAddress);
+  }, [])
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
 
