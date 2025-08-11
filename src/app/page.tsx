@@ -45,7 +45,6 @@ export default function Component() {
   };
 
   const handleLetsMove = () => {
-    console.log("Let's Move clicked", fromAddress, toAddress);
     if (fromAddress || toAddress) {
       // Save to localStorage for transfer
       sessionStorage.setItem("fromAddress", fromAddress);
