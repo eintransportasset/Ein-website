@@ -34,15 +34,7 @@ const Page: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
-  // Watch the dateTime field specifically
-  const watchedDateTime = watch("dateTime");
   
-  // useEffect(() => {
-  //   if (watchedDateTime) {
-  //     console.log("Selected date:", watchedDateTime);
-  //   }
-  // }, [watchedDateTime])
-
   
   useEffect(() => {
     // Initialize from sessionStorage once on mount; don't overwrite user input on re-renders
@@ -51,6 +43,7 @@ const Page: React.FC = () => {
     if (fromAddress) setValue("fromAddress", fromAddress);
     if (toAddress) setValue("toAddress", toAddress);
   }, [])
+  
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
 
