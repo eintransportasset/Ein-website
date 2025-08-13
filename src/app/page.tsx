@@ -277,7 +277,7 @@ export default function Component() {
                   whileTap={{ scale: 0.98 }}
                   className="w-full flex items-center justify-center px-8 py-4 bg-[#0086FF] text-white rounded-lg  transition-colors duration-300 transform text-lg font-semibold"
                   onClick={handleLetsMove}
-                  // disabled={!fromAddress || !toAddress}
+                // disabled={!fromAddress || !toAddress}
                 >
                   <span className="relative z-10">Let's Move</span>
                   <ArrowBigRight className="relative z-10 h-6 w-6 ml-2" />
@@ -657,6 +657,16 @@ export default function Component() {
                   </Link>
                 ))}
               </div>
+              <div className=" border-gray-800 mt-4 pt-8 text-left hover:underline hover:text-gray-400">
+                {/* <p className="text-gray-400">Check for Privacy policy</p> */}
+                <a
+                  href="https://drive.google.com/drive/folders/16sVFMnUPPbNRlrEFEcfL0ZQ15Q3-w-8t?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <p className="text-gray-400">Check for Privacy policy</p>
+                </a>
+              </div>
             </div>
 
             <div
@@ -744,6 +754,7 @@ export default function Component() {
           </div>
 
           <div className="border-t border-gray-800 mt-12 pt-8 text-center">
+            <p className="text-gray-400"> </p>
             <p className="text-gray-400">&copy; 2025 Eintransport. All rights reserved.</p>
           </div>
         </div>
