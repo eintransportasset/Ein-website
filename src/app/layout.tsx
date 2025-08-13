@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import 'react-day-picker/dist/style.css';
+import Script from "next/script";
 
 export const viewport = {
   width: 'device-width',
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/Eintransport.png", type: "image/png" },
-      { url: "/Eintransport.png",  type: "image/png" },
+      { url: "/Eintransport.png", type: "image/png" },
     ],
     apple: "/Eintransport.png",
   },
@@ -35,9 +36,29 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
+
   return (
     <html lang="en">
+      <head>
+        {/* <!-- Google tag (gtag.js) --> */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17381887493"
+        />
+        <Script
+          id="google-ads"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-17381887493');
+            `,
+          }}
+        />
+        
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
