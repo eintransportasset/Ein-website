@@ -660,7 +660,7 @@ export default function Component() {
               <div className=" border-gray-800 mt-4 pt-8 text-left hover:underline hover:text-gray-400">
                 {/* <p className="text-gray-400">Check for Privacy policy</p> */}
                 <a
-                  href="https://drive.google.com/drive/folders/16sVFMnUPPbNRlrEFEcfL0ZQ15Q3-w-8t?usp=sharing"
+                  href="https://docs.google.com/document/d/1ZjkzdEuBJaLggLBb6QeJlw_hluWLuRpqUZKTMfFxxO4/edit?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

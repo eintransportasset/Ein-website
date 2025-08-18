@@ -1,8 +1,21 @@
+"use client"
+
 import React from 'react'
 import { CheckCircle } from 'lucide-react'
 import Link from 'next/link'
+import { useEffect } from 'react';
 
 export default function OrderConfirmation() {
+
+    useEffect(() => {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: "order_placed",
+            service: "trucks_service",
+        });
+    }, []);
+
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-blue-200 p-4">
             <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8">

@@ -12,6 +12,13 @@ export default function OrderConfirmation() {
             localStorage?.removeItem("fromAddress")
             localStorage?.removeItem("toAddress")
         }
+
+        // Push event to GTM
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: "order_placed",
+            service: "packers_and_movers",
+        });
     }, [])
 
     return (
