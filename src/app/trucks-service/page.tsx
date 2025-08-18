@@ -120,6 +120,17 @@ const Page: React.FC = () => {
     }
   }
 
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push({
+        event: "page_view",
+        page: "/trucks-service",
+      });
+    }
+  }, []);
+
   return (
     <div className="h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 p-2 sm:p-4 flex flex-col">
       <div className="max-w-6xl mx-auto flex flex-col flex-1">

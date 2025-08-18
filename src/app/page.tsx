@@ -102,6 +102,15 @@ export default function Component() {
         "We offer a wide range of vehicles including TATA 407, open-body trucks, and container trucks. Whether you need a small vehicle or a high-capacity one, we'll provide the right fit for your move.",
     },
   ]
+
+  useEffect(() => {
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({
+      event: "page_view",
+      page: "/",
+    });
+  }, []);
+
   return (
     <div className="min-h-screen bg-white overflow-hidden">
       {/* Header */}

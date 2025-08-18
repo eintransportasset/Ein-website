@@ -101,6 +101,15 @@ const Page: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    // Ensure GTM dataLayer exists and send page_view event
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({
+      event: "page_view",
+      page: "packers_and_movers",
+    });
+  }, []);
+  
   return (
     <div className="h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 p-2 sm:p-4 flex">
       <div className="max-w-6xl mx-auto flex flex-col flex-1">
