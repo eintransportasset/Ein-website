@@ -22,8 +22,8 @@ import RotatingText from "@/components/RotatingText";
 
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import CircularGallery from "@/components/MarqueeAdjust";
 import Carousel from "@/components/test";
+import Image from "next/image";
 
 export default function Component() {
   const [isVisible, setIsVisible] = useState(false);
@@ -32,7 +32,7 @@ export default function Component() {
   const [toAddress, setToAddress] = useState("");
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     sessionStorage.setItem("isMove", "false");
     if (sessionStorage.getItem("isMove") === "false") {
@@ -40,6 +40,13 @@ export default function Component() {
     }
 
     setIsVisible(true);
+  }, []);
+
+  useEffect(() => {
+    // const timer = setInterval(() => {
+    //   setShowModal(true);
+    // }, 20000); // 20000ms = 20 seconds
+    // return () => clearInterval(timer);
   }, []);
 
   const toggleMenu = () => {
@@ -225,8 +232,7 @@ export default function Component() {
       </header>
 
       {/* Hero Section */}
-
-      <section className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 py-6 sm:py-20 px-4 sm:px-6 relative overflow-hidden">
+      <section className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 py-6 flex items-center sm:py-20 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-50">
           {/* Subtle background pattern */}
           <div className="absolute inset-0 bg-[url('/path-to-your-subtle-pattern.svg')] bg-repeat"></div>
@@ -625,7 +631,8 @@ export default function Component() {
         </div>
       </section>
 
-      <section id="services" className="py-16 sm:py-24 px-4 sm:px-6 bg-white">
+      {/* carosal */}
+      <section id="" className="py-16 sm:py-24 px-4 sm:px-6 bg-white">
         {/* <div style={{ height: "600px", position: "relative" }}>
           <CircularGallery
             bend={0}
@@ -634,7 +641,7 @@ export default function Component() {
             scrollEase={0.02}
           />
         </div> */}
-         <Carousel />
+        <Carousel />
       </section>
 
       {/* Why Do Millions Move With Eintransport */}
@@ -674,6 +681,18 @@ export default function Component() {
               </Link>
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* single Image */}
+      <section className="py-16 h-screen w-full sm:py-24 px-4 sm:px-6 flex items-center justify-center">
+        <div className="relative w-full h-full">
+          <Image
+            src="/Eintransport.png"
+            alt="hero"
+            fill
+            className="object-contain" // or object-cover depending on what you need
+          />
         </div>
       </section>
 
@@ -979,6 +998,59 @@ export default function Component() {
           </div>
         </div>
       </footer>
+
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xs bg-opacity-100">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.7 }}
+            className="bg-blue-100 p-8 rounded-2xl shadow-2xl relative"
+          >
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+              Packers & Movers
+            </h2>
+            <div className="space-y-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={fromAddress}
+                  onChange={(e) => setFromAddress(e.target.value)}
+                  className="w-full p-4 pl-10 text-gray-700 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter pickup address"
+                />
+                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={toAddress}
+                  onChange={(e) => setToAddress(e.target.value)}
+                  className="w-full p-4 pl-10 bg-white text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter drop-off address"
+                />
+                <MapPinHouse className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full flex items-center justify-center px-8 py-4 bg-[#0086FF] text-white rounded-lg transition-colors duration-300 transform text-lg font-semibold"
+                onClick={handleLetsMove}
+              >
+                <span className="relative z-10">Let's Move</span>
+                <ArrowBigRight className="relative z-10 h-6 w-6 ml-2" />
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

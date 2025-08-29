@@ -406,15 +406,7 @@ body {
   top: 10%;
   right: 15%;
 }
-button {
-  padding: 1rem 2rem 1rem 2rem;
-  border: none;
-  background: #555;
-  color: white;
-  text-transform: uppercase;
-  font-weight: bold;
-  cursor: pointer;
-}
+
 .toggle {
   position: absolute;
   top: 10%;

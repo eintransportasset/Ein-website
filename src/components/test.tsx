@@ -528,7 +528,7 @@ const Carousel: React.FC = () => {
     <div className="relative flex flex-col items-center">
       <div
         ref={wrapperRef}
-        className="relative flex items-center gap-7 w-[90%] h-[500px] bg-gray-800 overflow-hidden"
+        className="relative flex items-center gap-7  h-[500px] bg-white overflow-hidden"
       >
         {items.map(({ image, text }, index) => (
           <div
@@ -541,7 +541,7 @@ const Carousel: React.FC = () => {
             <Box
               isActive={index === activeIndex}
               onClick={() => goToIndex(index)}
-              customStyle="flex-col w-[350px] h-auto bg-white gap-4 rounded shadow-md"
+              customStyle="flex-col w-[250px] sm:w-[350px] h-[350px] bg-white  bg-white gap-4 rounded shadow-md"
             >
               <img
                 src={image}
