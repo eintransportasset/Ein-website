@@ -161,7 +161,7 @@ const Page: React.FC = () => {
             </h1>
           </div>
           <Link
-            className="text-[#0086FF]   flex justify-end hover:text-[#0086FF] text-lg font-medium transition-colors duration-300"
+            className="text-slate-600 hover:underline  flex justify-end hover:text-[#0086FF] text-lg font-medium transition-colors duration-300"
             href="tel:+919043384332"
           >
             +919043384332

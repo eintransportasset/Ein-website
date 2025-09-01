@@ -321,7 +321,7 @@ export default function Component() {
           </div>
         </div>
       </section>
-      
+
       {/* Our Secure Service */}
       <section id="services" className="py-16 sm:py-24 px-4 sm:px-6 bg-white">
         <div className="container mx-auto max-w-7xl">
@@ -631,15 +631,20 @@ export default function Component() {
       </section>
 
       {/* carosal */}
-      <section id="" className="py-16 sm:py-24 px-4 sm:px-6 bg-white">
-        {/* <div style={{ height: "600px", position: "relative" }}>
-          <CircularGallery
-            bend={0}
-            textColor="#ffffff"
-            borderRadius={0.05}
-            scrollEase={0.02}
-          />
-        </div> */}
+      <section id="" className=" px-4 sm:px-6 bg-white">
+        <div className="items-center flex justify-center font-semibold text-2xl">
+          <h2
+            className={`text-3xl text-gray-900 sm:text-4xl md:text-5xl font-bold text-center mb-16 transition-all duration-1000 ${
+              isVisible
+                ? "translate-y-0 opacity-100"
+                : "translate-y-10 opacity-0"
+            }`}
+          >
+            Moving Made <span className="text-[#0086FF] relative">Easy</span>
+          </h2>
+
+          {/* <h1 className="text-black items-center"> </h1> */}
+        </div>
         <Carousel />
       </section>
 
@@ -684,7 +689,19 @@ export default function Component() {
       </section>
 
       {/* single Image */}
-      <section className="py-16 h-screen w-full sm:py-24 px-4 sm:px-6 flex items-center justify-center">
+      <section className="py-6 h-screen w-full px-4 sm:px-6 flex flex-col items-center justify-center">
+        <div className="flex justify-center">
+          <h2
+            className={`text-3xl text-gray-900 sm:text-4xl md:text-5xl font-bold text-center mb-16 transition-all duration-1000 ${
+              isVisible
+                ? "translate-y-0 opacity-100"
+                : "translate-y-10 opacity-0"
+            }`}
+          >
+            Service <span className="text-[#0086FF] relative">Spotlight</span>
+          </h2>
+        </div>
+
         <div className="relative w-full h-full">
           <Image
             src="/images/dual.png"
@@ -947,16 +964,26 @@ export default function Component() {
                 Contact Info
               </h4>
               <div className="space-y-4 text-gray-400">
-                <div className="flex gap-3 items-center group">
+                <div className="flex gap-3 items-center text-center group">
                   <span className="bg-[#1E2939] rounded-xl p-3 text-white group-hover:bg-[#0086FF] transition-colors duration-300">
                     <Phone width={18} height={18} />
                   </span>
-                  <Link
-                    className="hover:text-white transition-colors duration-300"
-                    href="tel:+919489847336"
-                  >
-                    +91 9489847336
-                  </Link>
+                  <div className="flex flex-col justify-center">
+                    <div className="flex items-center gap-3">
+                      <Link
+                        className="hover:text-white transition-colors duration-300"
+                        href="tel:+919043384332"
+                      >
+                        +91 9043384332
+                      </Link>
+                    </div>
+                    <Link
+                      className="hover:text-white transition-colors duration-300"
+                      href="tel:+919489847336"
+                    >
+                      +91 9489847336
+                    </Link>
+                  </div>
                 </div>
 
                 <div className="flex gap-3 items-center group">
@@ -1004,11 +1031,11 @@ export default function Component() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5, duration: 0.7 }}
-            className="bg-blue-100 p-8 rounded-2xl shadow-2xl relative"
+            className="bg-blue-100 p-8 rounded-2xl shadow-2xl relative w-3/4 lg:max-w-xl h-auto"
           >
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              className="absolute top-4 cursor-pointer right-4 text-gray-500 hover:text-gray-700"
             >
               <X className="h-6 w-6" />
             </button>

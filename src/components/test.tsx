@@ -34,7 +34,7 @@ const Box: React.FC<BoxProps> = ({
       className={clsx(
         "flex items-center justify-center text-black text-[21px] cursor-pointer flex-shrink-0 overflow-hidden box-border",
         customStyle,
-        isActive && "ring-2 ring-blue-500"
+      
       )}
       onClick={onClick}
     >
@@ -122,7 +122,7 @@ const Carousel: React.FC = () => {
     <div className="relative flex flex-col items-center">
       <div
         ref={wrapperRef}
-        className="relative flex items-center gap-7  h-[500px] bg-white overflow-hidden"
+        className="relative flex items-center gap-7  bg-white overflow-hidden"
       >
         {items.map(({ image, text }, index) => (
           <div
