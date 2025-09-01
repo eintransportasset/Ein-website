@@ -418,7 +418,7 @@ const Page: React.FC = () => {
                 className={`group relative px-6 py-3 bg-gradient-to-r from-[#0086FF] via-blue-600 to-indigo-600 text-white rounded-lg font-semibold transition-all duration-300 shadow-md ${
                   loading
                     ? "opacity-50 cursor-not-allowed"
-                    : "hover:shadow-lg hover:shadow-[#0086FF]/30 hover:scale-105 active:scale-95"
+                    : "cursor-pointer hover:shadow-lg hover:shadow-[#0086FF]/30 hover:scale-105 active:scale-95"
                 }`}
               >
                 <span className="flex items-center gap-2 text-xs sm:text-sm">

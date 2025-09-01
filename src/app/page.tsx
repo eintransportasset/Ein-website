@@ -11,15 +11,13 @@ import {
   Phone,
   Youtube,
   ChevronDown,
-  Home,
-  Building,
   MapPinHouse,
 } from "lucide-react";
+
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import RotatingText from "@/components/RotatingText";
-
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Carousel from "@/components/test";
@@ -43,10 +41,10 @@ export default function Component() {
   }, []);
 
   useEffect(() => {
-    // const timer = setInterval(() => {
-    //   setShowModal(true);
-    // }, 20000); // 20000ms = 20 seconds
-    // return () => clearInterval(timer);
+    const timer = setInterval(() => {
+      setShowModal(true);
+    }, 20000); // 20000ms = 20 seconds
+    return () => clearInterval(timer);
   }, []);
 
   const toggleMenu = () => {
@@ -311,7 +309,7 @@ export default function Component() {
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full flex items-center justify-center px-8 py-4 bg-[#0086FF] text-white rounded-lg  transition-colors duration-300 transform text-lg font-semibold"
+                  className="w-full cursor-pointer  flex items-center justify-center px-8 py-4 bg-[#0086FF] text-white rounded-lg  transition-colors duration-300 transform text-lg font-semibold"
                   onClick={handleLetsMove}
                   // disabled={!fromAddress || !toAddress}
                 >
@@ -323,6 +321,7 @@ export default function Component() {
           </div>
         </div>
       </section>
+      
       {/* Our Secure Service */}
       <section id="services" className="py-16 sm:py-24 px-4 sm:px-6 bg-white">
         <div className="container mx-auto max-w-7xl">
@@ -688,10 +687,10 @@ export default function Component() {
       <section className="py-16 h-screen w-full sm:py-24 px-4 sm:px-6 flex items-center justify-center">
         <div className="relative w-full h-full">
           <Image
-            src="/Eintransport.png"
+            src="/images/dual.png"
             alt="hero"
             fill
-            className="object-contain" // or object-cover depending on what you need
+            className="object-cover" // or object-cover depending on what you need
           />
         </div>
       </section>
@@ -1041,7 +1040,7 @@ export default function Component() {
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full flex items-center justify-center px-8 py-4 bg-[#0086FF] text-white rounded-lg transition-colors duration-300 transform text-lg font-semibold"
+                className="w-full cursor-pointer flex items-center justify-center px-8 py-4 bg-[#0086FF] text-white rounded-lg transition-colors duration-300 transform text-lg font-semibold"
                 onClick={handleLetsMove}
               >
                 <span className="relative z-10">Let's Move</span>
