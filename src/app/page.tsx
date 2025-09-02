@@ -40,11 +40,30 @@ export default function Component() {
     setIsVisible(true);
   }, []);
 
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setShowModal(true);
+  //   }, 20000); // 20000ms = 20 seconds
+  //   return () => clearInterval(timer);
+  // }, []);
+  
   useEffect(() => {
-    const timer = setInterval(() => {
+    // First timeout: trigger after 7 seconds
+    const firstTimer = setTimeout(() => {
       setShowModal(true);
-    }, 20000); // 20000ms = 20 seconds
-    return () => clearInterval(timer);
+
+      // After the first one, set interval to trigger every 20 seconds
+      const intervalTimer = setInterval(() => {
+        setShowModal(true);
+      }, 20000);
+
+      // Save intervalTimer to clear on cleanup
+      // This must be outside setTimeout to be reachable
+      return () => clearInterval(intervalTimer);
+    }, 7000);
+
+    // Cleanup function
+    return () => clearTimeout(firstTimer);
   }, []);
 
   const toggleMenu = () => {
@@ -282,7 +301,7 @@ export default function Component() {
               className="bg-white p-8 rounded-2xl shadow-2xl "
             >
               <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-                Packers & Movers
+                Plan Your Move With Packers & Movers
               </h2>
               <div className="space-y-4">
                 <div className="relative">
@@ -972,16 +991,16 @@ export default function Component() {
                     <div className="flex items-center gap-3">
                       <Link
                         className="hover:text-white transition-colors duration-300"
-                        href="tel:+919043384332"
+                        href="tel:+919489847336"
                       >
-                        +91 9043384332
+                        +91 9489847336
                       </Link>
                     </div>
                     <Link
                       className="hover:text-white transition-colors duration-300"
-                      href="tel:+919489847336"
+                      href="tel:+919043384332"
                     >
-                      +91 9489847336
+                      +91 9043384332
                     </Link>
                   </div>
                 </div>
@@ -1040,7 +1059,7 @@ export default function Component() {
               <X className="h-6 w-6" />
             </button>
             <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-              Packers & Movers
+              Plan Your Move With Packers & Movers
             </h2>
             <div className="space-y-4">
               <div className="relative">
