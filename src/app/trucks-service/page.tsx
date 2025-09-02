@@ -160,8 +160,14 @@ const Page: React.FC = () => {
               Trucks Service
             </h1>
           </div>
+          {/* <Link
+            className="text-slate-600 hover:underline  flex justify-end hover:text-[#0086FF] text-lg sm:text-xs font-medium transition-colors duration-300"
+            href="tel:+919043384332"
+          >
+            +919043384332
+          </Link> */}
           <Link
-            className="text-slate-600 hover:underline  flex justify-end hover:text-[#0086FF] text-lg font-medium transition-colors duration-300"
+            className="text-xs sm:text-sm md:text-base lg:text-lg text-slate-600 hover:underline flex justify-end hover:text-[#0086FF] font-medium transition-colors duration-300"
             href="tel:+919043384332"
           >
             +919043384332
@@ -494,11 +500,10 @@ const Page: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`group relative px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold transition-all duration-300 shadow-md ${
-                  loading
+                className={`group relative px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold transition-all duration-300 shadow-md ${loading
                     ? "opacity-50 cursor-not-allowed"
                     : "hover:shadow-lg hover:shadow-blue-500/30 hover:scale-105 active:scale-95"
-                }`}
+                  }`}
               >
                 <span className="flex items-center gap-2 text-xs sm:text-sm">
                   {loading ? (

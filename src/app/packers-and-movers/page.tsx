@@ -148,8 +148,15 @@ const Page: React.FC = () => {
               Packers & Movers
             </h1>
           </div>
-          <Link
+          {/* <Link
             className="text-slate-600 hover:underline  flex justify-end hover:text-[#0086FF] text-lg font-medium transition-colors duration-300"
+            href="tel:+919043384332"
+          >
+            +919043384332
+          </Link> */}
+
+          <Link
+            className="text-xs sm:text-sm md:text-base lg:text-lg text-slate-600 hover:underline flex justify-end hover:text-[#0086FF] font-medium transition-colors duration-300"
             href="tel:+919043384332"
           >
             +919043384332
@@ -306,10 +313,10 @@ const Page: React.FC = () => {
                           })}
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="Enter drop-off address"
-                          // value={sessionStorage.getItem("toAddress") || ""}
-                          // onChange={(e) => {
-                          //   sessionStorage.setItem("toAddress", e.target.value);
-                          // }}
+                        // value={sessionStorage.getItem("toAddress") || ""}
+                        // onChange={(e) => {
+                        //   sessionStorage.setItem("toAddress", e.target.value);
+                        // }}
                         />
                       </div>
                       {errors.toAddress && (
@@ -415,11 +422,10 @@ const Page: React.FC = () => {
                 type="submit"
                 disabled={loading}
                 form="packersandmovers"
-                className={`group relative px-6 py-3 bg-gradient-to-r from-[#0086FF] via-blue-600 to-indigo-600 text-white rounded-lg font-semibold transition-all duration-300 shadow-md ${
-                  loading
+                className={`group relative px-6 py-3 bg-gradient-to-r from-[#0086FF] via-blue-600 to-indigo-600 text-white rounded-lg font-semibold transition-all duration-300 shadow-md ${loading
                     ? "opacity-50 cursor-not-allowed"
                     : "cursor-pointer hover:shadow-lg hover:shadow-[#0086FF]/30 hover:scale-105 active:scale-95"
-                }`}
+                  }`}
               >
                 <span className="flex items-center gap-2 text-xs sm:text-sm">
                   {loading ? (

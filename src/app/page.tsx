@@ -55,7 +55,7 @@ export default function Component() {
       // After the first one, set interval to trigger every 20 seconds
       const intervalTimer = setInterval(() => {
         setShowModal(true);
-      }, 20000);
+      }, 30000);
 
       // Save intervalTimer to clear on cleanup
       // This must be outside setTimeout to be reachable
