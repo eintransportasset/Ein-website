@@ -1,27 +1,39 @@
-"use client"
+"use client";
 
-import DateInput from "@/components/DateInput"
-import { ArrowLeft, Truck, ArrowRight, MapPin, Calendar, Package, User, Phone, Mail, Navigation, MapPinHouse } from "lucide-react"
-import Link from "next/link"
-import type React from "react"
-import { useState, useEffect } from "react"
-import { useForm, type SubmitHandler } from "react-hook-form"
-import { useRouter } from "next/navigation"
-import Loading from "@/components/fileLoading"
+import DateInput from "@/components/DateInput";
+import {
+  ArrowLeft,
+  Truck,
+  ArrowRight,
+  MapPin,
+  Calendar,
+  Package,
+  User,
+  Phone,
+  Mail,
+  Navigation,
+  MapPinHouse,
+} from "lucide-react";
+import Link from "next/link";
+import type React from "react";
+import { useState, useEffect } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import Loading from "@/components/fileLoading";
 
 type FormData = {
-  fromAddress: string
-  toAddress: string
-  dateTime: string
-  description: string
-  fullName: string
-  phoneNumber: string
-  email?: string
-  shiftingThings: string
-}
+  fromAddress: string;
+  toAddress: string;
+  dateTime: string;
+  description: string;
+  fullName: string;
+  phoneNumber: string;
+  email?: string;
+  shiftingThings: string;
+};
 
 const Page: React.FC = () => {
-  const router = useRouter()
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -30,48 +42,52 @@ const Page: React.FC = () => {
     reset,
     setValue,
     watch,
-  } = useForm<FormData>()
-  const [loading, setLoading] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
+  } = useForm<FormData>();
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  
-  
   useEffect(() => {
     // Initialize from sessionStorage once on mount; don't overwrite user input on re-renders
     const fromAddress = sessionStorage.getItem("fromAddress");
     const toAddress = sessionStorage.getItem("toAddress");
     if (fromAddress) setValue("fromAddress", fromAddress);
     if (toAddress) setValue("toAddress", toAddress);
-  }, [])
-  
+  }, []);
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    setLoading(true)
+    setLoading(true);
 
     const payload = {
       ...data,
       targetTab: "PackersAndMoversRequests",
-    }
+    };
 
     try {
       // Send to Google Sheet
-      const sheetPromise = fetch(`${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK}`, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
+      const sheetPromise = fetch(
+        `${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK}`,
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       // Send to Google Sheet2
-      const sheetPromise2 = fetch(`${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK2}`, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
+      const sheetPromise2 = fetch(
+        `${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK2}`,
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       // Send to DB endpoint
       const dbPromise = fetch("/api/packers-requests", {
@@ -80,26 +96,25 @@ const Page: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      })
+      });
 
       // Wait for both requests to finish
-      await Promise.all([sheetPromise, dbPromise, sheetPromise2])
-      sessionStorage.setItem('isMove', "true");
-      if (sessionStorage.getItem('isMove') === "true") {
+      await Promise.all([sheetPromise, dbPromise, sheetPromise2]);
+      sessionStorage.setItem("isMove", "true");
+      if (sessionStorage.getItem("isMove") === "true") {
         document.cookie = "isMove=true; path=/";
       }
 
-      setSubmitted(true)
-      reset()
-      sessionStorage.removeItem("fromAddress")
-      sessionStorage.removeItem("toAddress")
-      router.push("/packers-and-movers/orderPlaced")
-
+      setSubmitted(true);
+      reset();
+      sessionStorage.removeItem("fromAddress");
+      sessionStorage.removeItem("toAddress");
+      router.push("/packers-and-movers/orderPlaced");
     } catch (error) {
-      console.error("Submission error:", error)
-      alert("Something went wrong. Please try again.")
+      console.error("Submission error:", error);
+      alert("Something went wrong. Please try again.");
     }
-  }
+  };
 
   useEffect(() => {
     // Ensure GTM dataLayer exists and send page_view event
@@ -109,17 +124,16 @@ const Page: React.FC = () => {
       page: "packers_and_movers",
     });
   }, []);
-  
+
   return (
     <div className="h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 p-2 sm:p-4 flex">
       <div className="max-w-6xl mx-auto flex flex-col flex-1">
-
         {/* Header Navigation */}
-        <div className="relative flex items-center mb-1.5 pt-1.5 sm:mb-2 sm:pt-2">
+        <div className="relative flex items-center justify-between mb-1.5 pt-1.5 sm:mb-2 sm:pt-2">
           <Link
             href="/"
             className={`group flex items-center gap-2 text-slate-600 hover:text-blue-600 bg-white/90 backdrop-blur-sm rounded-lg border border-slate-200 hover:border-blue-500/30 px-3 py-2 transition-all duration-300 hover:shadow-md text-xs sm:text-sm
-    ${loading ? "pointer-events-none opacity-50" : ""}`}
+            ${loading ? "pointer-events-none opacity-50" : ""}`}
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
             <span className="font-semibold hidden sm:inline">Back to Home</span>
@@ -134,12 +148,29 @@ const Page: React.FC = () => {
               Packers & Movers
             </h1>
           </div>
+          {/* <Link
+            className="text-slate-600 hover:underline  flex justify-end hover:text-[#0086FF] text-lg font-medium transition-colors duration-300"
+            href="tel:+919043384332"
+          >
+            +919043384332
+          </Link> */}
+
+          <Link
+            className="text-xs sm:text-sm md:text-base lg:text-lg text-slate-600 hover:underline flex justify-end hover:text-[#0086FF] font-medium transition-colors duration-300"
+            href="tel:+919043384332"
+          >
+            +919043384332
+          </Link>
         </div>
 
         {/* Main Form Container */}
         <div className="bg-white backdrop-blur-sm shadow-lg rounded-xl p-4 sm:p-6 border border-slate-200/50 flex-1 flex flex-col overflow-hidden">
           {loading && <Loading />}
-          <form id="packersandmovers" onSubmit={handleSubmit(onSubmit)} className="flex flex-col flex-1 overflow-y-auto">
+          <form
+            id="packersandmovers"
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col flex-1 overflow-y-auto"
+          >
             {/* Form Content - Grid Layout */}
             <div className="flex-1 text-gray-900 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {/* Left Column */}
@@ -150,7 +181,9 @@ const Page: React.FC = () => {
                     <div className="p-1.5 bg-gradient-to-r from-[#0086FF] to-blue-600 rounded-lg shadow-md">
                       <User className="w-4 h-4 text-white" />
                     </div>
-                    <h2 className="text-base sm:text-lg font-bold text-slate-800">Contact Information</h2>
+                    <h2 className="text-base sm:text-lg font-bold text-slate-800">
+                      Contact Information
+                    </h2>
                   </div>
                   <div className="space-y-3">
                     <div className="group">
@@ -160,7 +193,9 @@ const Page: React.FC = () => {
                       <div className="relative">
                         <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-focus-within:text-[#0086FF]" />
                         <input
-                          {...register("fullName", { required: "Full name is required" })}
+                          {...register("fullName", {
+                            required: "Full name is required",
+                          })}
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="Enter your full name"
                         />
@@ -183,21 +218,27 @@ const Page: React.FC = () => {
                             type="text"
                             {...register("phoneNumber", {
                               required: "Phone number is required",
-                              maxLength: { value: 10, message: "Maximum 10 characters allowed" },
-                              minLength: { value: 10, message: "Minimum 10 characters required" },
+                              maxLength: {
+                                value: 10,
+                                message: "Maximum 10 characters allowed",
+                              },
+                              minLength: {
+                                value: 10,
+                                message: "Minimum 10 characters required",
+                              },
                               pattern: {
                                 value: /^[0-9]{10}$/,
                                 message: "Phone number must be 10 digits",
                               },
                             })}
                             onInput={(e) => {
-                              e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "");
+                              e.currentTarget.value =
+                                e.currentTarget.value.replace(/[^0-9]/g, "");
                             }}
                             className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                             placeholder="1234567890"
                             maxLength={10}
                           />
-
                         </div>
                         {errors.phoneNumber && (
                           <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
@@ -208,7 +249,10 @@ const Page: React.FC = () => {
                       </div>
                       <div className="group">
                         <label className="block text-xs sm:text-sm text-slate-700 mb-1">
-                          Email <span className="text-slate-400 text-xs">(optional)</span>
+                          Email{" "}
+                          <span className="text-slate-400 text-xs">
+                            (optional)
+                          </span>
                         </label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-focus-within:text-[#0086FF]" />
@@ -230,7 +274,9 @@ const Page: React.FC = () => {
                     <div className="p-1.5 bg-gradient-to-r from-[#0086FF] to-blue-600 rounded-lg shadow-md">
                       <Navigation className="w-4 h-4 text-white" />
                     </div>
-                    <h2 className="text-base sm:text-lg font-bold text-slate-800">Route Information</h2>
+                    <h2 className="text-base sm:text-lg font-bold text-slate-800">
+                      Route Information
+                    </h2>
                   </div>
                   <div className="space-y-3">
                     <div>
@@ -240,10 +286,11 @@ const Page: React.FC = () => {
                       <div className="relative group">
                         <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-focus-within:text-[#0086FF]" />
                         <input
-                          {...register("fromAddress", { required: "Pickup address is required" })}
+                          {...register("fromAddress", {
+                            required: "Pickup address is required",
+                          })}
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="Enter pickup address"
-
                         />
                       </div>
                       {errors.fromAddress && (
@@ -255,12 +302,15 @@ const Page: React.FC = () => {
                     </div>
                     <div>
                       <label className="block text-xs sm:text-sm text-slate-700 mb-1">
-                        Drop-off Location <span className="text-red-500">*</span>
+                        Drop-off Location{" "}
+                        <span className="text-red-500">*</span>
                       </label>
                       <div className="relative group">
                         <MapPinHouse className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-700 group-focus-within:text-[#0086FF]" />
                         <input
-                          {...register("toAddress", { required: "Drop-off address is required" })}
+                          {...register("toAddress", {
+                            required: "Drop-off address is required",
+                          })}
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="Enter drop-off address"
                         // value={sessionStorage.getItem("toAddress") || ""}
@@ -288,7 +338,9 @@ const Page: React.FC = () => {
                     <div className="p-1.5 bg-gradient-to-r from-[#0086FF] to-blue-600 rounded-lg shadow-md">
                       <Calendar className="w-4 h-4 text-white" />
                     </div>
-                    <h2 className="text-base sm:text-lg font-bold text-slate-800">Shifting Schedule</h2>
+                    <h2 className="text-base sm:text-lg font-bold text-slate-800">
+                      Shifting Schedule
+                    </h2>
                   </div>
                   <div>
                     <label className="block text-xs sm:text-sm text-slate-700 mb-1">
@@ -335,7 +387,9 @@ const Page: React.FC = () => {
                     <div className="p-1.5 bg-gradient-to-r from-[#0086FF] to-blue-600 rounded-lg shadow-md">
                       <Package className="w-4 h-4 text-white" />
                     </div>
-                    <h2 className="text-base sm:text-lg font-bold text-slate-800">Items Information</h2>
+                    <h2 className="text-base sm:text-lg font-bold text-slate-800">
+                      Items Information
+                    </h2>
                   </div>
                   <div className="flex-1">
                     <label className="block text-xs sm:text-sm text-slate-700 mb-1">
@@ -344,7 +398,9 @@ const Page: React.FC = () => {
                     <div className="relative group">
                       <Package className="absolute left-3 top-3 w-4 h-4 text-blue-700 group-focus-within:text-[#0086FF]" />
                       <textarea
-                        {...register("shiftingThings", { required: "Please describe items to be moved" })}
+                        {...register("shiftingThings", {
+                          required: "Please describe items to be moved",
+                        })}
                         className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400 h-30 sm:h-45 "
                         placeholder="Please describe the items you need to Move in details or BHK"
                       />
@@ -366,7 +422,9 @@ const Page: React.FC = () => {
                 type="submit"
                 disabled={loading}
                 form="packersandmovers"
-                className={`group relative px-6 py-3 bg-gradient-to-r from-[#0086FF] via-blue-600 to-indigo-600 text-white rounded-lg font-semibold transition-all duration-300 shadow-md ${loading ? "opacity-50 cursor-not-allowed" : "hover:shadow-lg hover:shadow-[#0086FF]/30 hover:scale-105 active:scale-95"
+                className={`group relative px-6 py-3 bg-gradient-to-r from-[#0086FF] via-blue-600 to-indigo-600 text-white rounded-lg font-semibold transition-all duration-300 shadow-md ${loading
+                    ? "opacity-50 cursor-not-allowed"
+                    : "cursor-pointer hover:shadow-lg hover:shadow-[#0086FF]/30 hover:scale-105 active:scale-95"
                   }`}
               >
                 <span className="flex items-center gap-2 text-xs sm:text-sm">
@@ -387,7 +445,8 @@ const Page: React.FC = () => {
           </form>
         </div>
       </div>
-    </div>)
-}
+    </div>
+  );
+};
 
-export default Page
+export default Page;

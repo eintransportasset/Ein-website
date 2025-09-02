@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import DateInput from "@/components/DateInput"
-import Modal from "@/components/modal"
+import DateInput from "@/components/DateInput";
+import Modal from "@/components/modal";
 import {
   ArrowLeft,
   Truck,
@@ -15,29 +15,29 @@ import {
   Weight,
   FileText,
   MapPinHouse,
-} from "lucide-react"
-import Link from "next/link"
-import type React from "react"
-import { useState, useEffect } from "react"
-import { useForm, type SubmitHandler } from "react-hook-form"
-import { useRouter } from "next/navigation"
-import Loading from "@/components/fileLoading"
+} from "lucide-react";
+import Link from "next/link";
+import type React from "react";
+import { useState, useEffect } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import Loading from "@/components/fileLoading";
 
 export type FormData = {
-  fromAddress: string
-  toAddress: string
-  dateTime: string
-  description: string
-  fullName: string
-  phoneNumber: string
-  email?: string
-  materials: string
-  weight: string
-  vehicleRequired: string
-}
+  fromAddress: string;
+  toAddress: string;
+  dateTime: string;
+  description: string;
+  fullName: string;
+  phoneNumber: string;
+  email?: string;
+  materials: string;
+  weight: string;
+  vehicleRequired: string;
+};
 
 const Page: React.FC = () => {
-  const router = useRouter()
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -46,14 +46,14 @@ const Page: React.FC = () => {
     reset,
     setValue,
     watch,
-  } = useForm<FormData>()
-  const [loading, setLoading] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
+  } = useForm<FormData>();
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   // Watch the dateTime field specifically
   const watchedDateTime = watch("dateTime");
-  
+
   // useEffect(() => {
   //   if (watchedDateTime) {
   //     console.log("Selected date:", watchedDateTime);
@@ -61,35 +61,40 @@ const Page: React.FC = () => {
   // }, [watchedDateTime])
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    setLoading(true)
-    setSubmitted(false)
+    setLoading(true);
+    setSubmitted(false);
 
     const payload = {
       ...data,
       targetTab: "goodsTransportRequests",
-    }
+    };
 
-    
     try {
       // Send to Google Sheet
-      const sheetPromise = fetch(`${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK}`, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
+      const sheetPromise = fetch(
+        `${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK}`,
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       // Send to Google Sheet2
-      const sheetPromise2 = fetch(`${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK2}`, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
+      const sheetPromise2 = fetch(
+        `${process.env.NEXT_PUBLIC_SHEET_SCRIPT_LINK2}`,
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       // Send to DB endpoint
       const dbPromise = fetch("/api/goods-requests", {
@@ -98,28 +103,27 @@ const Page: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      })
+      });
 
       // Wait for all requests to finish
-      await Promise.all([sheetPromise, dbPromise, sheetPromise2])
+      await Promise.all([sheetPromise, dbPromise, sheetPromise2]);
 
-      sessionStorage.setItem('isMove', "true");
-      if (sessionStorage.getItem('isMove') === "true") {
+      sessionStorage.setItem("isMove", "true");
+      if (sessionStorage.getItem("isMove") === "true") {
         document.cookie = "isMove=true; path=/";
       }
 
-      sessionStorage.removeItem("fromAddress")
-      sessionStorage.removeItem("toAddress")
+      sessionStorage.removeItem("fromAddress");
+      sessionStorage.removeItem("toAddress");
 
-      setSubmitted(true)
-      reset() // Reset form after successful submission
-      router.push("/trucks-service/orderPlaced")
+      setSubmitted(true);
+      reset(); // Reset form after successful submission
+      router.push("/trucks-service/orderPlaced");
     } catch (error) {
-      console.log("Error in create ", error)
-      alert("Something went wrong. Please try again.")
+      console.log("Error in create ", error);
+      alert("Something went wrong. Please try again.");
     }
-  }
-
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -136,7 +140,7 @@ const Page: React.FC = () => {
       <div className="max-w-6xl mx-auto flex flex-col flex-1">
         {/* Header Navigation */}
 
-        <div className="relative flex items-center mb-1.5 pt-1.5 sm:mb-2 sm:pt-2">
+        <div className="relative flex items-center justify-between mb-1.5 pt-1.5 sm:mb-2 sm:pt-2">
           <Link
             href="/"
             className={`group flex items-center gap-2 text-slate-600 hover:text-blue-600 bg-white/90 backdrop-blur-sm rounded-lg border border-slate-200 hover:border-blue-500/30 px-3 py-2 transition-all duration-300 hover:shadow-md text-xs sm:text-sm
@@ -156,6 +160,18 @@ const Page: React.FC = () => {
               Trucks Service
             </h1>
           </div>
+          {/* <Link
+            className="text-slate-600 hover:underline  flex justify-end hover:text-[#0086FF] text-lg sm:text-xs font-medium transition-colors duration-300"
+            href="tel:+919043384332"
+          >
+            +919043384332
+          </Link> */}
+          <Link
+            className="text-xs sm:text-sm md:text-base lg:text-lg text-slate-600 hover:underline flex justify-end hover:text-[#0086FF] font-medium transition-colors duration-300"
+            href="tel:+919043384332"
+          >
+            +919043384332
+          </Link>
         </div>
 
         {/* Main Form Container */}
@@ -166,15 +182,31 @@ const Page: React.FC = () => {
           {submitted && (
             <div className="mb-4 p-3 bg-blue-50 text-blue-800 border border-blue-200 rounded-lg flex items-center gap-2 text-sm">
               <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-3 h-3 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               </div>
-              <span className="font-semibold">Request submitted successfully! Redirecting...</span>
+              <span className="font-semibold">
+                Request submitted successfully! Redirecting...
+              </span>
             </div>
           )}
 
-          <form id="transportForm" onSubmit={handleSubmit(onSubmit)} className="flex flex-col flex-1 overflow-y-auto">
+          <form
+            id="transportForm"
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col flex-1 overflow-y-auto"
+          >
             {/* Form Content - Grid Layout */}
             <div className="flex-1 text-gray-900 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {/* Left Column */}
@@ -185,7 +217,9 @@ const Page: React.FC = () => {
                     <div className="p-1.5 bg-blue-600 rounded-lg shadow-md">
                       <User className="w-4 h-4 text-white" />
                     </div>
-                    <h2 className="text-base sm:text-lg font-bold text-slate-800">Contact Information</h2>
+                    <h2 className="text-base sm:text-lg font-bold text-slate-800">
+                      Contact Information
+                    </h2>
                   </div>
                   <div className="space-y-3">
                     <div className="group">
@@ -195,7 +229,9 @@ const Page: React.FC = () => {
                       <div className="relative">
                         <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
                         <input
-                          {...register("fullName", { required: "Full name is required" })}
+                          {...register("fullName", {
+                            required: "Full name is required",
+                          })}
                           className="w-full pl-10 pr-3 py-2 border text-black border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="Enter your full name"
                         />
@@ -218,15 +254,22 @@ const Page: React.FC = () => {
                             type="text"
                             {...register("phoneNumber", {
                               required: "Phone number is required",
-                              maxLength: { value: 10, message: "Maximum 10 characters allowed" },
-                              minLength: { value: 10, message: "Minimum 10 characters required" },
+                              maxLength: {
+                                value: 10,
+                                message: "Maximum 10 characters allowed",
+                              },
+                              minLength: {
+                                value: 10,
+                                message: "Minimum 10 characters required",
+                              },
                               pattern: {
                                 value: /^[0-9]{10}$/,
                                 message: "Phone number must be 10 digits",
                               },
                             })}
                             onInput={(e) => {
-                              e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "");
+                              e.currentTarget.value =
+                                e.currentTarget.value.replace(/[^0-9]/g, "");
                             }}
                             className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#0086FF]/20 focus:border-[#0086FF] bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                             placeholder="1234567890"
@@ -242,7 +285,10 @@ const Page: React.FC = () => {
                       </div>
                       <div className="group">
                         <label className="block text-xs sm:text-sm text-slate-700 mb-1">
-                          Email <span className="text-slate-400 text-xs">(optional)</span>
+                          Email{" "}
+                          <span className="text-slate-400 text-xs">
+                            (optional)
+                          </span>
                         </label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
@@ -250,9 +296,10 @@ const Page: React.FC = () => {
                             type="email"
                             {...register("email", {
                               pattern: {
-                                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                value:
+                                  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                                 message: "Invalid email address",
-                              }
+                              },
                             })}
                             className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                             placeholder="you@example.com"
@@ -275,7 +322,9 @@ const Page: React.FC = () => {
                     <div className="p-1.5 bg-blue-600 rounded-lg shadow-md">
                       <Navigation className="w-4 h-4 text-white" />
                     </div>
-                    <h2 className="text-base sm:text-lg font-bold text-slate-800">Route Information</h2>
+                    <h2 className="text-base sm:text-lg font-bold text-slate-800">
+                      Route Information
+                    </h2>
                   </div>
                   <div className="space-y-3">
                     <div>
@@ -322,7 +371,9 @@ const Page: React.FC = () => {
                       <div className="relative group">
                         <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
                         <input
-                          {...register("fromAddress", { required: "Pickup location is required" })}
+                          {...register("fromAddress", {
+                            required: "Pickup location is required",
+                          })}
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="Enter pickup address"
                         />
@@ -336,12 +387,15 @@ const Page: React.FC = () => {
                     </div>
                     <div>
                       <label className="block text-xs sm:text-sm text-slate-700 mb-1">
-                        Drop-off Location <span className="text-red-500">*</span>
+                        Drop-off Location{" "}
+                        <span className="text-red-500">*</span>
                       </label>
                       <div className="relative group">
                         <MapPinHouse className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
                         <input
-                          {...register("toAddress", { required: "Destination is required" })}
+                          {...register("toAddress", {
+                            required: "Destination is required",
+                          })}
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="Enter drop-off address"
                         />
@@ -365,7 +419,9 @@ const Page: React.FC = () => {
                     <div className="p-1.5 bg-blue-600 rounded-lg shadow-md">
                       <Package className="w-4 h-4 text-white" />
                     </div>
-                    <h2 className="text-base sm:text-lg font-bold text-slate-800">Goods Details</h2>
+                    <h2 className="text-base sm:text-lg font-bold text-slate-800">
+                      Goods Details
+                    </h2>
                   </div>
                   <div className="space-y-3">
                     <div className="group">
@@ -375,7 +431,9 @@ const Page: React.FC = () => {
                       <div className="relative">
                         <Package className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
                         <input
-                          {...register("materials", { required: "Materials are required" })}
+                          {...register("materials", {
+                            required: "Materials are required",
+                          })}
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="What are you transporting?"
                         />
@@ -395,7 +453,9 @@ const Page: React.FC = () => {
                         <Weight className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
                         <input
                           type="number"
-                          {...register("weight", { required: "Weight is required" })}
+                          {...register("weight", {
+                            required: "Weight is required",
+                          })}
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                           placeholder="e.g. 100"
                           min={1}
@@ -416,7 +476,9 @@ const Page: React.FC = () => {
                         <Truck className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 group-focus-within:text-blue-700" />
                         <input
                           type="text"
-                          {...register("vehicleRequired", { required: "Vehicle type is required" })}
+                          {...register("vehicleRequired", {
+                            required: "Vehicle type is required",
+                          })}
                           placeholder="Enter required vehicle type"
                           className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500 bg-white/70 hover:bg-white/90 text-xs sm:text-sm placeholder:text-slate-400"
                         />
@@ -438,7 +500,9 @@ const Page: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`group relative px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold transition-all duration-300 shadow-md ${loading ? "opacity-50 cursor-not-allowed" : "hover:shadow-lg hover:shadow-blue-500/30 hover:scale-105 active:scale-95"
+                className={`group relative px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold transition-all duration-300 shadow-md ${loading
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:shadow-lg hover:shadow-blue-500/30 hover:scale-105 active:scale-95"
                   }`}
               >
                 <span className="flex items-center gap-2 text-xs sm:text-sm">
@@ -459,11 +523,17 @@ const Page: React.FC = () => {
           </form>
 
           {/* Vehicle Selection Modal */}
-          {isOpen && <Modal isOpen={isOpen} setIsOpen={setIsOpen} selectValue={setValue} />}
+          {isOpen && (
+            <Modal
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              selectValue={setValue}
+            />
+          )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
