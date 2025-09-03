@@ -46,7 +46,7 @@ export default function Component() {
   //   }, 20000); // 20000ms = 20 seconds
   //   return () => clearInterval(timer);
   // }, []);
-  
+
   useEffect(() => {
     // First timeout: trigger after 7 seconds
     const firstTimer = setTimeout(() => {
@@ -149,7 +149,7 @@ export default function Component() {
       >
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-xl sm:text-2xl md:text-3xl font-bold text-[#0086FF] hover:scale-105 transition-transform duration-300 cursor-pointer">
-            Eintransport
+            Eintransport Pvt Ltd
           </div>
           {/* Desktop Navigation */}
           <nav className="hidden sm:flex text-base sm:text-lg md:text-xl space-x-4 md:space-x-6">
@@ -177,11 +177,29 @@ export default function Component() {
             >
               FAQ
             </a>
+            {/* Phone in lapnav */}
             <Link
-              className="text-white hover:text-[#0086FF] transition-colors duration-300"
               href="tel:+919043384332"
+              className="
+    hidden sm:flex items-center gap-1 
+    text-white bg-[#0086FF] rounded-md px-1 hover:underline transition-colors duration-300 font-medium animate-bounce
+  "
             >
-              +919043384332
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-5 h-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
+                />
+              </svg>
+              9043384332
             </Link>
           </nav>
           {/* Hamburger Button */}
@@ -240,7 +258,7 @@ export default function Component() {
                   className="text-white  w-full flex justify-center hover:text-[#0086FF] text-lg font-medium transition-colors duration-300"
                   href="tel:+919043384332"
                 >
-                  +919043384332
+                  9043384332
                 </Link>
               </div>
             </motion.nav>
@@ -249,7 +267,7 @@ export default function Component() {
       </header>
 
       {/* Hero Section */}
-      <section className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 py-6 flex items-center sm:py-20 px-4 sm:px-6 relative overflow-hidden">
+      <section className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 py-4 flex items-center sm:py-20 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-50">
           {/* Subtle background pattern */}
           <div className="absolute inset-0 bg-[url('/path-to-your-subtle-pattern.svg')] bg-repeat"></div>
@@ -280,6 +298,33 @@ export default function Component() {
                   rotationInterval={2000}
                   animatePresenceMode="wait"
                 />
+                <Link
+                  href="tel:+91 9043384332"
+                  className="
+    flex items-center gap-1
+    block sm:hidden 
+    mt-4 text-base font-semibold text-white 
+    bg-[#0086FF] px-1 py-1 rounded-md 
+    w-fit mx-auto 
+    animate-bounce
+  "
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
+                    />
+                  </svg>
+                  9043384332
+                </Link>
               </motion.div>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -686,7 +731,7 @@ export default function Component() {
           </h2>
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 sm:p-12 shadow-xl border border-white/20">
             <p className="text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
-              At Eintransport, we've helped millions of people and businesses
+              At Eintransport Pvt Ltd, we've helped millions of people and businesses
               move smoothly—from homes shifting to goods transport across
               cities. With a trusted team, reliable vehicles, and a focus on
               quick and safe service, we make every move{" "}
@@ -870,8 +915,8 @@ export default function Component() {
                   : "translate-y-10 opacity-0"
               } animation-delay-1600`}
             >
-              <h3 className="text-2xl sm:text-3xl font-bold mb-6 text-white">
-                Eintransport
+              <h3 className="text-2xl  md:text-xl xl:text-2xl font-bold mb-6 text-white">
+                Eintransport Pvt Ltd
               </h3>
               <p className="text-gray-400 text-base leading-relaxed mb-6">
                 Your trusted partner for sustainable and efficient
